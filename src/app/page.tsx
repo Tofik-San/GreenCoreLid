@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   const [apiStatus, setApiStatus] = useState<"loading" | "ok" | "error">("loading");
 
-    useEffect(() => {
+  useEffect(() => {
     const API_URL =
       process.env.NEXT_PUBLIC_API_URL ||
       "https://web-production-310c7cup.railway.app";
@@ -33,7 +34,7 @@ export default function Home() {
             GreenCore API
           </h1>
 
-          {/* Блок состояния API */}
+          {/* Индикатор состояния API */}
           <div className="mt-[-40px] mb-8 flex items-center justify-center gap-2">
             <div
               style={{
@@ -93,9 +94,10 @@ export default function Home() {
             </span>
           </div>
 
+          {/* Кнопка перехода к документации */}
           <div className="flex justify-center mt-10">
-            <a
-              href="#"
+            <Link
+              href="/docs"
               className="gc-btn"
               style={{
                 fontSize: "16px",
@@ -108,7 +110,7 @@ export default function Home() {
               }}
             >
               Перейти к документации
-            </a>
+            </Link>
           </div>
         </div>
       </main>
@@ -131,9 +133,9 @@ export default function Home() {
 
       {/* Плавающие кнопки */}
       <div className="floating-buttons">
-        <a href="#about">О проекте</a>
-        <a href="#features">Возможности</a>
-        <a href="#contact">Контакты</a>
+        <Link href="/about">О проекте</Link>
+        <Link href="/keys">Возможности</Link>
+        <Link href="/contacts">Контакты</Link>
       </div>
 
       <Footer />
