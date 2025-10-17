@@ -1,26 +1,200 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* === GreenCore Core Interface — Тёмно-оливковая тема === */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --gc-bg: #000000;
+  --gc-bg-panel: rgba(30, 39, 32, 0.65);
+  --gc-green: #53ff94;
+  --gc-green-dim: #3fd67c;
+  --gc-text: #c6f7cb;
+  --gc-line: rgba(83, 255, 148, 0.15);
+  --gc-shadow: rgba(0, 0, 0, 0.9);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--gc-bg);
+  color: var(--gc-text);
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 0.02em;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* === Цифровой фон === */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(83,255,148,0.08), transparent 70%),
+    linear-gradient(90deg, var(--gc-line) 1px, transparent 1px),
+    linear-gradient(var(--gc-line) 1px, transparent 1px);
+  background-size: 100% 100%, 64px 64px, 64px 64px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* === Заголовки === */
+.gc-title {
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1.03;
+  background: none;
+  color: #8effa9;
+  text-shadow:
+    0 0 6px rgba(83, 255, 148, 0.9),
+    0 0 18px rgba(83, 255, 148, 0.6),
+    0 0 42px rgba(83, 255, 148, 0.45),
+    0 0 80px rgba(83, 255, 148, 0.3);
+}
+
+.gc-hero-title {
+  font-family: Arial, sans-serif;
+  font-weight: 800;
+  -webkit-text-stroke: 0.6px rgba(10, 30, 20, 0.4);
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.7),
+    0 0 18px rgba(120, 255, 160, 0.85),
+    0 0 36px rgba(120, 255, 160, 0.55);
+}
+
+/* === Подзаголовок === */
+.gc-subtitle {
+  color: #a9d8b2;
+  text-shadow: 0 0 4px rgba(83, 255, 148, 0.15);
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+/* === Кнопка === */
+.gc-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 1rem;
+  background: linear-gradient(90deg, var(--gc-green-dim), var(--gc-green));
+  color: #0e1812;
+  font-weight: 700;
+  box-shadow:
+    0 0 12px rgba(83, 255, 148, 0.4),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s ease;
+}
+.gc-btn:hover {
+  filter: brightness(1.15);
+  box-shadow:
+    0 0 20px rgba(83, 255, 148, 0.55),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* === Hero фон === */
+.gc-hero {
+  background: radial-gradient(circle at 50% 30%, rgba(83, 255, 148, 0.05), transparent 70%);
+}
+
+/* === Эффект зелёных лепестков === */
+.petal-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.petal {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  animation:
+    petal-float 14s linear infinite,
+    petal-sway 6s ease-in-out infinite,
+    petal-limeglow 6s ease-in-out infinite;
+  animation-timing-function: linear;
+}
+.petal:nth-child(3n) {
+  width: 14px;
+  height: 14px;
+  background: radial-gradient(circle, #a8ff83 0%, rgba(168, 255, 131, 0) 70%);
+}
+.petal:nth-child(3n + 1) {
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #aaff9a 0%, rgba(170, 255, 154, 0) 70%);
+}
+.petal:nth-child(3n + 2) {
+  width: 26px;
+  height: 26px;
+  background: radial-gradient(circle, #baffc0 0%, rgba(186, 255, 192, 0) 70%);
+}
+@keyframes petal-float {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(-120vh) translateX(40px) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translateY(-240vh) translateX(-60px) scale(1.2);
+    opacity: 0;
+  }
+}
+@keyframes petal-sway {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(8deg) translateX(10px); }
+  50% { transform: rotate(-7deg) translateX(-10px); }
+  75% { transform: rotate(5deg) translateX(6px); }
+}
+@keyframes petal-limeglow {
+  0%, 100% {
+    opacity: 0.6;
+    filter: brightness(1) drop-shadow(0 0 6px rgba(180, 255, 120, 0.6));
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(1.5) drop-shadow(0 0 14px rgba(200, 255, 150, 1));
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* === Плавающие кнопки === */
+.floating-buttons {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 999999;
+}
+.floating-buttons a {
+  background: rgba(13, 27, 15, 0.8);
+  backdrop-filter: blur(12px);
+  color: #a8ffb0;
+  font-weight: 600;
+  border: 1px solid rgba(83, 255, 148, 0.4);
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  text-align: center;
+}
+.floating-buttons a:hover {
+  border-color: #53ff94;
+  box-shadow:
+    0 0 18px rgba(83, 255, 148, 0.6),
+    inset 0 0 6px rgba(83, 255, 148, 0.4);
+  transform: translateY(-2px);
+  color: #d3ffd9;
 }
