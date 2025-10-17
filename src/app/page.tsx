@@ -5,16 +5,20 @@ import Footer from "@/components/Footer";
 export default function Home() {
   const [apiStatus, setApiStatus] = useState<"loading" | "ok" | "error">("loading");
 
-  useEffect(() => {
+    useEffect(() => {
     const API_URL =
       process.env.NEXT_PUBLIC_API_URL ||
       "https://web-production-310c7cup.railway.app";
+
     fetch(`${API_URL}/health`)
       .then((res) => {
         if (!res.ok) throw new Error("API не отвечает");
-        return res.text();
+        return res.json();
       })
-      .then(() => setApiStatus("ok"))
+      .then((data) => {
+        if (data.status === "ok") setApiStatus("ok");
+        else setApiStatus("error");
+      })
       .catch(() => setApiStatus("error"));
   }, []);
 
