@@ -1,28 +1,31 @@
- 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "https://web-production-310c7c.up.railway.app";
+import axios from "axios";
 
-export async function fetchFromAPI(
-  endpoint: string,
-  options: RequestInit = {}
-) {
-  const headers = {
-    "X-API-Key": process.env.NEXT_PUBLIC_API_KEY || "",
+export const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "https://web-production-310c7c7.up.railway.app";
+export const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
+
+const api = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
     "Content-Type": "application/json",
-    ...options.headers,
-  };
+    "X-API-Key": API_KEY,
+  },
+  timeout: 10000,
+});
 
-  const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-    ...options,
-    headers,
-    next: { revalidate: 0 },
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`API error ${res.status}: ${text}`);
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      console.error(
+        `API error: ${error.response.status} - ${error.response.data.detail || "No detail"}`
+      );
+    } else if (error.request) {
+      console.error("API unreachable or CORS blocked");
+    } else {
+      console.error("Error setting up request:", error.message);
+    }
+    return Promise.reject(error);
   }
+);
 
-  return res.json();
-}
+export default api;
