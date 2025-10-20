@@ -1,20 +1,11 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
-  eslint: {
-    ignoreDuringBuilds: true, // чтобы не ронял билд при lint-ошибках
-  },
-  typescript: {
-    ignoreBuildErrors: true, // чтобы не падал билд из-за TS-варнингов
-  },
-  images: {
-    domains: ["images.unsplash.com", "cdn.pixabay.com"], // можно добавить свои домены для картинок
-  },
   env: {
-    NEXT_PUBLIC_API_URL:
-      process.env.NEXT_PUBLIC_API_URL ||
-      "https://web-production-310c7c.up.railway.app",
+    // Основной URL для запросов к API
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    // Альтернативное имя для совместимости (если используется в коде)
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_URL,
   },
 };
 
