@@ -53,11 +53,11 @@ export default function DocsPage() {
         {plans.length === 0 ? (
           <p className="text-green-300">Нет данных о планах.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 justify-items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 justify-center items-start max-w-[1200px] mx-auto">
             {plans.map((plan: any) => (
               <div
                 key={plan.id}
-                className="bg-black/40 border-[2px] border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-2xl shadow-[0_0_40px_rgba(83,255,148,0.2)] p-12 w-[360px] flex flex-col justify-between hover:shadow-[0_0_45px_rgba(83,255,148,0.4)]"
+                className="bg-black/40 border-2 border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-2xl shadow-[0_0_40px_rgba(83,255,148,0.2)] p-10 w-[350px] flex flex-col justify-between hover:shadow-[0_0_45px_rgba(83,255,148,0.4)]"
               >
                 {/* Иконка и название */}
                 <div className="flex flex-col items-center mb-6">
