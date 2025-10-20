@@ -12,8 +12,7 @@ export default function DocsPage() {
     fetch(`${API_URL}/plans`)
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) setPlans(data);
-        else if (data && typeof data === "object") setPlans(Object.values(data));
+        if (data?.plans && Array.isArray(data.plans)) setPlans(data.plans);
         else setPlans([]);
       })
       .catch(() => setPlans([]));
@@ -55,9 +54,9 @@ export default function DocsPage() {
           <p className="text-green-300">Нет данных о планах.</p>
         ) : (
           <div className="flex flex-wrap justify-center gap-10">
-            {plans.map((plan: any, index: number) => (
+            {plans.map((plan: any) => (
               <div
-                key={index}
+                key={plan.id}
                 className="bg-black/40 border border-green-500/70 hover:border-green-400 transition rounded-2xl shadow-[0_0_25px_rgba(83,255,148,0.15)] p-8 w-[320px] flex flex-col justify-between"
               >
                 {/* Иконка и название */}
@@ -66,7 +65,7 @@ export default function DocsPage() {
                     {getPlanIcon(plan.name)}
                   </span>
                   <h3 className="text-3xl text-green-300 font-semibold drop-shadow-[0_0_6px_rgba(83,255,148,0.6)] uppercase">
-                    {plan.name || "UNTITLED"}
+                    {plan.name}
                   </h3>
                 </div>
 
@@ -75,34 +74,21 @@ export default function DocsPage() {
                   <p>
                     Общее ограничение:{" "}
                     <span className="text-green-400 font-medium">
-                      {plan.limit_total ?? "—"}
+                      {plan.limit_total}
                     </span>
                   </p>
                   <p>
                     Макс. страница:{" "}
                     <span className="text-green-400 font-medium">
-                      {plan.max_page ?? "—"}
+                      {plan.max_page}
                     </span>
                   </p>
-                  {plan.allowed_filters && (
-                    <p>
-                      Фильтры:{" "}
-                      <span className="text-green-400 break-words">
-                        {JSON.parse(plan.allowed_filters)
-                          .slice(0, 4)
-                          .join(", ")}
-                        ...
-                      </span>
-                    </p>
-                  )}
                 </div>
 
                 {/* Цена и кнопка */}
                 <div className="flex flex-col items-center mt-auto">
                   <p className="text-green-400 font-semibold text-lg mb-3">
-                    {plan.price_rub === 0
-                      ? "БЕСПЛАТНО"
-                      : `${plan.price_rub} ₽ / мес`}
+                    {plan.price === 0 ? "БЕСПЛАТНО" : `${plan.price} ₽ / мес`}
                   </p>
                   <button
                     className="px-6 py-2 rounded-xl bg-green-700/40 hover:bg-green-600/60 text-green-100 font-medium shadow-[0_0_10px_rgba(83,255,148,0.4)] transition"
