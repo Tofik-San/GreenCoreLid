@@ -11,7 +11,12 @@ export default function DocsPage() {
 
     fetch(`${API_URL}/plans`)
       .then((res) => res.json())
-      .then((data) => setPlans(data))
+      .then((data) => {
+        // Гарантируем, что всегда массив
+        if (Array.isArray(data)) setPlans(data);
+        else if (data && typeof data === "object") setPlans(Object.values(data));
+        else setPlans([]);
+      })
       .catch(() => setPlans([]));
   }, []);
 
@@ -30,7 +35,7 @@ export default function DocsPage() {
         <p>Нет данных о планах.</p>
       ) : (
         <div className="flex flex-col items-center gap-6">
-          {plans.map((plan: any, index: number) => (
+          {(Array.isArray(plans) ? plans : []).map((plan: any, index: number) => (
             <div
               key={index}
               className="border border-green-500 p-4 rounded-lg max-w-md w-full"
