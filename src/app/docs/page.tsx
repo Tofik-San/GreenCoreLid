@@ -48,20 +48,20 @@ export default function DocsPage() {
       </section>
 
       {/* Раздел тарифов */}
-      <section className="max-w-[1200px] mx-auto">
+      <section className="max-w-[1400px] mx-auto">
         <h2 className="text-3xl mb-10 text-green-400">Планы</h2>
         {plans.length === 0 ? (
           <p className="text-green-300">Нет данных о планах.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 justify-items-center">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 justify-items-center">
             {plans.map((plan: any) => (
               <div
                 key={plan.id}
-                className="bg-black/40 border border-green-500/60 hover:border-green-400 transition-all duration-300 rounded-2xl shadow-[0_0_30px_rgba(83,255,148,0.15)] p-10 w-[320px] flex flex-col justify-between hover:shadow-[0_0_30px_rgba(83,255,148,0.35)]"
+                className="bg-black/40 border-[2px] border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-2xl shadow-[0_0_40px_rgba(83,255,148,0.2)] p-12 w-[360px] flex flex-col justify-between hover:shadow-[0_0_45px_rgba(83,255,148,0.4)]"
               >
                 {/* Иконка и название */}
-                <div className="flex flex-col items-center mb-4">
-                  <span className="text-5xl mb-3 drop-shadow-[0_0_12px_rgba(83,255,148,0.6)]">
+                <div className="flex flex-col items-center mb-6">
+                  <span className="text-6xl mb-4 drop-shadow-[0_0_15px_rgba(83,255,148,0.6)]">
                     {getPlanIcon(plan.name)}
                   </span>
                   <h3 className="text-3xl text-green-300 font-semibold drop-shadow-[0_0_6px_rgba(83,255,148,0.6)] uppercase">
@@ -70,7 +70,7 @@ export default function DocsPage() {
                 </div>
 
                 {/* Информация по тарифу */}
-                <div className="text-green-200 mb-8 text-sm leading-relaxed space-y-3 text-left">
+                <div className="text-green-200 mb-10 text-base leading-relaxed space-y-4 text-left">
                   <p>
                     Общее ограничение:{" "}
                     <span className="text-green-400 font-medium">
@@ -87,11 +87,11 @@ export default function DocsPage() {
 
                 {/* Цена и кнопка */}
                 <div className="flex flex-col items-center mt-auto">
-                  <p className="text-green-400 font-semibold text-lg mb-3">
+                  <p className="text-green-400 font-semibold text-xl mb-4">
                     {plan.price === 0 ? "БЕСПЛАТНО" : `${plan.price} ₽ / мес`}
                   </p>
                   <button
-                    className="px-8 py-2 rounded-xl bg-green-700/40 hover:bg-green-600/60 text-green-100 font-medium shadow-[0_0_15px_rgba(83,255,148,0.4)] transition"
+                    className="px-10 py-3 rounded-xl bg-green-700/40 hover:bg-green-600/60 text-green-100 font-medium shadow-[0_0_20px_rgba(83,255,148,0.5)] transition"
                     onClick={() => alert(`Выбран план: ${plan.name}`)}
                   >
                     Активировать
