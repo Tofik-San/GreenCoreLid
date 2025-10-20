@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 
 export default function DocsPage() {
-  const [plans, setPlans] = useState([]);
+  const [plans, setPlans] = useState<any[]>([]);
 
   useEffect(() => {
     const API_URL =
@@ -30,14 +30,16 @@ export default function DocsPage() {
         <p>Нет данных о планах.</p>
       ) : (
         <div className="flex flex-col items-center gap-6">
-          {plans.map((plan) => (
+          {plans.map((plan: any, index: number) => (
             <div
-              key={plan.id}
+              key={index}
               className="border border-green-500 p-4 rounded-lg max-w-md w-full"
             >
               <h3 className="text-green-300 text-xl">{plan.name}</h3>
               <p>{plan.description}</p>
-              <p className="text-green-400">{plan.requests_per_day} запросов/день</p>
+              <p className="text-green-400">
+                {plan.requests_per_day} запросов/день
+              </p>
             </div>
           ))}
         </div>
