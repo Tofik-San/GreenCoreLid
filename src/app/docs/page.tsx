@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 
 export default function DocsPage() {
   const [plans, setPlans] = useState<any[]>([]);
+  const [message, setMessage] = useState<string | null>(null);
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+
+  const API_URL =
+    process.env.NEXT_PUBLIC_API_URL ||
+    "https://web-production-310c7c.up.railway.app";
 
   useEffect(() => {
-    const API_URL =
-      process.env.NEXT_PUBLIC_API_URL ||
-      "https://web-production-310c7c.up.railway.app";
-
     fetch(`${API_URL}/plans`)
       .then((res) => res.json())
       .then((data) => {
@@ -31,6 +33,32 @@ export default function DocsPage() {
     }
   };
 
+  const handleActivate = async (planName: string) => {
+    try {
+      setLoadingPlan(planName);
+      setMessage(null);
+
+      const res = await fetch(`${API_URL}/generate_key`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan: planName }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data?.api_key) {
+        setMessage(`🔑 Ключ успешно создан: ${data.api_key}`);
+      } else {
+        setMessage(`Ошибка: ${data?.error || "Не удалось создать ключ."}`);
+      }
+    } catch {
+      setMessage("Ошибка соединения с сервером.");
+    } finally {
+      setLoadingPlan(null);
+      setTimeout(() => setMessage(null), 8000);
+    }
+  };
+
   return (
     <main className="min-h-screen px-10 py-16 text-center text-green-100">
       <h1 className="text-5xl mb-12 text-green-400 drop-shadow-[0_0_10px_rgba(163,255,163,0.7)]">
@@ -50,6 +78,12 @@ export default function DocsPage() {
       {/* Раздел тарифов */}
       <section className="max-w-[1400px] mx-auto px-6">
         <h2 className="text-3xl mb-10 text-green-400">Планы</h2>
+
+        {message && (
+          <div className="mb-10 text-green-300 bg-black/50 border border-green-400/50 px-6 py-4 rounded-xl shadow-[0_0_20px_rgba(83,255,148,0.3)] inline-block">
+            {message}
+          </div>
+        )}
 
         {plans.length === 0 ? (
           <p className="text-green-300">Нет данных о планах.</p>
@@ -93,10 +127,17 @@ export default function DocsPage() {
                         : `${plan.price} ₽ / мес`}
                     </p>
                     <button
-                      className="px-10 py-3 rounded-xl bg-green-700/40 hover:bg-green-600/60 text-green-100 font-medium shadow-[0_0_20px_rgba(83,255,148,0.5)] transition"
-                      onClick={() => alert(`Выбран план: ${plan.name}`)}
+                      disabled={loadingPlan === plan.name}
+                      className={`px-10 py-3 rounded-xl ${
+                        loadingPlan === plan.name
+                          ? "bg-green-800/30 cursor-wait"
+                          : "bg-green-700/40 hover:bg-green-600/60"
+                      } text-green-100 font-medium shadow-[0_0_20px_rgba(83,255,148,0.5)] transition`}
+                      onClick={() => handleActivate(plan.name)}
                     >
-                      Активировать
+                      {loadingPlan === plan.name
+                        ? "Создание..."
+                        : "Активировать"}
                     </button>
                   </div>
                 </div>
