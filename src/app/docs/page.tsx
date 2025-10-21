@@ -38,7 +38,7 @@ export default function DocsPage() {
       setLoadingPlan(planName);
       setMessage(null);
 
-      const res = await fetch(`${API_URL}/generate_key`, {
+      const res = await fetch(`${API_URL}/create_user_key`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ plan: planName }),
@@ -49,7 +49,7 @@ export default function DocsPage() {
       if (res.ok && data?.api_key) {
         setMessage(`🔑 Ключ успешно создан: ${data.api_key}`);
       } else {
-        setMessage(`Ошибка: ${data?.error || "Не удалось создать ключ."}`);
+        setMessage(`Ошибка: ${data?.detail || data?.error || "Не удалось создать ключ."}`);
       }
     } catch {
       setMessage("Ошибка соединения с сервером.");
@@ -70,7 +70,7 @@ export default function DocsPage() {
         <h2 className="text-2xl mb-4 text-green-300">Эндпоинты</h2>
         <ul className="mb-16 space-y-2 text-green-200">
           <li>GET /plants — список растений</li>
-          <li>POST /generate_key — сгенерировать API-ключ</li>
+          <li>POST /create_user_key — запрос на создание пользовательского ключа</li>
           <li>GET /health — проверка статуса</li>
         </ul>
       </section>
