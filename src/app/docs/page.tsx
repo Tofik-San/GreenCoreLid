@@ -65,16 +65,6 @@ export default function DocsPage() {
         Документация API
       </h1>
 
-      {/* Раздел эндпоинтов */}
-      <section>
-        <h2 className="text-2xl mb-4 text-green-300">Эндпоинты</h2>
-        <ul className="mb-16 space-y-2 text-green-200">
-          <li>GET /plants — список растений</li>
-          <li>POST /create_user_key — запрос на создание пользовательского ключа</li>
-          <li>GET /health — проверка статуса</li>
-        </ul>
-      </section>
-
       {/* Раздел тарифов */}
       <section className="max-w-[1400px] mx-auto px-6">
         <h2 className="text-3xl mb-10 text-green-400">Планы</h2>
@@ -91,9 +81,7 @@ export default function DocsPage() {
           <div className="flex flex-wrap justify-center gap-16 relative">
             {plans.map((plan: any, index: number) => (
               <div key={plan.id} className="relative flex flex-col items-center">
-                {/* Карточка */}
                 <div className="bg-black/40 border-2 border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-2xl shadow-[0_0_40px_rgba(83,255,148,0.2)] p-10 w-[380px] flex flex-col justify-between hover:shadow-[0_0_50px_rgba(83,255,148,0.4)]">
-                  {/* Иконка и название */}
                   <div className="flex flex-col items-center mb-6">
                     <span className="text-6xl mb-4 drop-shadow-[0_0_15px_rgba(83,255,148,0.6)]">
                       {getPlanIcon(plan.name)}
@@ -103,7 +91,6 @@ export default function DocsPage() {
                     </h3>
                   </div>
 
-                  {/* Информация по тарифу */}
                   <div className="text-green-200 mb-10 text-base leading-relaxed space-y-4 text-left">
                     <p>
                       Общее ограничение:{" "}
@@ -119,7 +106,6 @@ export default function DocsPage() {
                     </p>
                   </div>
 
-                  {/* Цена и кнопка */}
                   <div className="flex flex-col items-center mt-auto">
                     <p className="text-green-400 font-semibold text-xl mb-4">
                       {plan.price === 0
@@ -142,7 +128,6 @@ export default function DocsPage() {
                   </div>
                 </div>
 
-                {/* Светящийся разделитель между карточками */}
                 {index < plans.length - 1 && (
                   <div className="hidden lg:block absolute top-1/2 right-[-40px] w-px h-[250px] bg-gradient-to-b from-green-400/70 via-green-300/40 to-transparent blur-[1px] shadow-[0_0_15px_rgba(83,255,148,0.7)]" />
                 )}
