@@ -48,55 +48,63 @@ export default function DocsPage() {
       </section>
 
       {/* Раздел тарифов */}
-      <section className="max-w-[1400px] mx-auto">
+      <section className="max-w-[1400px] mx-auto px-6">
         <h2 className="text-3xl mb-10 text-green-400">Планы</h2>
+
         {plans.length === 0 ? (
           <p className="text-green-300">Нет данных о планах.</p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 justify-center items-start max-w-[1200px] mx-auto">
-            {plans.map((plan: any) => (
-              <div
-                key={plan.id}
-                className="bg-black/40 border-2 border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-2xl shadow-[0_0_40px_rgba(83,255,148,0.2)] p-10 w-[350px] flex flex-col justify-between hover:shadow-[0_0_45px_rgba(83,255,148,0.4)]"
-              >
-                {/* Иконка и название */}
-                <div className="flex flex-col items-center mb-6">
-                  <span className="text-6xl mb-4 drop-shadow-[0_0_15px_rgba(83,255,148,0.6)]">
-                    {getPlanIcon(plan.name)}
-                  </span>
-                  <h3 className="text-3xl text-green-300 font-semibold drop-shadow-[0_0_6px_rgba(83,255,148,0.6)] uppercase">
-                    {plan.name}
-                  </h3>
+          <div className="flex flex-wrap justify-center gap-16 relative">
+            {plans.map((plan: any, index: number) => (
+              <div key={plan.id} className="relative flex flex-col items-center">
+                {/* Карточка */}
+                <div className="bg-black/40 border-2 border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-2xl shadow-[0_0_40px_rgba(83,255,148,0.2)] p-10 w-[380px] flex flex-col justify-between hover:shadow-[0_0_50px_rgba(83,255,148,0.4)]">
+                  {/* Иконка и название */}
+                  <div className="flex flex-col items-center mb-6">
+                    <span className="text-6xl mb-4 drop-shadow-[0_0_15px_rgba(83,255,148,0.6)]">
+                      {getPlanIcon(plan.name)}
+                    </span>
+                    <h3 className="text-3xl text-green-300 font-semibold drop-shadow-[0_0_6px_rgba(83,255,148,0.6)] uppercase">
+                      {plan.name}
+                    </h3>
+                  </div>
+
+                  {/* Информация по тарифу */}
+                  <div className="text-green-200 mb-10 text-base leading-relaxed space-y-4 text-left">
+                    <p>
+                      Общее ограничение:{" "}
+                      <span className="text-green-400 font-medium">
+                        {plan.limit_total}
+                      </span>
+                    </p>
+                    <p>
+                      Макс. страница:{" "}
+                      <span className="text-green-400 font-medium">
+                        {plan.max_page}
+                      </span>
+                    </p>
+                  </div>
+
+                  {/* Цена и кнопка */}
+                  <div className="flex flex-col items-center mt-auto">
+                    <p className="text-green-400 font-semibold text-xl mb-4">
+                      {plan.price === 0
+                        ? "БЕСПЛАТНО"
+                        : `${plan.price} ₽ / мес`}
+                    </p>
+                    <button
+                      className="px-10 py-3 rounded-xl bg-green-700/40 hover:bg-green-600/60 text-green-100 font-medium shadow-[0_0_20px_rgba(83,255,148,0.5)] transition"
+                      onClick={() => alert(`Выбран план: ${plan.name}`)}
+                    >
+                      Активировать
+                    </button>
+                  </div>
                 </div>
 
-                {/* Информация по тарифу */}
-                <div className="text-green-200 mb-10 text-base leading-relaxed space-y-4 text-left">
-                  <p>
-                    Общее ограничение:{" "}
-                    <span className="text-green-400 font-medium">
-                      {plan.limit_total}
-                    </span>
-                  </p>
-                  <p>
-                    Макс. страница:{" "}
-                    <span className="text-green-400 font-medium">
-                      {plan.max_page}
-                    </span>
-                  </p>
-                </div>
-
-                {/* Цена и кнопка */}
-                <div className="flex flex-col items-center mt-auto">
-                  <p className="text-green-400 font-semibold text-xl mb-4">
-                    {plan.price === 0 ? "БЕСПЛАТНО" : `${plan.price} ₽ / мес`}
-                  </p>
-                  <button
-                    className="px-10 py-3 rounded-xl bg-green-700/40 hover:bg-green-600/60 text-green-100 font-medium shadow-[0_0_20px_rgba(83,255,148,0.5)] transition"
-                    onClick={() => alert(`Выбран план: ${plan.name}`)}
-                  >
-                    Активировать
-                  </button>
-                </div>
+                {/* Светящийся разделитель между карточками */}
+                {index < plans.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 right-[-40px] w-px h-[250px] bg-gradient-to-b from-green-400/70 via-green-300/40 to-transparent blur-[1px] shadow-[0_0_15px_rgba(83,255,148,0.7)]" />
+                )}
               </div>
             ))}
           </div>
