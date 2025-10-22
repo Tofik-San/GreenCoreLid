@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   const [apiStatus, setApiStatus] = useState<"loading" | "ok" | "error">("loading");
+  const [activeModal, setActiveModal] = useState<string | null>(null);
 
   useEffect(() => {
     const API_URL =
@@ -131,12 +132,60 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Плавающие кнопки */}
+      {/* Кнопки (теперь открывают модалки) */}
       <div className="floating-buttons">
-        <Link href="/about">О проекте</Link>
-        <Link href="/keys">Возможности</Link>
-        <Link href="/contacts">Контакты</Link>
+        <button onClick={() => setActiveModal("about")}>О проекте</button>
+        <button onClick={() => setActiveModal("features")}>Возможности</button>
+        <button onClick={() => setActiveModal("contacts")}>Контакты</button>
       </div>
+
+      {/* Модальные окна */}
+      {activeModal && (
+        <div
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[999999]"
+          onClick={() => setActiveModal(null)}
+        >
+          <div
+            className="bg-[#0d1b0f] border border-[#53ff94]/40 rounded-2xl p-8 w-[90%] max-w-lg text-[#a8ffb0] text-center shadow-lg relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-3 right-4 text-[#53ff94] text-lg"
+              onClick={() => setActiveModal(null)}
+            >
+              ✕
+            </button>
+
+            {activeModal === "about" && (
+              <>
+                <h2 className="text-2xl mb-3 text-[#53ff94]">О проекте</h2>
+                <p>
+                  GreenCore — цифровое ядро знаний о растениях. Платформа объединяет
+                  ботанику, агротехнику и искусственный интеллект для точного подбора ухода.
+                </p>
+              </>
+            )}
+            {activeModal === "features" && (
+              <>
+                <h2 className="text-2xl mb-3 text-[#53ff94]">Возможности</h2>
+                <p>
+                  Система фильтров, API-доступ, интеграции с ботами и визуальными
+                  инструментами для проектирования экосистем.
+                </p>
+              </>
+            )}
+            {activeModal === "contacts" && (
+              <>
+                <h2 className="text-2xl mb-3 text-[#53ff94]">Контакты</h2>
+                <p>
+                  Email: info@greencore.ai<br />
+                  Telegram: @greencore_bot
+                </p>
+              </>
+            )}
+          </div>
+        </div>
+      )}
 
       <Footer />
     </>
