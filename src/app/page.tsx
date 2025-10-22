@@ -4,8 +4,6 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   const [apiStatus, setApiStatus] = useState<"loading" | "ok" | "error">("loading");
-  const [activeModal, setActiveModal] = useState<string | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const API_URL =
@@ -23,16 +21,6 @@ export default function Home() {
       })
       .catch(() => setApiStatus("error"));
   }, []);
-
-  // плавное появление модалки
-  useEffect(() => {
-    if (activeModal) {
-      setIsVisible(true);
-    } else {
-      const timer = setTimeout(() => setIsVisible(false), 250);
-      return () => clearTimeout(timer);
-    }
-  }, [activeModal]);
 
   return (
     <>
@@ -53,28 +41,16 @@ export default function Home() {
                 height: "12px",
                 borderRadius: "50%",
                 backgroundColor:
-                  apiStatus === "ok"
-                    ? "#4ade80"
-                    : apiStatus === "error"
-                    ? "#ef4444"
-                    : "#facc15",
+                  apiStatus === "ok" ? "#4ade80" :
+                  apiStatus === "error" ? "#ef4444" : "#facc15",
                 boxShadow:
-                  apiStatus === "ok"
-                    ? "0 0 8px #4ade80"
-                    : apiStatus === "error"
-                    ? "0 0 8px #ef4444"
-                    : "0 0 8px #facc15",
+                  apiStatus === "ok" ? "0 0 8px #4ade80" :
+                  apiStatus === "error" ? "0 0 8px #ef4444" : "0 0 8px #facc15",
               }}
             />
-            <span
-              className="text-green-200 text-sm"
-              style={{ fontFamily: "monospace" }}
-            >
-              {apiStatus === "ok"
-                ? "API online"
-                : apiStatus === "error"
-                ? "API offline"
-                : "Проверка соединения..."}
+            <span className="text-green-200 text-sm" style={{ fontFamily: "monospace" }}>
+              {apiStatus === "ok" ? "API online" :
+               apiStatus === "error" ? "API offline" : "Проверка соединения..."}
             </span>
           </div>
 
@@ -126,74 +102,23 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Эффект зелёных лепестков */}
-      <div className="petal-field">
+      {/* Эффект зелёных лепестков — не перехватывает клики и лежит под всем */}
+      <div className="petal-field pointer-events-none fixed inset-0 -z-10">
         {Array.from({ length: 20 }).map((_, i) => (
           <div
             key={i}
-            className="petal"
+            className="petal pointer-events-none"
             style={{
               left: `${Math.random() * 100}%`,
               bottom: `${Math.random() * 200}px`,
               animationDelay: `${i * 2.5}s`,
               animationDuration: `${10 + Math.random() * 6}s`,
               transform: `rotate(${Math.random() * 360}deg)`,
+              position: "absolute",
             }}
           />
         ))}
       </div>
-
-      {/* Модальные окна с анимацией */}
-      {(activeModal || isVisible) && (
-        <div
-          className={`fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${
-            activeModal ? "opacity-100" : "opacity-0"
-          } z-[999999]`}
-          onClick={() => setActiveModal(null)}
-        >
-          <div
-            className={`bg-[#0d1b0f] border border-[#53ff94]/40 rounded-2xl p-8 w-[90%] max-w-lg text-[#a8ffb0] text-center shadow-lg relative transform transition-all duration-300 ${
-              activeModal ? "scale-100 opacity-100" : "scale-95 opacity-0"
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              className="absolute top-3 right-4 text-[#53ff94] text-lg"
-              onClick={() => setActiveModal(null)}
-            >
-              ✕
-            </button>
-
-            {activeModal === "about" && (
-              <>
-                <h2 className="text-2xl mb-3 text-[#53ff94]">О проекте</h2>
-                <p>
-                  GreenCore — цифровое ядро знаний о растениях. Платформа объединяет
-                  ботанику, агротехнику и искусственный интеллект для точного подбора ухода.
-                </p>
-              </>
-            )}
-            {activeModal === "features" && (
-              <>
-                <h2 className="text-2xl mb-3 text-[#53ff94]">Возможности</h2>
-                <p>
-                  Система фильтров, API-доступ, интеграции с ботами и визуальными
-                  инструментами для проектирования экосистем.
-                </p>
-              </>
-            )}
-            {activeModal === "contacts" && (
-              <>
-                <h2 className="text-2xl mb-3 text-[#53ff94]">Контакты</h2>
-                <p>
-                  Email: info@greencore.ai<br />
-                  Telegram: @greencore_bot
-                </p>
-              </>
-            )}
-          </div>
-        </div>
-      )}
 
       <Footer />
     </>
