@@ -1,10 +1,15 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: true,
-  env: {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  reactStrictMode: false,
+  experimental: {
+    appDir: true,
+  },
+  webpack: (config) => {
+    // чтобы модалки, createPortal и document работали на клиенте
+    config.resolve.fallback = { fs: false, path: false };
+    return config;
   },
 };
 
 export default nextConfig;
-
