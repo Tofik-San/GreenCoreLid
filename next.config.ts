@@ -1,15 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  reactStrictMode: false,
-  experimental: {
-    appDir: true,
-  },
-  webpack: (config) => {
-    // чтобы модалки, createPortal и document работали на клиенте
-    config.resolve.fallback = { fs: false, path: false };
-    return config;
-  },
+  reactStrictMode: true,
+  // experimental.appDir убран — в Next 15 он включён по умолчанию
+  // дополнительных флагов не требуется
 };
 
 export default nextConfig;
