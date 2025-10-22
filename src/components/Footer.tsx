@@ -6,38 +6,38 @@ export default function Footer() {
   const closeModal = () => setOpenModal(null);
 
   return (
-    <>
-      {/* Футер */}
-      <footer className="w-full py-6 text-center text-sm text-green-400 border-t border-green-800/50 bg-transparent relative">
+    <footer className="w-full py-6 text-center text-sm text-green-400 border-t border-green-800/50 bg-transparent relative">
+      <div className="flex flex-col items-center space-y-4">
+        {/* Текст © */}
         <p>© {new Date().getFullYear()} GreenCore — цифровая ботаника нового уровня.</p>
-      </footer>
 
-      {/* Плавающие кнопки в нижнем правом углу */}
-      <div className="fixed bottom-6 right-6 flex flex-col items-end gap-3 z-40">
-        <button
-          onClick={() => setOpenModal("about")}
-          className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
-        >
-          О проекте
-        </button>
-        <button
-          onClick={() => setOpenModal("features")}
-          className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
-        >
-          Возможности
-        </button>
-        <button
-          onClick={() => setOpenModal("privacy")}
-          className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
-        >
-          Политика конфиденциальности
-        </button>
-        <button
-          onClick={() => setOpenModal("terms")}
-          className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
-        >
-          Условия использования
-        </button>
+        {/* Кнопки внизу */}
+        <div className="flex flex-wrap justify-center gap-4">
+          <button
+            onClick={() => setOpenModal("about")}
+            className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
+          >
+            О проекте
+          </button>
+          <button
+            onClick={() => setOpenModal("features")}
+            className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
+          >
+            Возможности
+          </button>
+          <button
+            onClick={() => setOpenModal("privacy")}
+            className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
+          >
+            Политика конфиденциальности
+          </button>
+          <button
+            onClick={() => setOpenModal("terms")}
+            className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
+          >
+            Условия использования
+          </button>
+        </div>
       </div>
 
       {/* Модальные окна */}
@@ -103,6 +103,6 @@ export default function Footer() {
           </div>
         </div>
       )}
-    </>
+    </footer>
   );
 }
