@@ -126,6 +126,7 @@ export default function Home() {
         </div>
       </main>
 
+      {/* Эффект зелёных лепестков */}
       <div className="petal-field">
         {Array.from({ length: 20 }).map((_, i) => (
           <div
@@ -140,13 +141,6 @@ export default function Home() {
             }}
           />
         ))}
-      </div>
-
-      {/* Кнопки (внизу справа) */}
-      <div className="floating-buttons">
-        <button onClick={() => setActiveModal("about")}>О проекте</button>
-        <button onClick={() => setActiveModal("features")}>Возможности</button>
-        <button onClick={() => setActiveModal("contacts")}>Контакты</button>
       </div>
 
       {/* Модальные окна с анимацией */}

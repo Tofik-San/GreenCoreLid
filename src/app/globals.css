@@ -167,17 +167,6 @@ body::before {
   }
 }
 
-/* === Плавающие кнопки (справа) — скрыты === */
-.floating-buttons {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  z-index: 99999;
-}
-
 /* === Кнопки в футере, стиль сохранён === */
 .floating-buttons-style {
   background: rgba(13, 27, 15, 0.8);
