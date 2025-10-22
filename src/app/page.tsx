@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 export default function Home() {
   const [apiStatus, setApiStatus] = useState<"loading" | "ok" | "error">("loading");
   const [activeModal, setActiveModal] = useState<string | null>(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const API_URL =
@@ -22,6 +23,16 @@ export default function Home() {
       })
       .catch(() => setApiStatus("error"));
   }, []);
+
+  // плавное появление модалки
+  useEffect(() => {
+    if (activeModal) {
+      setIsVisible(true);
+    } else {
+      const timer = setTimeout(() => setIsVisible(false), 250);
+      return () => clearTimeout(timer);
+    }
+  }, [activeModal]);
 
   return (
     <>
@@ -131,21 +142,25 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Плавающие кнопки — теперь кнопки, не ссылки */}
+      {/* Кнопки (внизу справа) */}
       <div className="floating-buttons">
         <button onClick={() => setActiveModal("about")}>О проекте</button>
         <button onClick={() => setActiveModal("features")}>Возможности</button>
         <button onClick={() => setActiveModal("contacts")}>Контакты</button>
       </div>
 
-      {/* Модальные окна */}
-      {activeModal && (
+      {/* Модальные окна с анимацией */}
+      {(activeModal || isVisible) && (
         <div
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-[999999]"
+          className={`fixed inset-0 flex items-center justify-center bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${
+            activeModal ? "opacity-100" : "opacity-0"
+          } z-[999999]`}
           onClick={() => setActiveModal(null)}
         >
           <div
-            className="bg-[#0d1b0f] border border-[#53ff94]/40 rounded-2xl p-8 w-[90%] max-w-lg text-[#a8ffb0] text-center shadow-lg relative"
+            className={`bg-[#0d1b0f] border border-[#53ff94]/40 rounded-2xl p-8 w-[90%] max-w-lg text-[#a8ffb0] text-center shadow-lg relative transform transition-all duration-300 ${
+              activeModal ? "scale-100 opacity-100" : "scale-95 opacity-0"
+            }`}
             onClick={(e) => e.stopPropagation()}
           >
             <button
