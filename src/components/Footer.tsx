@@ -91,7 +91,7 @@ export default function Footer() {
       : null;
 
   return (
-    <footer className="relative z-10 w-full py-10 text-center text-sm text-green-400 border-t border-green-800/50 bg-transparent">
+    <footer className="relative z-[9999] w-full py-10 text-center text-sm text-green-400 border-t border-green-800/50 bg-transparent">
       <p className="mb-6">© {new Date().getFullYear()} GreenCore — цифровая ботаника нового уровня.</p>
 
       <div className="flex flex-wrap justify-center gap-5">

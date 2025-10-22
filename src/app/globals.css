@@ -27,7 +27,7 @@ body {
   overflow-x: hidden;
 }
 
-/* === Цифровой фон === */
+/* === Цифровой фон — убираем перекрытие кликов === */
 body::before {
   content: "";
   position: fixed;
@@ -37,8 +37,8 @@ body::before {
     linear-gradient(90deg, var(--gc-line) 1px, transparent 1px),
     linear-gradient(var(--gc-line) 1px, transparent 1px);
   background-size: 100% 100%, 64px 64px, 64px 64px;
-  pointer-events: none;
-  z-index: -1;
+  pointer-events: none !important;
+  z-index: -10 !important;
 }
 
 /* === Заголовки === */
@@ -104,7 +104,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   overflow: hidden;
-  z-index: 0;
+  z-index: -5;
 }
 .petal {
   position: absolute;
@@ -167,7 +167,7 @@ body::before {
   }
 }
 
-/* === Кнопки в футере, стиль сохранён === */
+/* === Кнопки в футере === */
 .floating-buttons-style {
   background: rgba(13, 27, 15, 0.8);
   backdrop-filter: blur(12px);
@@ -180,6 +180,9 @@ body::before {
   transition: all 0.3s ease;
   text-decoration: none;
   text-align: center;
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
 }
 .floating-buttons-style:hover {
   border-color: #53ff94;
@@ -188,9 +191,4 @@ body::before {
     inset 0 0 6px rgba(83, 255, 148, 0.4);
   transform: translateY(-2px);
   color: #d3ffd9;
-}
-.floating-buttons-style {
-  cursor: pointer;
-  user-select: none;
-  display: inline-block;
 }
