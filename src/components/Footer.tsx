@@ -7,7 +7,6 @@ export default function Footer() {
 
   return (
     <footer className="w-full py-10 text-center text-sm text-green-400 border-t border-green-800/50 bg-transparent relative">
-      {/* Текст © */}
       <p className="mb-6">© {new Date().getFullYear()} GreenCore — цифровая ботаника нового уровня.</p>
 
       {/* Кнопки */}
@@ -21,9 +20,12 @@ export default function Footer() {
           <button
             key={btn.id}
             onClick={() => setOpenModal(btn.id)}
-            className="px-5 py-2 rounded-xl border border-green-500 bg-green-900/40 text-green-100
-                       hover:bg-green-700/50 transition-all duration-300 shadow-[0_0_12px_rgba(83,255,148,0.3)]
-                       hover:shadow-[0_0_25px_rgba(83,255,148,0.5)] hover:text-green-50"
+            className="px-6 py-2.5 rounded-xl font-medium text-green-100
+                       border border-green-400/70 bg-gradient-to-b from-green-900/50 to-green-800/40
+                       hover:from-green-800/60 hover:to-green-700/60
+                       shadow-[0_0_12px_rgba(83,255,148,0.4),inset_0_0_6px_rgba(83,255,148,0.2)]
+                       hover:shadow-[0_0_25px_rgba(83,255,148,0.6),inset_0_0_10px_rgba(83,255,148,0.3)]
+                       transition-all duration-300 backdrop-blur-sm"
           >
             {btn.label}
           </button>
