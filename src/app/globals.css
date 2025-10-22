@@ -167,9 +167,35 @@ body::before {
   }
 }
 
-/* === Плавающие кнопки (отключены) === */
-.floating-buttons,
-.floating-buttons a,
-.floating-buttons-style {
+/* === Плавающие кнопки (справа) — скрыты === */
+.floating-buttons {
   display: none !important;
+}
+
+/* === Кнопки в футере, стиль сохранён === */
+.floating-buttons-style {
+  background: rgba(13, 27, 15, 0.8);
+  backdrop-filter: blur(12px);
+  color: #a8ffb0;
+  font-weight: 600;
+  border: 1px solid rgba(83, 255, 148, 0.4);
+  border-radius: 9999px;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  text-align: center;
+}
+.floating-buttons-style:hover {
+  border-color: #53ff94;
+  box-shadow:
+    0 0 18px rgba(83, 255, 148, 0.6),
+    inset 0 0 6px rgba(83, 255, 148, 0.4);
+  transform: translateY(-2px);
+  color: #d3ffd9;
+}
+.floating-buttons-style {
+  cursor: pointer;
+  user-select: none;
+  display: inline-block;
 }
