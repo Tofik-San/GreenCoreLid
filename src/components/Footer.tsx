@@ -6,38 +6,28 @@ export default function Footer() {
   const closeModal = () => setOpenModal(null);
 
   return (
-    <footer className="w-full py-6 text-center text-sm text-green-400 border-t border-green-800/50 bg-transparent relative">
-      <div className="flex flex-col items-center space-y-4">
-        {/* Текст © */}
-        <p>© {new Date().getFullYear()} GreenCore — цифровая ботаника нового уровня.</p>
+    <footer className="w-full py-10 text-center text-sm text-green-400 border-t border-green-800/50 bg-transparent relative">
+      {/* Текст © */}
+      <p className="mb-6">© {new Date().getFullYear()} GreenCore — цифровая ботаника нового уровня.</p>
 
-        {/* Кнопки внизу */}
-        <div className="flex flex-wrap justify-center gap-4">
+      {/* Кнопки */}
+      <div className="flex flex-wrap justify-center gap-5">
+        {[
+          { id: "about", label: "О проекте" },
+          { id: "features", label: "Возможности" },
+          { id: "privacy", label: "Политика конфиденциальности" },
+          { id: "terms", label: "Условия использования" },
+        ].map((btn) => (
           <button
-            onClick={() => setOpenModal("about")}
-            className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
+            key={btn.id}
+            onClick={() => setOpenModal(btn.id)}
+            className="px-5 py-2 rounded-xl border border-green-500 bg-green-900/40 text-green-100
+                       hover:bg-green-700/50 transition-all duration-300 shadow-[0_0_12px_rgba(83,255,148,0.3)]
+                       hover:shadow-[0_0_25px_rgba(83,255,148,0.5)] hover:text-green-50"
           >
-            О проекте
+            {btn.label}
           </button>
-          <button
-            onClick={() => setOpenModal("features")}
-            className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
-          >
-            Возможности
-          </button>
-          <button
-            onClick={() => setOpenModal("privacy")}
-            className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
-          >
-            Политика конфиденциальности
-          </button>
-          <button
-            onClick={() => setOpenModal("terms")}
-            className="bg-green-900/40 border border-green-500 text-green-100 rounded-xl px-5 py-2 hover:bg-green-800/70 transition shadow-[0_0_12px_rgba(83,255,148,0.3)]"
-          >
-            Условия использования
-          </button>
-        </div>
+        ))}
       </div>
 
       {/* Модальные окна */}
