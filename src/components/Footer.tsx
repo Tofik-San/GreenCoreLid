@@ -7,9 +7,11 @@ export default function Footer() {
 
   return (
     <footer className="w-full py-10 text-center text-sm text-green-400 border-t border-green-800/50 bg-transparent relative">
-      <p className="mb-6">© {new Date().getFullYear()} GreenCore — цифровая ботаника нового уровня.</p>
+      <p className="mb-6">
+        © {new Date().getFullYear()} GreenCore — цифровая ботаника нового уровня.
+      </p>
 
-      {/* Кнопки */}
+      {/* Кнопки, стилизованные как плавающие */}
       <div className="flex flex-wrap justify-center gap-5">
         {[
           { id: "about", label: "О проекте" },
@@ -20,12 +22,8 @@ export default function Footer() {
           <button
             key={btn.id}
             onClick={() => setOpenModal(btn.id)}
-            className="px-6 py-2.5 rounded-xl font-medium text-green-100
-                       border border-green-400/70 bg-gradient-to-b from-green-900/50 to-green-800/40
-                       hover:from-green-800/60 hover:to-green-700/60
-                       shadow-[0_0_12px_rgba(83,255,148,0.4),inset_0_0_6px_rgba(83,255,148,0.2)]
-                       hover:shadow-[0_0_25px_rgba(83,255,148,0.6),inset_0_0_10px_rgba(83,255,148,0.3)]
-                       transition-all duration-300 backdrop-blur-sm"
+            className="floating-buttons-style px-6 py-2.5 rounded-xl font-medium text-green-100
+                       hover:scale-105 transition-transform duration-300"
           >
             {btn.label}
           </button>
@@ -53,8 +51,9 @@ export default function Footer() {
               <>
                 <h2 className="text-2xl mb-4 text-green-300">О проекте</h2>
                 <p className="text-sm leading-relaxed text-green-200/90">
-                  GreenCore — цифровое ядро ботанических знаний, объединяющее агротехнику, данные и экологию. 
-                  Проект создаёт интеллектуальную инфраструктуру для устойчивого озеленения, точного ухода и автоматизации анализа растений.
+                  GreenCore — цифровое ядро ботанических знаний, объединяющее агротехнику, данные и экологию.
+                  Проект создаёт интеллектуальную инфраструктуру для устойчивого озеленения,
+                  точного ухода и автоматизации анализа растений.
                 </p>
               </>
             )}
@@ -63,9 +62,9 @@ export default function Footer() {
               <>
                 <h2 className="text-2xl mb-4 text-green-300">Возможности</h2>
                 <p className="text-sm leading-relaxed text-green-200/90">
-                  • Динамическая база растений с фильтрацией по свету, температуре и токсичности.<br/>
-                  • Генерация карточек сортов по видам.<br/>
-                  • API для интеграции с ботами, сайтами и системами ландшафтного проектирования.<br/>
+                  • Динамическая база растений с фильтрацией по свету, температуре и токсичности.<br />
+                  • Генерация карточек сортов по видам.<br />
+                  • API для интеграции с ботами, сайтами и системами ландшафтного проектирования.<br />
                   • Поддержка тарифных планов и лимитов по API-ключам.
                 </p>
               </>
@@ -75,8 +74,8 @@ export default function Footer() {
               <>
                 <h2 className="text-2xl mb-4 text-green-300">Политика конфиденциальности</h2>
                 <p className="text-sm leading-relaxed text-green-200/90">
-                  GreenCore API не собирает личные данные пользователей, кроме технических логов (ключ, IP, запросы). 
-                  Эти данные используются исключительно для защиты и аналитики. 
+                  GreenCore API не собирает личные данные пользователей, кроме технических логов (ключ, IP, запросы).
+                  Эти данные используются исключительно для защиты и аналитики.
                   Контакт для вопросов: greencore.api@gmail.com.
                 </p>
               </>
@@ -86,9 +85,10 @@ export default function Footer() {
               <>
                 <h2 className="text-2xl mb-4 text-green-300">Условия использования</h2>
                 <p className="text-sm leading-relaxed text-green-200/90">
-                  Используя GreenCore API, вы соглашаетесь соблюдать честные принципы использования данных, 
-                  не распространять ключи третьим лицам и не копировать базу. 
-                  Доступ предоставляется «как есть», без гарантий. Разработчик оставляет за собой право изменять условия.
+                  Используя GreenCore API, вы соглашаетесь соблюдать честные принципы использования данных,
+                  не распространять ключи третьим лицам и не копировать базу.
+                  Доступ предоставляется «как есть», без гарантий.
+                  Разработчик оставляет за собой право изменять условия.
                 </p>
               </>
             )}
