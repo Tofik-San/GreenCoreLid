@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -97,7 +96,7 @@ export default function Home() {
 
           {/* Кнопка перехода к документации */}
           <div className="flex justify-center mt-10">
-            <Link
+            <a
               href="/docs"
               className="gc-btn"
               style={{
@@ -111,7 +110,7 @@ export default function Home() {
               }}
             >
               Перейти к документации
-            </Link>
+            </a>
           </div>
         </div>
       </main>
@@ -132,7 +131,7 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Кнопки (теперь открывают модалки) */}
+      {/* Плавающие кнопки — теперь кнопки, не ссылки */}
       <div className="floating-buttons">
         <button onClick={() => setActiveModal("about")}>О проекте</button>
         <button onClick={() => setActiveModal("features")}>Возможности</button>
