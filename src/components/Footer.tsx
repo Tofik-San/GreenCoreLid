@@ -23,7 +23,7 @@ export default function Footer() {
             key={btn.id}
             onClick={() => setOpenModal(btn.id)}
             className="floating-buttons-style px-6 py-2.5 rounded-xl font-medium text-green-100
-                       hover:scale-105 transition-transform duration-300"
+                       transition-transform duration-300 hover:scale-105 focus:outline-none active:scale-95"
           >
             {btn.label}
           </button>

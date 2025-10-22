@@ -220,3 +220,8 @@ body::before {
   transform: translateY(-2px);
   color: #d3ffd9;
 }
+.floating-buttons-style {
+  cursor: pointer; /* разрешает клики */
+  user-select: none;
+  display: inline-block;
+}
