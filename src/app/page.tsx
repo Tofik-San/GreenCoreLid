@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -41,16 +42,28 @@ export default function Home() {
                 height: "12px",
                 borderRadius: "50%",
                 backgroundColor:
-                  apiStatus === "ok" ? "#4ade80" :
-                  apiStatus === "error" ? "#ef4444" : "#facc15",
+                  apiStatus === "ok"
+                    ? "#4ade80"
+                    : apiStatus === "error"
+                    ? "#ef4444"
+                    : "#facc15",
                 boxShadow:
-                  apiStatus === "ok" ? "0 0 8px #4ade80" :
-                  apiStatus === "error" ? "0 0 8px #ef4444" : "0 0 8px #facc15",
+                  apiStatus === "ok"
+                    ? "0 0 8px #4ade80"
+                    : apiStatus === "error"
+                    ? "0 0 8px #ef4444"
+                    : "0 0 8px #facc15",
               }}
             />
-            <span className="text-green-200 text-sm" style={{ fontFamily: "monospace" }}>
-              {apiStatus === "ok" ? "API online" :
-               apiStatus === "error" ? "API offline" : "Проверка соединения..."}
+            <span
+              className="text-green-200 text-sm"
+              style={{ fontFamily: "monospace" }}
+            >
+              {apiStatus === "ok"
+                ? "API online"
+                : apiStatus === "error"
+                ? "API offline"
+                : "Проверка соединения..."}
             </span>
           </div>
 
@@ -83,7 +96,7 @@ export default function Home() {
 
           {/* Кнопка перехода к документации */}
           <div className="flex justify-center mt-10">
-            <a
+            <Link
               href="/docs"
               className="gc-btn"
               style={{
@@ -97,27 +110,32 @@ export default function Home() {
               }}
             >
               Перейти к документации
-            </a>
+            </Link>
           </div>
         </div>
       </main>
 
-      {/* Эффект зелёных лепестков — не перехватывает клики и лежит под всем */}
-      <div className="petal-field pointer-events-none fixed inset-0 -z-10">
+      <div className="petal-field">
         {Array.from({ length: 20 }).map((_, i) => (
           <div
             key={i}
-            className="petal pointer-events-none"
+            className="petal"
             style={{
               left: `${Math.random() * 100}%`,
               bottom: `${Math.random() * 200}px`,
               animationDelay: `${i * 2.5}s`,
               animationDuration: `${10 + Math.random() * 6}s`,
               transform: `rotate(${Math.random() * 360}deg)`,
-              position: "absolute",
             }}
           />
         ))}
+      </div>
+
+      {/* Плавающие кнопки */}
+      <div className="floating-buttons">
+        <Link href="/about">О проекте</Link>
+        <Link href="/keys">Возможности</Link>
+        <Link href="/contacts">Контакты</Link>
       </div>
 
       <Footer />
