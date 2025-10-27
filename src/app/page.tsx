@@ -108,17 +108,17 @@ export default function Home() {
 
   return (
     <>
-      <main className="gc-hero flex flex-col items-center justify-center min-h-screen px-6 text-center">
-        <div className="max-w-3xl">
+      <main className="gc-hero flex flex-col items-center justify-between h-screen px-6 text-center overflow-hidden">
+        <div className="max-w-3xl mt-[60px]">
           <h1
-            className="gc-title gc-hero-title text-[clamp(56px,9vw,132px)] mb-6 mt-[-150px]"
+            className="gc-title gc-hero-title text-[clamp(56px,9vw,132px)] mb-4"
             style={{ filter: "brightness(1.2)" }}
           >
             GreenCore API
           </h1>
 
           {/* Индикатор состояния API */}
-          <div className="mt-[-40px] mb-8 flex items-center justify-center gap-2">
+          <div className="mt-[-20px] mb-6 flex items-center justify-center gap-2">
             <div
               style={{
                 width: "12px",
@@ -150,12 +150,13 @@ export default function Home() {
             </span>
           </div>
 
+          {/* Подзаголовок */}
           <div
             className="gc-subtitle text-green-100 text-center leading-relaxed select-none"
             style={{
               fontSize: "18px",
               lineHeight: "1.6",
-              marginTop: "12px",
+              marginTop: "8px",
               maxWidth: "680px",
               textAlign: "center",
             }}
@@ -178,7 +179,7 @@ export default function Home() {
           </div>
 
           {/* Кнопка перехода к документации */}
-          <div className="flex justify-center mt-10 mb-8">
+          <div className="flex justify-center mt-8 mb-6">
             <Link
               href="/docs"
               className="gc-btn"
@@ -186,7 +187,6 @@ export default function Home() {
                 fontSize: "16px",
                 padding: "0.9rem 1.8rem",
                 borderRadius: "1rem",
-                marginTop: "40px",
                 boxShadow:
                   "0 0 14px rgba(173,255,83,0.4), inset 0 -3px 8px rgba(0,0,0,0.25)",
                 letterSpacing: "0.5px",
@@ -196,8 +196,8 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Новый блок кнопок (перенесён из Footer) */}
-          <div className="flex flex-wrap justify-center gap-5 mt-[150px] mt-6">
+          {/* Блок кнопок (модалки) */}
+          <div className="flex flex-wrap justify-center gap-5 mt-4 mb-4">
             {[
               { id: "about", label: "О проекте" },
               { id: "features", label: "Возможности" },
@@ -215,6 +215,8 @@ export default function Home() {
             ))}
           </div>
         </div>
+
+        <Footer />
       </main>
 
       <div className="petal-field">
@@ -234,7 +236,6 @@ export default function Home() {
       </div>
 
       {modal}
-      <Footer />
     </>
   );
 }
