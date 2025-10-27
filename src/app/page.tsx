@@ -108,17 +108,17 @@ export default function Home() {
 
   return (
     <>
-      <main className="gc-hero flex flex-col items-center justify-between h-screen px-6 text-center overflow-hidden">
-        <div className="max-w-3xl mt-[60px]">
+      <main className="gc-hero flex flex-col items-center justify-center px-6 text-center py-12 overflow-hidden">
+        <div className="max-w-3xl fade-in-up">
           <h1
-            className="gc-title gc-hero-title text-[clamp(56px,9vw,132px)] mb-4"
+            className="gc-title gc-hero-title fade-in-up text-[clamp(56px,9vw,132px)] mb-4"
             style={{ filter: "brightness(1.2)" }}
           >
             GreenCore API
           </h1>
 
           {/* Индикатор состояния API */}
-          <div className="mt-[-20px] mb-6 flex items-center justify-center gap-2">
+          <div className="mt-[-10px] mb-6 flex items-center justify-center gap-2 fade-in-up" style={{ animationDelay: "0.15s" }}>
             <div
               style={{
                 width: "12px",
@@ -138,10 +138,7 @@ export default function Home() {
                     : "0 0 8px #facc15",
               }}
             />
-            <span
-              className="text-green-200 text-sm"
-              style={{ fontFamily: "monospace" }}
-            >
+            <span className="text-green-200 text-sm" style={{ fontFamily: "monospace" }}>
               {apiStatus === "ok"
                 ? "API online"
                 : apiStatus === "error"
@@ -150,16 +147,9 @@ export default function Home() {
             </span>
           </div>
 
-          {/* Подзаголовок */}
           <div
-            className="gc-subtitle text-green-100 text-center leading-relaxed select-none"
-            style={{
-              fontSize: "18px",
-              lineHeight: "1.6",
-              marginTop: "8px",
-              maxWidth: "680px",
-              textAlign: "center",
-            }}
+            className="gc-subtitle fade-in-up text-green-100 text-center leading-relaxed select-none"
+            style={{ animationDelay: "0.3s" }}
           >
             Мы соединяем ботанику и технологию.<br />
             <strong className="text-green-400">GreenCore</strong> — цифровое ядро знаний о растениях.<br />
@@ -168,8 +158,7 @@ export default function Home() {
             <span
               className="text-green-300"
               style={{
-                textShadow:
-                  "0 0 12px rgba(83,255,148,0.45), 0 0 32px rgba(83,255,148,0.25)",
+                textShadow: "0 0 12px rgba(83,255,148,0.45), 0 0 32px rgba(83,255,148,0.25)",
                 fontWeight: 600,
               }}
             >
@@ -179,37 +168,21 @@ export default function Home() {
           </div>
 
           {/* Кнопка перехода к документации */}
-          <div className="flex justify-center mt-8 mb-6">
-            <Link
-              href="/docs"
-              className="gc-btn"
-              style={{
-                fontSize: "16px",
-                padding: "0.9rem 1.8rem",
-                borderRadius: "1rem",
-                boxShadow:
-                  "0 0 14px rgba(173,255,83,0.4), inset 0 -3px 8px rgba(0,0,0,0.25)",
-                letterSpacing: "0.5px",
-              }}
-            >
+          <div className="flex justify-center mt-10 mb-6 fade-in-up" style={{ animationDelay: "0.45s" }}>
+            <Link href="/docs" className="gc-btn">
               Перейти к документации
             </Link>
           </div>
 
-          {/* Блок кнопок (модалки) */}
-          <div className="flex flex-wrap justify-center gap-5 mt-4 mb-4">
+          {/* Кнопки-модалки */}
+          <div className="flex flex-wrap justify-center gap-5 mt-6 mb-10 fade-in-up" style={{ animationDelay: "0.6s" }}>
             {[
               { id: "about", label: "О проекте" },
               { id: "features", label: "Возможности" },
               { id: "privacy", label: "Политика конфиденциальности" },
               { id: "terms", label: "Условия использования" },
             ].map((btn) => (
-              <button
-                key={btn.id}
-                onClick={() => setOpenModal(btn.id)}
-                className="floating-buttons-style"
-                type="button"
-              >
+              <button key={btn.id} onClick={() => setOpenModal(btn.id)} className="floating-buttons-style" type="button">
                 {btn.label}
               </button>
             ))}

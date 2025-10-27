@@ -13,7 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <body className="relative min-h-screen text-[var(--gc-text)] bg-[var(--gc-bg)] antialiased">
+      <body className="relative min-h-screen text-[var(--gc-text)] bg-[var(--gc-bg)] antialiased overflow-x-hidden">
         {children}
       </body>
     </html>
