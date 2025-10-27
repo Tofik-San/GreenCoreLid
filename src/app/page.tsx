@@ -131,11 +131,17 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Плавающие кнопки */}
-      <div className="floating-buttons">
-        <Link href="/about">О проекте</Link>
-        <Link href="/keys">Возможности</Link>
-        <Link href="/contacts">Контакты</Link>
+      {/* Служебные ссылки перед футером */}
+      <div className="mt-20 mb-6 flex flex-wrap justify-center gap-6 text-sm text-green-300 opacity-80">
+        <Link href="/about" className="hover:text-green-100 transition">
+          О проекте
+        </Link>
+        <Link href="/terms" className="hover:text-green-100 transition">
+          Условия пользования
+        </Link>
+        <Link href="/privacy" className="hover:text-green-100 transition">
+          Политика конфиденциальности
+        </Link>
       </div>
 
       <Footer />
