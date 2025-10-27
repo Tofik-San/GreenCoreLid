@@ -207,7 +207,7 @@ export default function Home() {
               <button
                 key={btn.id}
                 onClick={() => setOpenModal(btn.id)}
-                className="px-6 py-2.5 rounded-xl font-medium text-green-100 border border-green-800/50 bg-green-900/20 hover:bg-green-900/40 transition-transform duration-300 hover:scale-105 focus:outline-none active:scale-95"
+                className="floating-buttons-style"
                 type="button"
               >
                 {btn.label}
