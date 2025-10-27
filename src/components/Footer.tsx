@@ -8,7 +8,7 @@ export default function Footer() {
         <span className="text-green-300 font-medium">GreenCore</span> — цифровая ботаника нового уровня.
       </p>
       <p className="text-green-700/70 text-xs select-none">
-        Платформа объединяет данные, агротехнику и технологии устойчивого озеленения.
+        Все права защищены.
       </p>
     </footer>
   );

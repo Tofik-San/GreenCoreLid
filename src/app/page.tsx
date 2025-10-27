@@ -197,7 +197,7 @@ export default function Home() {
           </div>
 
           {/* Новый блок кнопок (перенесён из Footer) */}
-          <div className="flex flex-wrap justify-center gap-5 mt-[70px] mt-6">
+          <div className="flex flex-wrap justify-center gap-5 mt-[150px] mt-6">
             {[
               { id: "about", label: "О проекте" },
               { id: "features", label: "Возможности" },
