@@ -132,7 +132,7 @@ export default function Home() {
       </div>
 
       {/* Служебные ссылки перед футером */}
-      <div className="mt-20 mb-6 flex flex-wrap justify-center gap-6 text-sm text-green-300 opacity-80">
+      <div className="mt-20 mb-6 flex flex-wrap justify-center gap-8 gc-legal-links">
         <Link href="/about" className="hover:text-green-100 transition">
           О проекте
         </Link>

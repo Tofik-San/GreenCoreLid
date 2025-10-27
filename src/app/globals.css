@@ -199,6 +199,7 @@ body::before {
   user-select: none;
   display: inline-block;
 }
+
 /* === Плавное появление контента === */
 .fade-in-up {
   opacity: 0;
@@ -211,4 +212,16 @@ body::before {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* === Служебные ссылки над футером === */
+.gc-legal-links {
+  font-size: 14px;
+  color: #9fe5a9;
+  opacity: 0.75;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+.gc-legal-links:hover {
+  color: #baffc0;
+  opacity: 1;
 }
