@@ -34,117 +34,88 @@ export default function Home() {
             GreenCore API
           </h1>
 
-          {/* Индикатор состояния API */}
-          <div className="mt-[-40px] mb-8 flex items-center justify-center gap-2">
-            <div
-              style={{
-                width: "12px",
-                height: "12px",
-                borderRadius: "50%",
-                backgroundColor:
-                  apiStatus === "ok"
-                    ? "#4ade80"
-                    : apiStatus === "error"
-                    ? "#ef4444"
-                    : "#facc15",
-                boxShadow:
-                  apiStatus === "ok"
-                    ? "0 0 8px #4ade80"
-                    : apiStatus === "error"
-                    ? "0 0 8px #ef4444"
-                    : "0 0 8px #facc15",
-              }}
-            />
-            <span
-              className="text-green-200 text-sm"
-              style={{ fontFamily: "monospace" }}
-            >
-              {apiStatus === "ok"
-                ? "API online"
-                : apiStatus === "error"
-                ? "API offline"
-                : "Проверка соединения..."}
-            </span>
-          </div>
-
+        {/* Индикатор состояния API */}
+        <div className="mt-[-40px] mb-8 flex items-center justify-center gap-2">
           <div
-            className="gc-subtitle text-green-100 text-center leading-relaxed select-none"
             style={{
-              fontSize: "18px",
-              lineHeight: "1.6",
-              marginTop: "12px",
-              maxWidth: "680px",
-              textAlign: "center",
-            }}
-          >
-            Мы соединяем ботанику и технологию.<br />
-            <strong className="text-green-400">GreenCore</strong> — цифровое ядро знаний о растениях.<br />
-            Платформа объединяет научные данные, агротехнику и реальный опыт ухода,<br />
-            формируя интеллектуальную инфраструктуру устойчивого озеленения и умных экосистем.<br />
-            <span
-              className="text-green-300"
-              style={{
-                textShadow:
-                  "0 0 12px rgba(83,255,148,0.45), 0 0 32px rgba(83,255,148,0.25)",
-                fontWeight: 600,
-              }}
-            >
-              GreenCore делает знание измеримым, уход — предсказуемым, а природу —
-              управляемой с точностью науки.
-            </span>
-          </div>
-
-          {/* Кнопка перехода к документации */}
-          <div className="flex justify-center mt-10">
-            <Link
-              href="/docs"
-              className="gc-btn"
-              style={{
-                fontSize: "16px",
-                padding: "0.9rem 1.8rem",
-                borderRadius: "1rem",
-                marginTop: "40px",
-                boxShadow:
-                  "0 0 14px rgba(173,255,83,0.4), inset 0 -3px 8px rgba(0,0,0,0.25)",
-                letterSpacing: "0.5px",
-              }}
-            >
-              Перейти к документации
-            </Link>
-          </div>
-        </div>
-      </main>
-
-      <div className="petal-field">
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div
-            key={i}
-            className="petal"
-            style={{
-              left: `${Math.random() * 100}%`,
-              bottom: `${Math.random() * 200}px`,
-              animationDelay: `${i * 2.5}s`,
-              animationDuration: `${10 + Math.random() * 6}s`,
-              transform: `rotate(${Math.random() * 360}deg)`,
+              width: "12px",
+              height: "12px",
+              borderRadius: "50%",
+              backgroundColor:
+                apiStatus === "ok" ? "#4ade80" : apiStatus === "error" ? "#ef4444" : "#facc15",
+              boxShadow:
+                apiStatus === "ok" ? "0 0 8px #4ade80" : apiStatus === "error" ? "0 0 8px #ef4444" : "0 0 8px #facc15",
             }}
           />
-        ))}
-      </div>
+          <span className="text-green-200 text-sm" style={{ fontFamily: "monospace" }}>
+            {apiStatus === "ok" ? "API online" : apiStatus === "error" ? "API offline" : "Проверка соединения..."}
+          </span>
+        </div>
 
-      {/* Служебные ссылки перед футером */}
-      <div className="mt-20 mb-6 flex flex-wrap justify-center gap-8 gc-legal-links">
-        <Link href="/about" className="hover:text-green-100 transition">
-          О проекте
-        </Link>
-        <Link href="/terms" className="hover:text-green-100 transition">
-          Условия пользования
-        </Link>
-        <Link href="/privacy" className="hover:text-green-100 transition">
-          Политика конфиденциальности
-        </Link>
-      </div>
+        <div
+          className="gc-subtitle text-green-100 text-center leading-relaxed select-none"
+          style={{ fontSize: "18px", lineHeight: "1.6", marginTop: "12px", maxWidth: "680px", textAlign: "center" }}
+        >
+          Мы соединяем ботанику и технологию.<br />
+          <strong className="text-green-400">GreenCore</strong> — цифровое ядро знаний о растениях.<br />
+          Платформа объединяет научные данные, агротехнику и реальный опыт ухода,<br />
+          формируя интеллектуальную инфраструктуру устойчивого озеленения и умных экосистем.<br />
+          <span
+            className="text-green-300"
+            style={{ textShadow: "0 0 12px rgba(83,255,148,0.45), 0 0 32px rgba(83,255,148,0.25)", fontWeight: 600 }}
+          >
+            GreenCore делает знание измеримым, уход — предсказуемым, а природу —
+            управляемой с точностью науки.
+          </span>
+        </div>
 
-      <Footer />
+        {/* Кнопка перехода к документации */}
+        <div className="flex justify-center mt-10">
+          <Link
+            href="/docs"
+            className="gc-btn"
+            style={{
+              fontSize: "16px",
+              padding: "0.9rem 1.8rem",
+              borderRadius: "1rem",
+              marginTop: "40px",
+              boxShadow: "0 0 14px rgba(173,255,83,0.4), inset 0 -3px 8px rgba(0,0,0,0.25)",
+              letterSpacing: "0.5px",
+            }}
+          >
+            Перейти к документации
+          </Link>
+        </div>
+      </div>
+    </main>
+
+    <div className="petal-field">
+      {Array.from({ length: 20 }).map((_, i) => (
+        <div
+          key={i}
+          className="petal"
+          style={{
+            left: `${Math.random() * 100}%`,
+            bottom: `${Math.random() * 200}px`,
+            animationDelay: `${i * 2.5}s`,
+            animationDuration: `${10 + Math.random() * 6}s`,
+            transform: `rotate(${Math.random() * 360}deg)`,
+          }}
+        />
+      ))}
+    </div>
+
+    {/* Служебные ссылки перед футером — с разделителем */}
+    <div className="mt-14 mb-4 px-6">
+      <div className="gc-legal-sep" />
+      <nav className="gc-legal-links">
+        <Link href="/about">О проекте</Link>
+        <Link href="/terms">Условия пользования</Link>
+        <Link href="/privacy">Политика конфиденциальности</Link>
+      </nav>
+    </div>
+
+    <Footer />
     </>
   );
 }

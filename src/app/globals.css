@@ -134,21 +134,10 @@ body::before {
   background: radial-gradient(circle, #baffc0 0%, rgba(186, 255, 192, 0) 70%);
 }
 @keyframes petal-float {
-  0% {
-    transform: translateY(0) scale(0.8);
-    opacity: 0;
-  }
-  10% {
-    opacity: 0.9;
-  }
-  50% {
-    transform: translateY(-120vh) translateX(40px) scale(1);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translateY(-240vh) translateX(-60px) scale(1.2);
-    opacity: 0;
-  }
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  10% { opacity: 0.9; }
+  50% { transform: translateY(-120vh) translateX(40px) scale(1); opacity: 0.7; }
+  100% { transform: translateY(-240vh) translateX(-60px) scale(1.2); opacity: 0; }
 }
 @keyframes petal-sway {
   0%, 100% { transform: rotate(0deg); }
@@ -157,20 +146,12 @@ body::before {
   75% { transform: rotate(5deg) translateX(6px); }
 }
 @keyframes petal-limeglow {
-  0%, 100% {
-    opacity: 0.6;
-    filter: brightness(1) drop-shadow(0 0 6px rgba(180, 255, 120, 0.6));
-  }
-  50% {
-    opacity: 1;
-    filter: brightness(1.5) drop-shadow(0 0 14px rgba(200, 255, 150, 1));
-  }
+  0%, 100% { opacity: 0.6; filter: brightness(1) drop-shadow(0 0 6px rgba(180, 255, 120, 0.6)); }
+  50% { opacity: 1; filter: brightness(1.5) drop-shadow(0 0 14px rgba(200, 255, 150, 1)); }
 }
 
 /* === Плавающие кнопки (справа) — скрыты === */
-.floating-buttons {
-  display: none !important;
-}
+.floating-buttons { display: none !important; }
 
 /* === Кнопки в футере, стиль сохранён === */
 .floating-buttons-style {
@@ -194,34 +175,40 @@ body::before {
   transform: translateY(-2px);
   color: #d3ffd9;
 }
-.floating-buttons-style {
-  cursor: pointer;
-  user-select: none;
-  display: inline-block;
-}
+.floating-buttons-style { cursor: pointer; user-select: none; display: inline-block; }
 
 /* === Плавное появление контента === */
-.fade-in-up {
-  opacity: 0;
-  transform: translateY(20px);
-  animation: fadeInUp 0.8s ease forwards;
+.fade-in-up { opacity: 0; transform: translateY(20px); animation: fadeInUp 0.8s ease forwards; }
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+/* === Служебные ссылки над футером — заметнее === */
+.gc-legal-sep {
+  border-top: 1px solid rgba(83, 255, 148, 0.12);
+  max-width: 860px;
+  margin: 0 auto;
 }
 
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* === Служебные ссылки над футером === */
 .gc-legal-links {
-  font-size: 14px;
-  color: #9fe5a9;
-  opacity: 0.75;
-  transition: color 0.2s ease, opacity 0.2s ease;
+  font-size: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 18px;
+  justify-content: center;
+  padding-top: 16px; /* отступ после линии */
 }
-.gc-legal-links:hover {
-  color: #baffc0;
-  opacity: 1;
+
+.gc-legal-links a {
+  color: #b6f7bf;                 /* фиксируем зелёный, убираем синий по умолчанию */
+  text-decoration: none;          /* убираем подчёркивание */
+  padding: 6px 12px;              /* кликабельная область */
+  border-radius: 9999px;          /* капсула */
+  border: 1px solid transparent;
+  transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.gc-legal-links a:hover {
+  color: #0e1812;
+  background: linear-gradient(90deg, var(--gc-green-dim), var(--gc-green));
+  border-color: rgba(83, 255, 148, 0.35);
+  box-shadow: 0 0 14px rgba(83, 255, 148, 0.35);
 }
