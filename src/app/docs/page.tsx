@@ -80,14 +80,11 @@ export default function DocsPage() {
         {plans.length === 0 ? (
           <p className="text-green-300">Нет данных о планах.</p>
         ) : (
-          <div className="flex flex-wrap justify-center gap-x-44 gap-y-20 relative">
-            {plans.map((plan: any) => (
-              <div
-                key={plan.id}
-                className="relative flex flex-col items-center mx-6 my-6"
-              >
-                <div className="bg-black/40 border-2 border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[580px] flex flex-col justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)] hover:scale-[1.02] transform transition-transform duration-300 ease-out">
-                  <div className="flex flex-col items-center mb-10">
+          <div className="flex flex-wrap justify-center gap-32 relative">
+            {plans.map((plan: any, index: number) => (
+              <div key={plan.id} className="relative flex flex-col items-center mx-4 my-6">
+                 <div className="bg-black/40 border-2 border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[500px] flex flex-col justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
+                  <div className="flex flex-col items-center mb-8">
                     <span className="text-7xl mb-5 drop-shadow-[0_0_20px_rgba(83,255,148,0.6)]">
                       {getPlanIcon(plan.name)}
                     </span>
@@ -96,7 +93,7 @@ export default function DocsPage() {
                     </h3>
                   </div>
 
-                  <div className="text-green-200 mb-14 text-lg leading-relaxed space-y-5 text-left">
+                  <div className="text-green-200 mb-12 text-lg leading-relaxed space-y-5 text-left">
                     <p>
                       Общее ограничение:{" "}
                       <span className="text-green-400 font-medium">
@@ -112,7 +109,7 @@ export default function DocsPage() {
                   </div>
 
                   <div className="flex flex-col items-center mt-auto">
-                    <p className="text-green-400 font-semibold text-2xl mb-6">
+                    <p className="text-green-400 font-semibold text-2xl mb-5">
                       {plan.price === 0
                         ? "БЕСПЛАТНО"
                         : `${plan.price} ₽ / мес`}
@@ -132,6 +129,10 @@ export default function DocsPage() {
                     </button>
                   </div>
                 </div>
+
+                {index < plans.length - 1 && (
+                  <div className="hidden lg:block absolute top-1/2 right-[-60px] w-px h-[280px] bg-gradient-to-b from-green-400/70 via-green-300/40 to-transparent blur-[1px] shadow-[0_0_15px_rgba(83,255,148,0.7)]" />
+                )}
               </div>
             ))}
           </div>
