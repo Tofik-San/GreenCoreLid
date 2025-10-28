@@ -80,7 +80,7 @@ export default function DocsPage() {
         {plans.length === 0 ? (
           <p className="text-green-300">Нет данных о планах.</p>
         ) : (
-          <div className="flex flex-wrap justify-center gap-24 relative">
+          <div className="flex flex-wrap justify-center gap-32 relative">
             {plans.map((plan: any, index: number) => (
               <div key={plan.id} className="relative flex flex-col items-center">
                  <div className="bg-black/40 border-2 border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[500px] flex flex-col justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
