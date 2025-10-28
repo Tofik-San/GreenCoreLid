@@ -82,8 +82,11 @@ export default function DocsPage() {
         ) : (
           <div className="flex flex-wrap justify-center gap-32 relative">
             {plans.map((plan: any, index: number) => (
-              <div key={plan.id} className="relative flex flex-col items-center mx-4 my-6">
-                 <div className="bg-black/40 border-2 border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[500px] flex flex-col justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
+              <div
+                key={plan.id}
+                className="relative flex flex-col items-center mx-4 my-6"
+              >
+                <div className="bg-black/40 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[500px] flex flex-col items-center justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
                   <div className="flex flex-col items-center mb-8">
                     <span className="text-7xl mb-5 drop-shadow-[0_0_20px_rgba(83,255,148,0.6)]">
                       {getPlanIcon(plan.name)}
@@ -93,7 +96,8 @@ export default function DocsPage() {
                     </h3>
                   </div>
 
-                  <div className="text-green-200 mb-12 text-lg leading-relaxed space-y-5 text-left">
+                  {/* Центрированный текст */}
+                  <div className="text-green-200 mb-12 text-lg leading-relaxed space-y-5 text-center">
                     <p>
                       Общее ограничение:{" "}
                       <span className="text-green-400 font-medium">
