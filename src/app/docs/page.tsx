@@ -80,13 +80,14 @@ export default function DocsPage() {
         {plans.length === 0 ? (
           <p className="text-green-300">Нет данных о планах.</p>
         ) : (
-          // БОЛЬШЕ ВОЗДУХА МЕЖДУ КАРТОЧКАМИ
-          <div className="flex flex-wrap justify-center gap-x-36 gap-y-16 relative">
+          <div className="flex flex-wrap justify-center gap-x-44 gap-y-20 relative">
             {plans.map((plan: any) => (
-              // Лёгкие внешние отступы у каждой карточки
-              <div key={plan.id} className="relative flex flex-col items-center mx-2 my-4">
-                <div className="bg-black/40 border-2 border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[560px] flex flex-col justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
-                  <div className="flex flex-col items-center mb-8">
+              <div
+                key={plan.id}
+                className="relative flex flex-col items-center mx-6 my-6"
+              >
+                <div className="bg-black/40 border-2 border-green-500/70 hover:border-green-400 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[580px] flex flex-col justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)] hover:scale-[1.02] transform transition-transform duration-300 ease-out">
+                  <div className="flex flex-col items-center mb-10">
                     <span className="text-7xl mb-5 drop-shadow-[0_0_20px_rgba(83,255,148,0.6)]">
                       {getPlanIcon(plan.name)}
                     </span>
@@ -95,7 +96,7 @@ export default function DocsPage() {
                     </h3>
                   </div>
 
-                  <div className="text-green-200 mb-12 text-lg leading-relaxed space-y-5 text-left">
+                  <div className="text-green-200 mb-14 text-lg leading-relaxed space-y-5 text-left">
                     <p>
                       Общее ограничение:{" "}
                       <span className="text-green-400 font-medium">
@@ -111,8 +112,10 @@ export default function DocsPage() {
                   </div>
 
                   <div className="flex flex-col items-center mt-auto">
-                    <p className="text-green-400 font-semibold text-2xl mb-5">
-                      {plan.price === 0 ? "БЕСПЛАТНО" : `${plan.price} ₽ / мес`}
+                    <p className="text-green-400 font-semibold text-2xl mb-6">
+                      {plan.price === 0
+                        ? "БЕСПЛАТНО"
+                        : `${plan.price} ₽ / мес`}
                     </p>
                     <button
                       disabled={loadingPlan === plan.name}
@@ -123,7 +126,9 @@ export default function DocsPage() {
                       } text-green-100 font-medium text-lg shadow-[0_0_25px_rgba(83,255,148,0.5)] transition`}
                       onClick={() => handleActivate(plan.name)}
                     >
-                      {loadingPlan === plan.name ? "Создание..." : "Активировать"}
+                      {loadingPlan === plan.name
+                        ? "Создание..."
+                        : "Активировать"}
                     </button>
                   </div>
                 </div>
