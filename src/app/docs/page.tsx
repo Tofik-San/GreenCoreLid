@@ -86,7 +86,7 @@ export default function DocsPage() {
                 key={plan.id}
                 className="relative flex flex-col items-center mx-4 my-6"
               >
-                <div className="bg-black/40 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[500px] flex flex-col items-center justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
+                <div className="bg-black/40 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[540px] flex flex-col items-center justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
                   <div className="flex flex-col items-center mb-8">
                     <span className="text-7xl mb-5 drop-shadow-[0_0_20px_rgba(83,255,148,0.6)]">
                       {getPlanIcon(plan.name)}
@@ -96,27 +96,56 @@ export default function DocsPage() {
                     </h3>
                   </div>
 
-                  {/* Центрированный текст */}
-                  <div className="text-green-200 mb-12 text-lg leading-relaxed space-y-5 text-center">
-                    <p>
-                      Общее ограничение:{" "}
-                      <span className="text-green-400 font-medium">
-                        {plan.limit_total}
-                      </span>
-                    </p>
-                    <p>
-                      Макс. страница:{" "}
-                      <span className="text-green-400 font-medium">
-                        {plan.max_page}
-                      </span>
-                    </p>
+                  {/* Описание тарифа */}
+                  <div className="text-green-200 mb-10 text-lg leading-relaxed space-y-5 text-center max-w-[340px]">
+                    {plan.name.toLowerCase() === "free" && (
+                      <>
+                        <p>
+                          Базовый доступ для тестирования и личных экспериментов.
+                          Позволяет изучить структуру API и оценить качество данных.
+                        </p>
+                        <p>
+                          <strong>5 запросов в день</strong> • до{" "}
+                          <strong>5 карточек</strong> на страницу
+                        </p>
+                      </>
+                    )}
+                    {plan.name.toLowerCase() === "premium" && (
+                      <>
+                        <p>
+                          Оптимальный выбор для дизайнеров и небольших студий.
+                          Расширенные фильтры, выгрузка данных и стабильные лимиты
+                          для работы над проектами.
+                        </p>
+                        <p>
+                          <strong>1500 запросов в день</strong> • до{" "}
+                          <strong>30 карточек</strong> на страницу
+                        </p>
+                      </>
+                    )}
+                    {plan.name.toLowerCase() === "supreme" && (
+                      <>
+                        <p>
+                          Полный доступ к экосистеме GreenCore. Пакетные запросы,
+                          приоритетная обработка, bulk-экспорт и ранний доступ
+                          к новым функциям.
+                        </p>
+                        <p>
+                          <strong>2500 запросов в день</strong> • до{" "}
+                          <strong>50 карточек</strong> на страницу
+                        </p>
+                      </>
+                    )}
                   </div>
 
+                  {/* Цена и кнопка */}
                   <div className="flex flex-col items-center mt-auto">
                     <p className="text-green-400 font-semibold text-2xl mb-5">
-                      {plan.price === 0
+                      {plan.name.toLowerCase() === "free"
                         ? "БЕСПЛАТНО"
-                        : `${plan.price} ₽ / мес`}
+                        : plan.name.toLowerCase() === "premium"
+                        ? "590 ₽ / мес"
+                        : "2 490 ₽ / мес"}
                     </p>
                     <button
                       disabled={loadingPlan === plan.name}
