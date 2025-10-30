@@ -2,8 +2,10 @@
 import { useState, useEffect } from "react";
 
 export default function SearchPage() {
+  // ✅ Добавлен fallback — теперь API всегда подставится
   const API_URL =
-    process.env.NEXT_PUBLIC_API_URL ||
+    process.env.NEXT_PUBLIC_API_URL?.trim() ||
+    process.env.NEXT_PUBLIC_API_BASE_URL?.trim() ||
     "https://web-production-310c7c.up.railway.app";
 
   const [apiKey, setApiKey] = useState("");
