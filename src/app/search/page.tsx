@@ -1,12 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function SearchPage() {
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL ||
     "https://web-production-310c7c.up.railway.app";
 
-  const [apiKey, setApiKey] = useState(localStorage.getItem("api_key") || "");
+  const [apiKey, setApiKey] = useState("");
   const [filters, setFilters] = useState({
     view: "",
     light: "",
@@ -18,13 +18,26 @@ export default function SearchPage() {
   const [plants, setPlants] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [saved, setSaved] = useState(false);
+
+  // Загружаем ключ только на клиенте
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedKey = localStorage.getItem("api_key");
+      if (savedKey) setApiKey(savedKey);
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
   const saveKey = () => {
-    localStorage.setItem("api_key", apiKey.trim());
+    if (typeof window !== "undefined") {
+      localStorage.setItem("api_key", apiKey.trim());
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2500);
+    }
   };
 
   const fetchPlants = async () => {
@@ -72,6 +85,12 @@ export default function SearchPage() {
         <button onClick={saveKey} className="gc-btn text-sm px-6 py-2">
           Сохранить
         </button>
+        {/* Индикатор сохранения */}
+        {saved && (
+          <span className="text-green-400 text-sm animate-pulse">
+            ✓ Ключ сохранён
+          </span>
+        )}
       </div>
 
       {/* Форма фильтров */}
