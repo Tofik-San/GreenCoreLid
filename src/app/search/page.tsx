@@ -6,6 +6,7 @@ export default function SearchPage() {
     process.env.NEXT_PUBLIC_API_URL ||
     "https://web-production-310c7c.up.railway.app";
 
+  const [apiKey, setApiKey] = useState(localStorage.getItem("api_key") || "");
   const [filters, setFilters] = useState({
     view: "",
     light: "",
@@ -22,7 +23,15 @@ export default function SearchPage() {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
+  const saveKey = () => {
+    localStorage.setItem("api_key", apiKey.trim());
+  };
+
   const fetchPlants = async () => {
+    if (!apiKey) {
+      setError("Введите API-ключ перед поиском.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
@@ -31,9 +40,11 @@ export default function SearchPage() {
         .map(([k, v]) => `${k}=${v}`)
         .join("&");
 
-      const res = await fetch(`${API_URL}/plants?${params}`);
-      if (!res.ok) throw new Error("Ошибка при запросе к API");
+      const res = await fetch(`${API_URL}/plants?${params}`, {
+        headers: { Authorization: apiKey },
+      });
 
+      if (!res.ok) throw new Error("Ошибка при запросе к API");
       const data = await res.json();
       setPlants(data.plants || []);
     } catch (err: any) {
@@ -48,6 +59,20 @@ export default function SearchPage() {
       <h1 className="text-4xl text-green-400 mb-10 text-center drop-shadow-[0_0_8px_rgba(83,255,148,0.6)]">
         Поиск растений
       </h1>
+
+      {/* Поле для API-ключа */}
+      <div className="flex justify-center items-center gap-4 mb-10">
+        <input
+          type="text"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          placeholder="Введите API-ключ"
+          className="w-[320px] px-4 py-2 rounded-xl bg-black/40 border border-green-400/40 text-green-200 placeholder-green-300/50 focus:outline-none focus:ring-2 focus:ring-green-400"
+        />
+        <button onClick={saveKey} className="gc-btn text-sm px-6 py-2">
+          Сохранить
+        </button>
+      </div>
 
       {/* Форма фильтров */}
       <div className="flex flex-wrap justify-center gap-6 mb-10">
