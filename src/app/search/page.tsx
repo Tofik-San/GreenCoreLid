@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 export default function SearchPage() {
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
-    "https://web-production-310c7cup.railway.app";
+    "https://web-production-310c7c.up.railway.app";
 
   const [apiKey, setApiKey] = useState("");
   const [filters, setFilters] = useState({
