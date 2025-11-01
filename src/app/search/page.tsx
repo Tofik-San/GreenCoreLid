@@ -2,19 +2,16 @@
 import { useState, useEffect } from "react";
 
 export default function SearchPage() {
-  // ✅ Добавлен fallback — теперь API всегда подставится
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
-    process.env.NEXT_PUBLIC_API_BASE_URL?.trim() ||
-    "https://web-production-310c7c.up.railway.app";
+    "https://web-production-310c7cup.railway.app";
 
   const [apiKey, setApiKey] = useState("");
   const [filters, setFilters] = useState({
     view: "",
     light: "",
-    temperature: "",
+    zone_usda: "",
     toxicity: "",
-    beginner_friendly: "",
     placement: "",
   });
   const [plants, setPlants] = useState<any[]>([]);
@@ -22,7 +19,6 @@ export default function SearchPage() {
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
 
-  // Загружаем ключ только на клиенте
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedKey = localStorage.getItem("api_key");
@@ -52,16 +48,16 @@ export default function SearchPage() {
     try {
       const params = Object.entries(filters)
         .filter(([_, v]) => v)
-        .map(([k, v]) => `${k}=${v}`)
+        .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
         .join("&");
 
       const res = await fetch(`${API_URL}/plants?${params}`, {
-        headers: { Authorization: apiKey },
+        headers: { "X-API-Key": apiKey },
       });
 
-      if (!res.ok) throw new Error("Ошибка при запросе к API");
+      if (!res.ok) throw new Error(`Ошибка ${res.status}`);
       const data = await res.json();
-      setPlants(data.plants || []);
+      setPlants(data.results || []);
     } catch (err: any) {
       setError(err.message || "Не удалось загрузить данные");
     } finally {
@@ -87,7 +83,6 @@ export default function SearchPage() {
         <button onClick={saveKey} className="gc-btn text-sm px-6 py-2">
           Сохранить
         </button>
-        {/* Индикатор сохранения */}
         {saved && (
           <span className="text-green-400 text-sm animate-pulse">
             ✓ Ключ сохранён
@@ -106,16 +101,18 @@ export default function SearchPage() {
 
         <select name="light" value={filters.light} onChange={handleChange} className="gc-filter">
           <option value="">Освещение</option>
-          <option value="shade">Тень</option>
-          <option value="partial">Полутень</option>
-          <option value="bright">Солнечно</option>
+          <option value="тень">Тень</option>
+          <option value="полутень">Полутень</option>
+          <option value="яркий">Яркий свет</option>
         </select>
 
-        <select name="temperature" value={filters.temperature} onChange={handleChange} className="gc-filter">
-          <option value="">Температура</option>
-          <option value="cold">Холодостойкие</option>
-          <option value="moderate">Умеренные</option>
-          <option value="warm">Теплолюбивые</option>
+        <select name="zone_usda" value={filters.zone_usda} onChange={handleChange} className="gc-filter">
+          <option value="">Зона USDA</option>
+          {Array.from({ length: 11 }, (_, i) => (
+            <option key={i + 2} value={(i + 2).toString()}>
+              {i + 2}
+            </option>
+          ))}
         </select>
 
         <select name="toxicity" value={filters.toxicity} onChange={handleChange} className="gc-filter">
@@ -125,22 +122,13 @@ export default function SearchPage() {
           <option value="toxic">Ядовитые</option>
         </select>
 
-        <select
-          name="beginner_friendly"
-          value={filters.beginner_friendly}
-          onChange={handleChange}
-          className="gc-filter"
-        >
-          <option value="">Для новичков</option>
-          <option value="true">Да</option>
-          <option value="false">Нет</option>
+        <select name="placement" value={filters.placement} onChange={handleChange} className="gc-filter">
+          <option value="">Размещение</option>
+          <option value="комнатное">Комнатное</option>
+          <option value="садовое">Садовое</option>
         </select>
 
-        <button
-          onClick={fetchPlants}
-          disabled={loading}
-          className="gc-btn text-sm px-6 py-3 mt-2"
-        >
+        <button onClick={fetchPlants} disabled={loading} className="gc-btn text-sm px-6 py-3 mt-2">
           {loading ? "Загрузка..." : "Найти"}
         </button>
       </div>
@@ -158,10 +146,8 @@ export default function SearchPage() {
             >
               <h2 className="text-2xl text-green-300 font-bold mb-3">{p.cultivar}</h2>
               <p className="text-green-200 text-sm mb-3">{p.view}</p>
-              <p className="text-green-100 text-sm leading-relaxed mb-4 line-clamp-6">
-                {p.insights}
-              </p>
-              <div className="text-xs text-green-400">
+              <p className="text-green-100 text-sm leading-relaxed mb-4 line-clamp-6">{p.insights}</p>
+              <div className="text-xs text-green-400 space-y-1">
                 <p>💧 {p.watering}</p>
                 <p>☀️ {p.light}</p>
                 <p>🌡 {p.temperature}</p>
