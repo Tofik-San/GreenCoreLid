@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 export default function SearchPage() {
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
-    "https://web-production-310c7c.up.railway.app";
+    "https://web-production-310c7c.up.railway.app"; // ✅ исправлен адрес
 
   const [apiKey, setApiKey] = useState("");
   const [filters, setFilters] = useState({
@@ -45,8 +45,10 @@ export default function SearchPage() {
       setError("Введите API-ключ перед поиском.");
       return;
     }
+
     setLoading(true);
     setError("");
+
     try {
       const params = Object.entries(filters)
         .filter(([_, v]) => v)
@@ -57,7 +59,11 @@ export default function SearchPage() {
       setRequestUrl(fullUrl);
 
       const res = await fetch(fullUrl, {
-        headers: { "X-API-Key": apiKey },
+        method: "GET",
+        headers: {
+          "X-API-Key": apiKey.trim(), // ✅ теперь ключ точно передаётся
+          "Content-Type": "application/json",
+        },
       });
 
       if (!res.ok) throw new Error(`Ошибка ${res.status}`);
