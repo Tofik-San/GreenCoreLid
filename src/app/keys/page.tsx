@@ -2,23 +2,27 @@
 import { useState } from "react";
 
 export default function KeysPage() {
-  const [email, setEmail] = useState("");
+  const [plan, setPlan] = useState("free");
   const [key, setKey] = useState("");
   const [loading, setLoading] = useState(false);
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL ||
-    "https://web-production-310c7cup.railway.app";
+    "https://web-production-310c7c.up.railway.app"; // ✅ исправлен адрес
 
   const handleGenerate = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/generate_key`, {
+      const res = await fetch(`${API_URL}/create_user_key?plan=${plan}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
       });
       const data = await res.json();
-      setKey(data.api_key || "Ошибка генерации");
+
+      if (data.api_key) {
+        setKey(data.api_key);
+        localStorage.setItem("api_key", data.api_key);
+      } else {
+        setKey("Ошибка генерации");
+      }
     } catch {
       setKey("Ошибка подключения к серверу");
     }
@@ -27,27 +31,38 @@ export default function KeysPage() {
 
   return (
     <div className="min-h-screen bg-black text-green-400 flex flex-col items-center py-16">
-      <h1 className="text-5xl font-bold mb-6 text-green-300">🔑 Генерация API-ключа</h1>
-      <p className="text-gray-400 mb-8">Введите email, чтобы получить бесплатный ключ:</p>
-      <div className="flex space-x-2">
-        <input
-          type="email"
-          placeholder="email@example.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+      <h1 className="text-5xl font-bold mb-6 text-green-300">
+        🔑 Получить API-ключ
+      </h1>
+
+      <p className="text-gray-400 mb-8">
+        Выберите тариф и получите ключ доступа:
+      </p>
+
+      <div className="flex space-x-3 mb-8">
+        <select
+          value={plan}
+          onChange={(e) => setPlan(e.target.value)}
           className="px-4 py-2 rounded-lg border border-green-600 bg-neutral-900 text-green-400 focus:outline-none"
-        />
+        >
+          <option value="free">Free</option>
+          <option value="premium">Premium</option>
+          <option value="supreme">Supreme</option>
+        </select>
         <button
           onClick={handleGenerate}
           disabled={loading}
           className="px-6 py-2 bg-green-400 text-black font-bold rounded-lg hover:bg-green-500 transition"
         >
-          {loading ? "Генерация..." : "Получить ключ"}
+          {loading ? "Создание..." : "Активировать"}
         </button>
       </div>
+
       {key && (
-        <p className="mt-6 text-green-300 text-xl">
-          {key === "Ошибка генерации" ? "⚠️ Ошибка" : `Ваш ключ: ${key}`}
+        <p className="mt-6 text-green-300 text-xl break-all">
+          {key === "Ошибка генерации"
+            ? "⚠️ Ошибка"
+            : `Ваш ключ: ${key}`}
         </p>
       )}
     </div>
