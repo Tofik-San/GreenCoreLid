@@ -7,12 +7,14 @@ export default function KeysPage() {
   const [loading, setLoading] = useState(false);
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL ||
-    "https://web-production-310c7c.up.railway.app"; // ✅ исправлен адрес
+    "https://web-production-310c7c.up.railway.app"; // ✅ актуальный адрес API
 
-  const handleGenerate = async () => {
+  // функция принимает выбранный план явно
+  const handleGenerate = async (selectedPlan: string) => {
+    console.log("🧭 Selected plan:", selectedPlan);
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/create_user_key?plan=${plan}`, {
+      const res = await fetch(`${API_URL}/create_user_key?plan=${selectedPlan}`, {
         method: "POST",
       });
       const data = await res.json();
@@ -49,8 +51,9 @@ export default function KeysPage() {
           <option value="premium">Premium</option>
           <option value="supreme">Supreme</option>
         </select>
+
         <button
-          onClick={handleGenerate}
+          onClick={() => handleGenerate(plan)} // ✅ передаём план явно
           disabled={loading}
           className="px-6 py-2 bg-green-400 text-black font-bold rounded-lg hover:bg-green-500 transition"
         >
@@ -60,9 +63,7 @@ export default function KeysPage() {
 
       {key && (
         <p className="mt-6 text-green-300 text-xl break-all">
-          {key === "Ошибка генерации"
-            ? "⚠️ Ошибка"
-            : `Ваш ключ: ${key}`}
+          {key === "Ошибка генерации" ? "⚠️ Ошибка" : `Ваш ключ: ${key}`}
         </p>
       )}
     </div>
