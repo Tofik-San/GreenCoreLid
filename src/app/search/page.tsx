@@ -82,7 +82,7 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === Поле API-ключа — одна линия с кнопкой === */}
+      {/* === Поле API-ключа — цельный блок с кнопкой === */}
       <div className="api-key-panel">
         <div className="api-key-wrapper">
           <input
@@ -99,7 +99,7 @@ export default function SearchPage() {
         {saved && <span className="api-key-saved">✓ Ключ принят</span>}
       </div>
 
-      {/* === Панель фильтров (совпадает со Swagger) === */}
+      {/* === Панель фильтров === */}
       <div className="filter-panel">
         <div className="filter-item">
           <label htmlFor="view">Вид / сорт</label>
@@ -207,18 +207,17 @@ export default function SearchPage() {
         .api-key-wrapper {
           position: relative;
           width: 100%;
-          display: flex;
         }
 
         .api-key-input {
-          flex: 1;
+          width: 100%;
           height: 48px;
           border: 1px solid rgba(83, 255, 148, 0.4);
           border-radius: 8px;
           background: rgba(0, 0, 0, 0.5);
           color: #c6f7cb;
           font-size: 15px;
-          padding: 0 120px 0 16px;
+          padding: 0 110px 0 16px;
           outline: none;
           transition: border-color 0.2s ease;
         }
@@ -229,14 +228,15 @@ export default function SearchPage() {
 
         .api-key-button {
           position: absolute;
-          right: 4px;
-          top: 4px;
-          bottom: 4px;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          height: 100%;
           background: #43e37c;
           color: #0b1a0f;
           border: none;
-          border-radius: 6px;
-          padding: 0 22px;
+          border-radius: 0 8px 8px 0;
+          padding: 0 24px;
           font-weight: 600;
           cursor: pointer;
           transition: background 0.2s ease;
@@ -327,7 +327,6 @@ export default function SearchPage() {
         }
       `}</style>
 
-      {/* Ошибки и результаты */}
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
       <div style={{ display: "none" }}>{requestUrl}</div>
 
