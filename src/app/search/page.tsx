@@ -82,7 +82,7 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === Поле API-ключа === */}
+      {/* === API-ключ === */}
       <div className="api-key-panel">
         <div className="api-key-row">
           <input
@@ -197,72 +197,70 @@ export default function SearchPage() {
       </div>
 
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
-      <div style={{ display: "none" }}>{requestUrl}</div>
 
-      {/* === Вывод карточек === */}
-      {plants.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {plants.map((p, i) => (
-            <div
-              key={i}
-              className="bg-black/40 border border-green-500/30 rounded-lg p-6 flex flex-col gap-3"
-            >
-              {/* Заголовок */}
-              <div>
-                <h2 className="text-2xl text-green-300 font-bold">
-                  {p.cultivar}
-                </h2>
-                <p className="text-green-200 italic">{p.view}</p>
-                <p className="text-green-400 text-sm">{p.family}</p>
-              </div>
-
-              {/* Описание */}
-              {p.insights && (
-                <p className="text-green-100 text-sm leading-relaxed">
-                  {p.insights}
-                </p>
-              )}
-
-              {/* Условия выращивания */}
-              <div className="text-xs text-green-300 space-y-1 mt-2">
-                {p.light && <p>☀️ <b>Свет:</b> {p.light}</p>}
-                {p.watering && <p>💧 <b>Полив:</b> {p.watering}</p>}
-                {p.temperature && <p>🌡 <b>Температура:</b> {p.temperature}</p>}
-                {p.soil && <p>🌱 <b>Почва:</b> {p.soil}</p>}
-                {p.fertilizer && <p>🧪 <b>Удобрения:</b> {p.fertilizer}</p>}
-              </div>
-
-              {/* Уход */}
-              {(p.pruning || p.pests_diseases) && (
-                <div className="text-xs text-green-400 mt-2">
-                  {p.pruning && <p>✂️ <b>Обрезка:</b> {p.pruning}</p>}
-                  {p.pests_diseases && (
-                    <p>🦠 <b>Вредители и болезни:</b> {p.pests_diseases}</p>
-                  )}
+      {/* === Карточки === */}
+      <div className="max-w-[1100px] mx-auto mt-10">
+        {plants.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {plants.map((p, i) => (
+              <article
+                key={i}
+                className="bg-black/50 border border-green-500/30 rounded-xl shadow-md p-6 flex flex-col gap-3 hover:border-green-400/40 transition"
+              >
+                <div>
+                  <h2 className="text-2xl text-green-300 font-bold">
+                    {p.cultivar}
+                  </h2>
+                  <p className="text-green-200 italic">{p.view}</p>
+                  <p className="text-green-400 text-sm">{p.family}</p>
                 </div>
-              )}
 
-              {/* Дополнительно */}
-              <div className="text-xs text-green-500 mt-2">
-                <p>
-                  🏡 <b>Размещение:</b>{" "}
-                  {p.indoor ? "комнатное" : p.outdoor ? "садовое" : "—"}
-                </p>
-                <p>
-                  🌿 <b>Для начинающих:</b>{" "}
-                  {p.beginner_friendly ? "подходит" : "требует опыта"}
-                </p>
-                <p>⚠️ <b>Токсичность:</b> {p.toxicity || "none"}</p>
-                {p.ru_regions && <p>📍 <b>Регионы РФ:</b> {p.ru_regions}</p>}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        !loading && (
-          <p className="text-green-300 text-center mt-8">Нет результатов</p>
-        )
-      )}
+                <hr className="border-green-900/50 my-2" />
+
+                {p.insights && (
+                  <p className="text-green-100 text-sm leading-relaxed">
+                    {p.insights}
+                  </p>
+                )}
+
+                <div className="space-y-1 text-xs text-green-300 mt-2">
+                  {p.light && <p>☀ <b>Свет:</b> {p.light}</p>}
+                  {p.watering && <p>💧 <b>Полив:</b> {p.watering}</p>}
+                  {p.temperature && <p>🌡 <b>Температура:</b> {p.temperature}</p>}
+                  {p.soil && <p>🌱 <b>Почва:</b> {p.soil}</p>}
+                  {p.fertilizer && <p>🧪 <b>Удобрения:</b> {p.fertilizer}</p>}
+                </div>
+
+                {(p.pruning || p.pests_diseases) && (
+                  <div className="space-y-1 text-xs text-green-400 mt-2">
+                    {p.pruning && <p>✂ <b>Обрезка:</b> {p.pruning}</p>}
+                    {p.pests_diseases && (
+                      <p>🦠 <b>Вредители и болезни:</b> {p.pests_diseases}</p>
+                    )}
+                  </div>
+                )}
+
+                <div className="space-y-1 text-xs text-green-500 mt-2">
+                  <p>
+                    🏡 <b>Размещение:</b>{" "}
+                    {p.indoor ? "комнатное" : p.outdoor ? "садовое" : "—"}
+                  </p>
+                  <p>
+                    🌿 <b>Для начинающих:</b>{" "}
+                    {p.beginner_friendly ? "подходит" : "требует опыта"}
+                  </p>
+                  <p>⚠ <b>Токсичность:</b> {p.toxicity || "none"}</p>
+                  {p.ru_regions && <p>📍 <b>Регионы РФ:</b> {p.ru_regions}</p>}
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          !loading && (
+            <p className="text-green-300 text-center mt-8">Нет результатов</p>
+          )
+        )}
+      </div>
     </main>
   );
 }
