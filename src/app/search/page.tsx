@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 export default function SearchPage() {
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
-    "https://web-production-310c7c.up.railway.app"; // ✅ исправлен адрес
+    "https://web-production-310c7c.up.railway.app";
 
   const [apiKey, setApiKey] = useState("");
   const [filters, setFilters] = useState({
@@ -13,14 +13,14 @@ export default function SearchPage() {
     zone_usda: "",
     toxicity: "",
     placement: "",
+    sort: "random",
   });
   const [plants, setPlants] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
-  const [requestUrl, setRequestUrl] = useState(""); // лог запроса
+  const [requestUrl, setRequestUrl] = useState("");
 
-  // Загрузка ключа из localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedKey = localStorage.getItem("api_key");
@@ -61,7 +61,7 @@ export default function SearchPage() {
       const res = await fetch(fullUrl, {
         method: "GET",
         headers: {
-          "X-API-Key": apiKey.trim(), // ✅ теперь ключ точно передаётся
+          "X-API-Key": apiKey.trim(),
           "Content-Type": "application/json",
         },
       });
@@ -82,14 +82,14 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* Поле для API-ключа */}
+      {/* API ключ */}
       <div className="flex justify-center items-center gap-4 mb-10">
         <input
           type="text"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
           placeholder="Введите API-ключ"
-          className="w-[320px] px-4 py-2 rounded-xl bg-black/40 border border-green-400/40 text-green-200 placeholder-green-300/50 focus:outline-none focus:ring-2 focus:ring-green-400"
+          className="w-[320px] px-4 py-2 rounded-lg bg-black/40 border border-green-400/40 text-green-200 placeholder-green-300/50 focus:outline-none focus:ring-2 focus:ring-green-400"
         />
         <button onClick={saveKey} className="gc-btn text-sm px-6 py-2">
           Сохранить
@@ -101,102 +101,176 @@ export default function SearchPage() {
         )}
       </div>
 
-      {/* Форма фильтров */}
-      <div className="flex flex-wrap justify-center gap-6 mb-10">
-        {/* Вид */}
-        <select
-          name="view"
-          value={filters.view}
-          onChange={handleChange}
-          className="gc-filter"
-        >
-          <option value="">Вид</option>
-          <option value="hydrangea">Hydrangea</option>
-          <option value="rosa">Rosa</option>
-          <option value="thuja">Thuja</option>
-          <option value="acer">Acer</option>
-        </select>
+      {/* === Новая панель фильтров (по Swagger) === */}
+      <div className="filter-panel">
+        {/* view */}
+        <div className="filter-item">
+          <label htmlFor="view">Вид / сорт</label>
+          <input
+            id="view"
+            name="view"
+            type="text"
+            value={filters.view}
+            onChange={(e) =>
+              setFilters({ ...filters, view: e.target.value })
+            }
+            placeholder="Например: hydrangea"
+          />
+        </div>
 
-        {/* Освещение */}
-        <select
-          name="light"
-          value={filters.light}
-          onChange={handleChange}
-          className="gc-filter"
-        >
-          <option value="">Освещение</option>
-          <option value="тень">Тень</option>
-          <option value="полутень">Полутень</option>
-          <option value="яркий">Яркий свет</option>
-        </select>
+        {/* light */}
+        <div className="filter-item">
+          <label htmlFor="light">Освещение</label>
+          <select
+            id="light"
+            name="light"
+            value={filters.light}
+            onChange={handleChange}
+          >
+            <option value="">--</option>
+            <option value="тень">тень</option>
+            <option value="полутень">полутень</option>
+            <option value="яркий">яркий</option>
+          </select>
+        </div>
 
-        {/* Зона USDA */}
-        <select
-          name="zone_usda"
-          value={filters.zone_usda}
-          onChange={handleChange}
-          className="gc-filter"
-        >
-          <option value="">Зона USDA</option>
-          {Array.from({ length: 11 }, (_, i) => (
-            <option key={i + 2} value={(i + 2).toString()}>
-              {i + 2}
-            </option>
-          ))}
-        </select>
+        {/* zone_usda */}
+        <div className="filter-item">
+          <label htmlFor="zone_usda">Зона USDA</label>
+          <select
+            id="zone_usda"
+            name="zone_usda"
+            value={filters.zone_usda}
+            onChange={handleChange}
+          >
+            <option value="">--</option>
+            {Array.from({ length: 11 }, (_, i) => (
+              <option key={i + 2} value={(i + 2).toString()}>
+                {i + 2}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        {/* Токсичность */}
-        <select
-          name="toxicity"
-          value={filters.toxicity}
-          onChange={handleChange}
-          className="gc-filter"
-        >
-          <option value="">Токсичность</option>
-          <option value="none">Безвредные</option>
-          <option value="mild">Слабая</option>
-          <option value="toxic">Ядовитые</option>
-        </select>
+        {/* toxicity */}
+        <div className="filter-item">
+          <label htmlFor="toxicity">Токсичность</label>
+          <select
+            id="toxicity"
+            name="toxicity"
+            value={filters.toxicity}
+            onChange={handleChange}
+          >
+            <option value="">--</option>
+            <option value="none">none</option>
+            <option value="mild">mild</option>
+            <option value="toxic">toxic</option>
+          </select>
+        </div>
 
-        {/* Размещение */}
-        <select
-          name="placement"
-          value={filters.placement}
-          onChange={handleChange}
-          className="gc-filter"
-        >
-          <option value="">Размещение</option>
-          <option value="комнатное">Комнатное</option>
-          <option value="садовое">Садовое</option>
-        </select>
+        {/* placement */}
+        <div className="filter-item">
+          <label htmlFor="placement">Размещение</label>
+          <select
+            id="placement"
+            name="placement"
+            value={filters.placement}
+            onChange={handleChange}
+          >
+            <option value="">--</option>
+            <option value="комнатное">комнатное</option>
+            <option value="садовое">садовое</option>
+          </select>
+        </div>
 
-        {/* Кнопка поиска */}
-        <button
-          onClick={fetchPlants}
-          disabled={loading}
-          className="gc-btn text-sm px-6 py-3 mt-2"
-        >
+        {/* sort */}
+        <div className="filter-item">
+          <label htmlFor="sort">Сортировка</label>
+          <select
+            id="sort"
+            name="sort"
+            value={filters.sort}
+            onChange={(e) =>
+              setFilters({ ...filters, sort: e.target.value })
+            }
+          >
+            <option value="random">random</option>
+            <option value="id">id</option>
+          </select>
+        </div>
+
+        <button onClick={fetchPlants} disabled={loading}>
           {loading ? "Загрузка..." : "Найти"}
         </button>
       </div>
 
-      {/* Ошибка */}
-      {error && <p className="text-red-400 text-center mb-6">{error}</p>}
+      <style jsx>{`
+        .filter-panel {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 20px;
+          max-width: 900px;
+          margin: 0 auto 50px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(83, 255, 148, 0.2);
+          border-radius: 8px;
+          padding: 24px 28px;
+        }
+        .filter-item {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          font-size: 14px;
+          color: #bde6c2;
+        }
+        label {
+          font-weight: 500;
+          color: #8effa9;
+        }
+        input,
+        select {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(83, 255, 148, 0.3);
+          border-radius: 6px;
+          padding: 8px 10px;
+          color: #c6f7cb;
+          font-size: 14px;
+          outline: none;
+        }
+        input:focus,
+        select:focus {
+          border-color: #53ff94;
+        }
+        button {
+          grid-column: 1 / -1;
+          margin-top: 10px;
+          padding: 10px 0;
+          background: #43e37c;
+          color: #0b1a0f;
+          font-weight: 600;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background 0.2s ease;
+        }
+        button:hover {
+          background: #53ff94;
+        }
+      `}</style>
 
-      {/* Лог запроса */}
+      {/* Ошибки и результаты */}
+      {error && <p className="text-red-400 text-center mb-6">{error}</p>}
       {requestUrl && (
         <p className="text-xs text-green-400 text-center mb-6 break-all">
           🔗 <strong>Запрос:</strong> {requestUrl}
         </p>
       )}
-
-      {/* Результаты */}
       {plants.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {plants.map((p, i) => (
             <div
               key={i}
-              className="bg-black/40 border border-green-500/30 rounded-2xl p-6 shadow-[0_0_25px_rgba(83,255,148,0.3)] hover:shadow-[0_0_40px_rgba(83,255,148,0.45)] transition"
+              className="bg-black/40 border border-green-500/30 rounded-lg p-6"
             >
               <h2 className="text-2xl text-green-300 font-bold mb-3">
                 {p.cultivar}
@@ -214,7 +288,9 @@ export default function SearchPage() {
           ))}
         </div>
       ) : (
-        !loading && <p className="text-green-300 text-center mt-8">Нет результатов</p>
+        !loading && (
+          <p className="text-green-300 text-center mt-8">Нет результатов</p>
+        )
       )}
     </main>
   );
