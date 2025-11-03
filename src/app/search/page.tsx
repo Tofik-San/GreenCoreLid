@@ -82,9 +82,9 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === Поле API-ключа — цельный блок с кнопкой === */}
+      {/* === Поле API-ключа — поле + кнопка справа === */}
       <div className="api-key-panel">
-        <div className="api-key-wrapper">
+        <div className="api-key-row">
           <input
             type="text"
             value={apiKey}
@@ -93,7 +93,7 @@ export default function SearchPage() {
             className="api-key-input"
           />
           <button onClick={saveKey} className="api-key-button">
-            Принять
+            Применить
           </button>
         </div>
         {saved && <span className="api-key-saved">✓ Ключ принят</span>}
@@ -201,24 +201,23 @@ export default function SearchPage() {
         .api-key-panel {
           max-width: 900px;
           margin: 0 auto 40px;
-          text-align: center;
         }
 
-        .api-key-wrapper {
-          position: relative;
+        .api-key-row {
+          display: flex;
+          gap: 8px;
           width: 100%;
-          display: block
         }
 
         .api-key-input {
-          width: 100%;
+          flex: 1;
           height: 48px;
           border: 1px solid rgba(83, 255, 148, 0.4);
           border-radius: 8px;
           background: rgba(0, 0, 0, 0.5);
           color: #c6f7cb;
           font-size: 15px;
-          padding: 0 110px 0 16px;
+          padding: 0 16px;
           outline: none;
           transition: border-color 0.2s ease;
         }
@@ -228,15 +227,11 @@ export default function SearchPage() {
         }
 
         .api-key-button {
-          position: absolute;
-          right: 0;
-          top: 0;
-          bottom: 0;
-          height: 100%;
+          height: 48px;
           background: #43e37c;
           color: #0b1a0f;
           border: none;
-          border-radius: 0 8px 8px 0;
+          border-radius: 8px;
           padding: 0 24px;
           font-weight: 600;
           cursor: pointer;
@@ -252,6 +247,7 @@ export default function SearchPage() {
           color: #53ff94;
           margin-top: 8px;
           font-size: 14px;
+          text-align: center;
           animation: fadeIn 0.4s ease;
         }
 
