@@ -67,7 +67,6 @@ export default function DocsPage() {
         Документация API
       </h1>
 
-      {/* Раздел тарифов */}
       <section className="max-w-[1600px] mx-auto px-8">
         <h2 className="text-3xl mb-14 text-green-400">Планы</h2>
 
@@ -96,7 +95,6 @@ export default function DocsPage() {
                     </h3>
                   </div>
 
-                  {/* Описание тарифа */}
                   <div className="text-green-200 mb-10 text-lg leading-relaxed space-y-5 text-center max-w-[340px]">
                     {plan.name.toLowerCase() === "free" && (
                       <>
@@ -105,8 +103,8 @@ export default function DocsPage() {
                           Позволяет изучить структуру API и оценить качество данных.
                         </p>
                         <p>
-                          <strong>5 запросов в день</strong> • до{" "}
-                          <strong>5 карточек</strong> на страницу
+                          <strong>5 запросов</strong> • до{" "}
+                          <strong>5 карточек</strong> за один вызов
                         </p>
                       </>
                     )}
@@ -114,12 +112,15 @@ export default function DocsPage() {
                       <>
                         <p>
                           Оптимальный выбор для дизайнеров и небольших студий.
-                          Расширенные фильтры, выгрузка данных и стабильные лимиты
+                          Расширенные фильтры, выгрузка данных и устойчивый лимит
                           для работы над проектами.
                         </p>
                         <p>
-                          <strong>1500 запросов в день</strong> • до{" "}
-                          <strong>30 карточек</strong> на страницу
+                          <strong>20 запросов</strong> • до{" "}
+                          <strong>10 карточек</strong> за вызов<br />
+                          <span className="text-green-400/80 text-sm">
+                            Используется по лимиту, без привязки ко времени.
+                          </span>
                         </p>
                       </>
                     )}
@@ -127,25 +128,26 @@ export default function DocsPage() {
                       <>
                         <p>
                           Полный доступ к экосистеме GreenCore. Пакетные запросы,
-                          приоритетная обработка, bulk-экспорт и ранний доступ
-                          к новым функциям.
+                          приоритетная обработка и ранний доступ к новым функциям.
                         </p>
                         <p>
-                          <strong>2500 запросов в день</strong> • до{" "}
-                          <strong>50 карточек</strong> на страницу
+                          <strong>50 запросов</strong> • до{" "}
+                          <strong>20 карточек</strong> за вызов<br />
+                          <span className="text-green-400/80 text-sm">
+                            Используется по лимиту, без привязки ко времени.
+                          </span>
                         </p>
                       </>
                     )}
                   </div>
 
-                  {/* Цена и кнопка */}
                   <div className="flex flex-col items-center mt-auto">
                     <p className="text-green-400 font-semibold text-2xl mb-5">
                       {plan.name.toLowerCase() === "free"
                         ? "БЕСПЛАТНО"
                         : plan.name.toLowerCase() === "premium"
-                        ? "590 ₽ / мес"
-                        : "2 490 ₽ / мес"}
+                        ? "590 ₽"
+                        : "2 490 ₽"}
                     </p>
                     <button
                       disabled={loadingPlan === plan.name}
@@ -171,7 +173,6 @@ export default function DocsPage() {
           </div>
         )}
 
-        {/* Кнопка перехода к поиску */}
         <div className="flex justify-center mt-20">
           <a
             href="/search"
