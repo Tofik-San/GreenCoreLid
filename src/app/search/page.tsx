@@ -207,6 +207,7 @@ export default function SearchPage() {
         .api-key-wrapper {
           position: relative;
           width: 100%;
+          display: block
         }
 
         .api-key-input {
