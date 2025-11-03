@@ -82,7 +82,7 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === API-ключ === */}
+      {/* === Поле API-ключа === */}
       <div className="api-key-panel">
         <div className="api-key-row">
           <input
@@ -196,10 +196,116 @@ export default function SearchPage() {
         </button>
       </div>
 
-      {error && <p className="text-red-400 text-center mb-6">{error}</p>}
-      <div style={{ display: "none" }}>{requestUrl}</div>
+      {/* === Стили фильтров и панели === */}
+      <style jsx>{`
+        .api-key-panel {
+          max-width: 900px;
+          margin: 40px auto 40px;
+        }
+        .api-key-row {
+          display: flex;
+          gap: 12px;
+          width: 100%;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .api-key-input {
+          flex: 1 1 auto;
+          height: 48px;
+          border: 1px solid rgba(83, 255, 148, 0.4);
+          border-radius: 8px;
+          background: rgba(0, 0, 0, 0.5);
+          color: #c6f7cb;
+          font-size: 15px;
+          padding: 0 16px;
+          outline: none;
+        }
+        .api-key-input:focus {
+          border-color: #53ff94;
+        }
+        .api-key-button {
+          all: unset;
+          height: 48px;
+          min-width: 110px;
+          padding: 0 20px;
+          background: #43e37c;
+          color: #0b1a0f;
+          border-radius: 8px;
+          text-align: center;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.12s ease;
+        }
+        .api-key-button:hover {
+          background: #53ff94;
+        }
+        .api-key-saved {
+          display: block;
+          color: #53ff94;
+          margin-top: 8px;
+          font-size: 14px;
+          text-align: center;
+        }
+        .filter-panel {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 20px;
+          max-width: 900px;
+          margin: 0 auto 50px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(83, 255, 148, 0.2);
+          border-radius: 8px;
+          padding: 24px 28px;
+        }
+        .filter-item {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          font-size: 14px;
+          color: #bde6c2;
+        }
+        label {
+          font-weight: 500;
+          color: #8effa9;
+        }
+        input,
+        select {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(83, 255, 148, 0.3);
+          border-radius: 6px;
+          padding: 8px 10px;
+          color: #c6f7cb;
+          font-size: 14px;
+          outline: none;
+        }
+        select option {
+          color: #000;
+          background: #e8ffe8;
+        }
+        input:focus,
+        select:focus {
+          border-color: #53ff94;
+        }
+        button {
+          grid-column: 1 / -1;
+          margin-top: 10px;
+          padding: 10px 0;
+          background: #43e37c;
+          color: #0b1a0f;
+          font-weight: 600;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background 0.2s ease;
+        }
+        button:hover {
+          background: #53ff94;
+        }
+      `}</style>
 
-      {/* === Карточки === */}
+      {error && <p className="text-red-400 text-center mb-6">{error}</p>}
+
+      {/* === Вывод карточек === */}
       {plants.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {plants.map((p, i) => (
@@ -207,27 +313,16 @@ export default function SearchPage() {
               key={i}
               className="bg-black/40 border border-green-500/30 rounded-lg p-6 flex flex-col gap-3"
             >
-              {/* === Заголовок === */}
               <div>
-                <h2 className="text-2xl text-green-300 font-bold">
-                  {p.cultivar}
-                </h2>
-                {p.view && (
-                  <p className="text-green-200 italic">{p.view}</p>
-                )}
-                {p.family && (
-                  <p className="text-green-400 text-sm">{p.family}</p>
-                )}
+                <h2 className="text-2xl text-green-300 font-bold">{p.cultivar}</h2>
+                {p.view && <p className="text-green-200 italic">{p.view}</p>}
+                {p.family && <p className="text-green-400 text-sm">{p.family}</p>}
               </div>
 
-              {/* === Описание === */}
               {p.insights && (
-                <p className="text-green-100 text-sm leading-relaxed">
-                  {p.insights}
-                </p>
+                <p className="text-green-100 text-sm leading-relaxed">{p.insights}</p>
               )}
 
-              {/* === Условия выращивания === */}
               <div className="text-xs text-green-300 space-y-1 mt-2">
                 {p.light && <p>☀ <b>Свет:</b> {p.light}</p>}
                 {p.watering && <p>💧 <b>Полив:</b> {p.watering}</p>}
@@ -236,7 +331,6 @@ export default function SearchPage() {
                 {p.fertilizer && <p>🧪 <b>Удобрения:</b> {p.fertilizer}</p>}
               </div>
 
-              {/* === Уход === */}
               {(p.pruning || p.pests_diseases) && (
                 <div className="text-xs text-green-400 mt-2">
                   {p.pruning && <p>✂ <b>Обрезка:</b> {p.pruning}</p>}
@@ -246,7 +340,6 @@ export default function SearchPage() {
                 </div>
               )}
 
-              {/* === Дополнительно === */}
               <div className="text-xs text-green-500 mt-2 space-y-1">
                 <p>
                   🏡 <b>Размещение:</b>{" "}
@@ -265,9 +358,7 @@ export default function SearchPage() {
           ))}
         </div>
       ) : (
-        !loading && (
-          <p className="text-green-300 text-center mt-8">Нет результатов</p>
-        )
+        !loading && <p className="text-green-300 text-center mt-8">Нет результатов</p>
       )}
     </main>
   );
