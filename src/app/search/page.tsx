@@ -82,7 +82,7 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === Поле API-ключа — поле + кнопка справа === */}
+      {/* === Поле API-ключа === */}
       <div className="api-key-panel">
         <div className="api-key-row">
           <input
@@ -198,20 +198,25 @@ export default function SearchPage() {
 
       {/* === Стили === */}
       <style jsx>{`
+        /* === API key block === */
         .api-key-panel {
           max-width: 900px;
-          margin: 50px auto 40px;
+          margin: 40px auto 40px;
         }
 
         .api-key-row {
-          display: flex;
-          gap: 8px;
+          display: flex !important;
+          gap: 12px;
           width: 100%;
+          align-items: center !important;
+          justify-content: space-between;
+          box-sizing: border-box;
         }
 
         .api-key-input {
-          flex: 1;
+          flex: 1 1 auto;
           height: 48px;
+          box-sizing: border-box;
           border: 1px solid rgba(83, 255, 148, 0.4);
           border-radius: 8px;
           background: rgba(0, 0, 0, 0.5);
@@ -219,7 +224,8 @@ export default function SearchPage() {
           font-size: 15px;
           padding: 0 16px;
           outline: none;
-          transition: border-color 0.2s ease;
+          display: block;
+          line-height: 48px;
         }
 
         .api-key-input:focus {
@@ -227,19 +233,25 @@ export default function SearchPage() {
         }
 
         .api-key-button {
-          height: 48px;
-          background: #43e37c;
-          color: #0b1a0f;
-          border: none;
-          border-radius: 8px;
-          padding: 0 24px;
+          all: unset;
+          display: inline-block !important;
+          height: 48px !important;
+          line-height: 48px !important;
+          min-width: 110px;
+          padding: 0 20px !important;
+          background: #43e37c !important;
+          color: #0b1a0f !important;
+          border-radius: 8px !important;
+          text-align: center;
           font-weight: 600;
           cursor: pointer;
-          transition: background 0.2s ease;
+          box-sizing: border-box;
+          transition: background 0.12s ease;
+          vertical-align: middle;
         }
 
         .api-key-button:hover {
-          background: #53ff94;
+          background: #53ff94 !important;
         }
 
         .api-key-saved {
@@ -260,6 +272,7 @@ export default function SearchPage() {
           }
         }
 
+        /* === Filter panel === */
         .filter-panel {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
