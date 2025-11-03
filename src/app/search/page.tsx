@@ -200,7 +200,7 @@ export default function SearchPage() {
       <style jsx>{`
         .api-key-panel {
           max-width: 900px;
-          margin: 0 auto 50px;
+          margin: 50px auto 40px;
         }
 
         .api-key-row {
