@@ -82,7 +82,7 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === API-ключ === */}
+      {/* === Поле API-ключа === */}
       <div className="api-key-panel">
         <div className="api-key-row">
           <input
@@ -196,71 +196,177 @@ export default function SearchPage() {
         </button>
       </div>
 
+      {/* === Стили === */}
+      <style jsx>{`
+        /* === API key block === */
+        .api-key-panel {
+          max-width: 900px;
+          margin: 40px auto 40px;
+        }
+
+        .api-key-row {
+          display: flex !important;
+          gap: 12px;
+          width: 100%;
+          align-items: center !important;
+          justify-content: space-between;
+          box-sizing: border-box;
+        }
+
+        .api-key-input {
+          flex: 1 1 auto;
+          height: 48px;
+          box-sizing: border-box;
+          border: 1px solid rgba(83, 255, 148, 0.4);
+          border-radius: 8px;
+          background: rgba(0, 0, 0, 0.5);
+          color: #c6f7cb;
+          font-size: 15px;
+          padding: 0 16px;
+          outline: none;
+          display: block;
+          line-height: 48px;
+        }
+
+        .api-key-input:focus {
+          border-color: #53ff94;
+        }
+
+        .api-key-button {
+          all: unset;
+          display: inline-block !important;
+          height: 48px !important;
+          line-height: 48px !important;
+          min-width: 110px;
+          padding: 0 20px !important;
+          background: #43e37c !important;
+          color: #0b1a0f !important;
+          border-radius: 8px !important;
+          text-align: center;
+          font-weight: 600;
+          cursor: pointer;
+          box-sizing: border-box;
+          transition: background 0.12s ease;
+          vertical-align: middle;
+        }
+
+        .api-key-button:hover {
+          background: #53ff94 !important;
+        }
+
+        .api-key-saved {
+          display: block;
+          color: #53ff94;
+          margin-top: 8px;
+          font-size: 14px;
+          text-align: center;
+          animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        /* === Filter panel === */
+        .filter-panel {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 20px;
+          max-width: 900px;
+          margin: 0 auto 50px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(83, 255, 148, 0.2);
+          border-radius: 8px;
+          padding: 24px 28px;
+        }
+
+        .filter-item {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          font-size: 14px;
+          color: #bde6c2;
+        }
+
+        label {
+          font-weight: 500;
+          color: #8effa9;
+        }
+
+        input,
+        select {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(83, 255, 148, 0.3);
+          border-radius: 6px;
+          padding: 8px 10px;
+          color: #c6f7cb;
+          font-size: 14px;
+          outline: none;
+        }
+
+        select option {
+          color: #000;
+          background: #e8ffe8;
+        }
+
+        input:focus,
+        select:focus {
+          border-color: #53ff94;
+        }
+
+        button {
+          grid-column: 1 / -1;
+          margin-top: 10px;
+          padding: 10px 0;
+          background: #43e37c;
+          color: #0b1a0f;
+          font-weight: 600;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background 0.2s ease;
+        }
+
+        button:hover {
+          background: #53ff94;
+        }
+      `}</style>
+
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
+      <div style={{ display: "none" }}>{requestUrl}</div>
 
-      {/* === Карточки === */}
-      <div className="max-w-[1100px] mx-auto mt-10">
-        {plants.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {plants.map((p, i) => (
-              <article
-                key={i}
-                className="bg-black/50 border border-green-500/30 rounded-xl shadow-md p-6 flex flex-col gap-3 hover:border-green-400/40 transition"
-              >
-                <div>
-                  <h2 className="text-2xl text-green-300 font-bold">
-                    {p.cultivar}
-                  </h2>
-                  <p className="text-green-200 italic">{p.view}</p>
-                  <p className="text-green-400 text-sm">{p.family}</p>
-                </div>
-
-                <hr className="border-green-900/50 my-2" />
-
-                {p.insights && (
-                  <p className="text-green-100 text-sm leading-relaxed">
-                    {p.insights}
-                  </p>
-                )}
-
-                <div className="space-y-1 text-xs text-green-300 mt-2">
-                  {p.light && <p>☀ <b>Свет:</b> {p.light}</p>}
-                  {p.watering && <p>💧 <b>Полив:</b> {p.watering}</p>}
-                  {p.temperature && <p>🌡 <b>Температура:</b> {p.temperature}</p>}
-                  {p.soil && <p>🌱 <b>Почва:</b> {p.soil}</p>}
-                  {p.fertilizer && <p>🧪 <b>Удобрения:</b> {p.fertilizer}</p>}
-                </div>
-
-                {(p.pruning || p.pests_diseases) && (
-                  <div className="space-y-1 text-xs text-green-400 mt-2">
-                    {p.pruning && <p>✂ <b>Обрезка:</b> {p.pruning}</p>}
-                    {p.pests_diseases && (
-                      <p>🦠 <b>Вредители и болезни:</b> {p.pests_diseases}</p>
-                    )}
-                  </div>
-                )}
-
-                <div className="space-y-1 text-xs text-green-500 mt-2">
-                  <p>
-                    🏡 <b>Размещение:</b>{" "}
-                    {p.indoor ? "комнатное" : p.outdoor ? "садовое" : "—"}
-                  </p>
-                  <p>
-                    🌿 <b>Для начинающих:</b>{" "}
-                    {p.beginner_friendly ? "подходит" : "требует опыта"}
-                  </p>
-                  <p>⚠ <b>Токсичность:</b> {p.toxicity || "none"}</p>
-                  {p.ru_regions && <p>📍 <b>Регионы РФ:</b> {p.ru_regions}</p>}
-                </div>
-              </article>
-            ))}
-          </div>
-        ) : (
-          !loading && (
-            <p className="text-green-300 text-center mt-8">Нет результатов</p>
-          )
-        )}
-      </div>
+      {plants.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          {plants.map((p, i) => (
+            <div
+              key={i}
+              className="bg-black/40 border border-green-500/30 rounded-lg p-6"
+            >
+              <h2 className="text-2xl text-green-300 font-bold mb-3">
+                {p.cultivar}
+              </h2>
+              <p className="text-green-200 text-sm mb-3">{p.view}</p>
+              <p className="text-green-100 text-sm leading-relaxed mb-4 line-clamp-6">
+                {p.insights}
+              </p>
+              <div className="text-xs text-green-400 space-y-1">
+                <p>💧 {p.watering}</p>
+                <p>☀️ {p.light}</p>
+                <p>🌡 {p.temperature}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        !loading && (
+          <p className="text-green-300 text-center mt-8">Нет результатов</p>
+        )
+      )}
     </main>
   );
 }
