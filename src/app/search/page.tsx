@@ -82,25 +82,25 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === Поле API-ключа (встроенная кнопка, по ширине фильтров) === */}
+      {/* === Поле API-ключа — одна линия с кнопкой === */}
       <div className="api-key-panel">
-        <div className="input-wrapper">
+        <div className="api-key-wrapper">
           <input
             type="text"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="Введите API-ключ"
+            className="api-key-input"
           />
-          <button onClick={saveKey}>Принять</button>
+          <button onClick={saveKey} className="api-key-button">
+            Принять
+          </button>
         </div>
-        {saved && (
-          <span className="saved-indicator">✓ Ключ принят</span>
-        )}
+        {saved && <span className="api-key-saved">✓ Ключ принят</span>}
       </div>
 
-      {/* === Панель фильтров (по Swagger) === */}
+      {/* === Панель фильтров (совпадает со Swagger) === */}
       <div className="filter-panel">
-        {/* view */}
         <div className="filter-item">
           <label htmlFor="view">Вид / сорт</label>
           <input
@@ -115,7 +115,6 @@ export default function SearchPage() {
           />
         </div>
 
-        {/* light */}
         <div className="filter-item">
           <label htmlFor="light">Освещение</label>
           <select
@@ -131,7 +130,6 @@ export default function SearchPage() {
           </select>
         </div>
 
-        {/* zone_usda */}
         <div className="filter-item">
           <label htmlFor="zone_usda">Зона USDA</label>
           <select
@@ -149,7 +147,6 @@ export default function SearchPage() {
           </select>
         </div>
 
-        {/* toxicity */}
         <div className="filter-item">
           <label htmlFor="toxicity">Токсичность</label>
           <select
@@ -165,7 +162,6 @@ export default function SearchPage() {
           </select>
         </div>
 
-        {/* placement */}
         <div className="filter-item">
           <label htmlFor="placement">Размещение</label>
           <select
@@ -180,7 +176,6 @@ export default function SearchPage() {
           </select>
         </div>
 
-        {/* sort */}
         <div className="filter-item">
           <label htmlFor="sort">Сортировка</label>
           <select
@@ -206,32 +201,33 @@ export default function SearchPage() {
         .api-key-panel {
           max-width: 900px;
           margin: 0 auto 40px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+          text-align: center;
         }
 
-        .input-wrapper {
+        .api-key-wrapper {
           position: relative;
           width: 100%;
+          display: flex;
         }
 
-        .input-wrapper input {
-          width: 100%;
-          padding: 12px 100px 12px 16px;
+        .api-key-input {
+          flex: 1;
+          height: 48px;
           border: 1px solid rgba(83, 255, 148, 0.4);
           border-radius: 8px;
           background: rgba(0, 0, 0, 0.5);
           color: #c6f7cb;
           font-size: 15px;
+          padding: 0 120px 0 16px;
           outline: none;
+          transition: border-color 0.2s ease;
         }
 
-        .input-wrapper input:focus {
+        .api-key-input:focus {
           border-color: #53ff94;
         }
 
-        .input-wrapper button {
+        .api-key-button {
           position: absolute;
           right: 4px;
           top: 4px;
@@ -240,17 +236,18 @@ export default function SearchPage() {
           color: #0b1a0f;
           border: none;
           border-radius: 6px;
-          padding: 0 18px;
+          padding: 0 22px;
           font-weight: 600;
           cursor: pointer;
           transition: background 0.2s ease;
         }
 
-        .input-wrapper button:hover {
+        .api-key-button:hover {
           background: #53ff94;
         }
 
-        .saved-indicator {
+        .api-key-saved {
+          display: block;
           color: #53ff94;
           margin-top: 8px;
           font-size: 14px;
@@ -258,8 +255,12 @@ export default function SearchPage() {
         }
 
         @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
         }
 
         .filter-panel {
@@ -273,6 +274,7 @@ export default function SearchPage() {
           border-radius: 8px;
           padding: 24px 28px;
         }
+
         .filter-item {
           display: flex;
           flex-direction: column;
@@ -280,10 +282,12 @@ export default function SearchPage() {
           font-size: 14px;
           color: #bde6c2;
         }
+
         label {
           font-weight: 500;
           color: #8effa9;
         }
+
         input,
         select {
           background: rgba(255, 255, 255, 0.06);
@@ -294,14 +298,17 @@ export default function SearchPage() {
           font-size: 14px;
           outline: none;
         }
+
         select option {
           color: #000;
           background: #e8ffe8;
         }
+
         input:focus,
         select:focus {
           border-color: #53ff94;
         }
+
         button {
           grid-column: 1 / -1;
           margin-top: 10px;
@@ -314,6 +321,7 @@ export default function SearchPage() {
           cursor: pointer;
           transition: background 0.2s ease;
         }
+
         button:hover {
           background: #53ff94;
         }
