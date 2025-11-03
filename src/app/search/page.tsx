@@ -82,27 +82,19 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === Поле API ключа (удлинённое) === */}
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-10">
-        <div className="flex w-full max-w-2xl">
+      {/* === Поле API-ключа (встроенная кнопка, по ширине фильтров) === */}
+      <div className="api-key-panel">
+        <div className="input-wrapper">
           <input
             type="text"
             value={apiKey}
             onChange={(e) => setApiKey(e.target.value)}
             placeholder="Введите API-ключ"
-            className="flex-1 px-4 py-3 rounded-l-lg bg-black/40 border border-green-400/40 text-green-200 placeholder-green-300/50 focus:outline-none focus:ring-2 focus:ring-green-400"
           />
-          <button
-            onClick={saveKey}
-            className="bg-green-400 text-black font-semibold px-6 rounded-r-lg hover:bg-green-300 transition"
-          >
-            Принять
-          </button>
+          <button onClick={saveKey}>Принять</button>
         </div>
         {saved && (
-          <span className="text-green-400 text-sm animate-pulse mt-2 sm:mt-0">
-            ✓ Ключ принят
-          </span>
+          <span className="saved-indicator">✓ Ключ принят</span>
         )}
       </div>
 
@@ -211,6 +203,65 @@ export default function SearchPage() {
 
       {/* === Стили === */}
       <style jsx>{`
+        .api-key-panel {
+          max-width: 900px;
+          margin: 0 auto 40px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .input-wrapper {
+          position: relative;
+          width: 100%;
+        }
+
+        .input-wrapper input {
+          width: 100%;
+          padding: 12px 100px 12px 16px;
+          border: 1px solid rgba(83, 255, 148, 0.4);
+          border-radius: 8px;
+          background: rgba(0, 0, 0, 0.5);
+          color: #c6f7cb;
+          font-size: 15px;
+          outline: none;
+        }
+
+        .input-wrapper input:focus {
+          border-color: #53ff94;
+        }
+
+        .input-wrapper button {
+          position: absolute;
+          right: 4px;
+          top: 4px;
+          bottom: 4px;
+          background: #43e37c;
+          color: #0b1a0f;
+          border: none;
+          border-radius: 6px;
+          padding: 0 18px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s ease;
+        }
+
+        .input-wrapper button:hover {
+          background: #53ff94;
+        }
+
+        .saved-indicator {
+          color: #53ff94;
+          margin-top: 8px;
+          font-size: 14px;
+          animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+
         .filter-panel {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -244,7 +295,7 @@ export default function SearchPage() {
           outline: none;
         }
         select option {
-          color: #000; /* читаемые пункты */
+          color: #000;
           background: #e8ffe8;
         }
         input:focus,
@@ -270,8 +321,6 @@ export default function SearchPage() {
 
       {/* Ошибки и результаты */}
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
-
-      {/* 🔗 Строка запроса скрыта */}
       <div style={{ display: "none" }}>{requestUrl}</div>
 
       {plants.length > 0 ? (
