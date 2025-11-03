@@ -82,26 +82,31 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* API ключ */}
-      <div className="flex justify-center items-center gap-4 mb-10">
-        <input
-          type="text"
-          value={apiKey}
-          onChange={(e) => setApiKey(e.target.value)}
-          placeholder="Введите API-ключ"
-          className="w-[320px] px-4 py-2 rounded-lg bg-black/40 border border-green-400/40 text-green-200 placeholder-green-300/50 focus:outline-none focus:ring-2 focus:ring-green-400"
-        />
-        <button onClick={saveKey} className="gc-btn text-sm px-6 py-2">
-          Сохранить
-        </button>
+      {/* === Поле API ключа (удлинённое) === */}
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-10">
+        <div className="flex w-full max-w-2xl">
+          <input
+            type="text"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+            placeholder="Введите API-ключ"
+            className="flex-1 px-4 py-3 rounded-l-lg bg-black/40 border border-green-400/40 text-green-200 placeholder-green-300/50 focus:outline-none focus:ring-2 focus:ring-green-400"
+          />
+          <button
+            onClick={saveKey}
+            className="bg-green-400 text-black font-semibold px-6 rounded-r-lg hover:bg-green-300 transition"
+          >
+            Принять
+          </button>
+        </div>
         {saved && (
-          <span className="text-green-400 text-sm animate-pulse">
-            ✓ Ключ сохранён
+          <span className="text-green-400 text-sm animate-pulse mt-2 sm:mt-0">
+            ✓ Ключ принят
           </span>
         )}
       </div>
 
-      {/* === Новая панель фильтров (по Swagger) === */}
+      {/* === Панель фильтров (по Swagger) === */}
       <div className="filter-panel">
         {/* view */}
         <div className="filter-item">
@@ -204,6 +209,7 @@ export default function SearchPage() {
         </button>
       </div>
 
+      {/* === Стили === */}
       <style jsx>{`
         .filter-panel {
           display: grid;
@@ -237,6 +243,10 @@ export default function SearchPage() {
           font-size: 14px;
           outline: none;
         }
+        select option {
+          color: #000; /* читаемые пункты */
+          background: #e8ffe8;
+        }
         input:focus,
         select:focus {
           border-color: #53ff94;
@@ -260,11 +270,10 @@ export default function SearchPage() {
 
       {/* Ошибки и результаты */}
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
-      {requestUrl && (
-        <p className="text-xs text-green-400 text-center mb-6 break-all">
-          🔗 <strong>Запрос:</strong> {requestUrl}
-        </p>
-      )}
+
+      {/* 🔗 Строка запроса скрыта */}
+      <div style={{ display: "none" }}>{requestUrl}</div>
+
       {plants.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {plants.map((p, i) => (
