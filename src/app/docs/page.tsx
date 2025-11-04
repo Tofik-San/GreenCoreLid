@@ -85,7 +85,7 @@ export default function DocsPage() {
                 key={plan.id}
                 className="relative flex flex-col items-center mx-4 my-6"
               >
-                <div className="bg-black/40 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[540px] flex flex-col items-center justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
+                <div className="bg-black/40 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[450px] flex flex-col items-center justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
                   <div className="flex flex-col items-center mb-8">
                     <span className="text-7xl mb-5 drop-shadow-[0_0_20px_rgba(83,255,148,0.6)]">
                       {getPlanIcon(plan.name)}
