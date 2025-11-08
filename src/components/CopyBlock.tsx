@@ -15,19 +15,21 @@ export default function CopyBlock({ code }: { code: string }) {
   };
 
   return (
-    <div className="relative inline-block w-full max-w-full border border-green-500/50 rounded-xl px-6 py-4 text-green-200 font-mono text-sm bg-[rgba(0,0,0,0.6)] shadow-[0_0_15px_rgba(83,255,148,0.25)] overflow-visible text-left">
-      <pre className="whitespace-pre-wrap break-all m-0 pr-16 text-center">{code}</pre>
+    <div
+      className="relative w-full border border-green-500/50 rounded-xl px-6 py-5 text-green-200 font-mono text-sm bg-[rgba(0,0,0,0.7)] shadow-[0_0_15px_rgba(83,255,148,0.25)] text-left"
+      style={{ display: "block" }}
+    >
+      <pre className="whitespace-pre-wrap break-all m-0 pr-20">{code}</pre>
 
-      <button
-        onClick={handleCopy}
-        className="absolute top-1.5 right-2 bg-[rgba(0,0,0,0.85)] text-green-300 border border-green-400/50 rounded-md px-3 py-[2px] text-xs hover:bg-green-800 hover:text-white transition-all duration-150 z-[9999]"
-        style={{
-          boxShadow: "0 0 8px rgba(83,255,148,0.5)",
-          backdropFilter: "blur(4px)",
-        }}
-      >
-        {copied ? "✓" : "Копировать"}
-      </button>
+      <div className="absolute top-2 right-3">
+        <button
+          onClick={handleCopy}
+          className="bg-green-900/70 text-green-200 border border-green-400/50 rounded-md px-3 py-1 text-xs font-semibold hover:bg-green-700 hover:text-white transition-all duration-150 shadow-[0_0_6px_rgba(83,255,148,0.4)]"
+          style={{ backdropFilter: "blur(4px)" }}
+        >
+          {copied ? "✓ Скопировано" : "Копировать"}
+        </button>
+      </div>
     </div>
   );
 }
