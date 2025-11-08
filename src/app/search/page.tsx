@@ -80,52 +80,31 @@ export default function SearchPage() {
 
   return (
     <main className="min-h-screen px-8 py-12 text-green-100 bg-[var(--gc-bg)] flex flex-col items-center">
-      {/* === Монолитный блок API-ключа === */}
-      <div
-        className="flex items-center justify-between gap-3 px-6 py-3 rounded-xl mb-10"
-        style={{
-          maxWidth: "900px",
-          width: "100%",
-          border: "1px solid rgba(83,255,148,0.25)",
-          background: "rgba(8,18,10,0.6)",
-          boxShadow:
-            "0 0 16px rgba(83,255,148,0.25), inset 0 0 12px rgba(83,255,148,0.15)",
-          backdropFilter: "blur(6px)",
-        }}
-      >
+      {/* === Встроенный блок API-ключа с кнопками === */}
+      <div className="relative mb-10" style={{ maxWidth: "900px", width: "100%" }}>
         <input
           type="text"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
           placeholder="Введите или вставьте API-ключ"
-          className="flex-grow bg-transparent border-none outline-none text-green-100 placeholder-green-700/70 font-mono text-[15px]"
-          style={{
-            height: "46px",
-            lineHeight: "46px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
+          className="w-full bg-transparent border border-green-500/40 rounded-xl text-green-100 placeholder-green-700/70 font-mono text-[15px] pr-[230px] pl-4 h-[52px] outline-none shadow-[0_0_14px_rgba(83,255,148,0.2)]"
         />
-        <div className="flex items-center gap-2 h-[46px]">
+
+        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-2">
           <button
             onClick={pasteKey}
-            className="px-4 h-full rounded-md border border-green-400/40 text-green-100 hover:bg-green-500/20 transition"
-            style={{
-              minWidth: "100px",
-              boxShadow: "0 0 8px rgba(83,255,148,0.25)",
-            }}
+            className="px-4 h-[38px] rounded-md border border-green-400/40 text-green-100 hover:bg-green-500/20 transition"
           >
             Вставить
           </button>
           <button
             onClick={saveKey}
-            className="px-5 h-full rounded-md text-[#04140a] font-semibold hover:brightness-110 transition"
+            className="px-5 h-[38px] rounded-md text-[#04140a] font-semibold hover:brightness-110 transition"
             style={{
-              minWidth: "110px",
               background:
                 "linear-gradient(90deg, rgba(63,214,124,1) 0%, rgba(83,255,148,1) 100%)",
               boxShadow:
-                "0 0 12px rgba(83,255,148,0.4), inset 0 -2px 6px rgba(0,0,0,0.25)",
+                "0 0 10px rgba(83,255,148,0.3), inset 0 -2px 6px rgba(0,0,0,0.25)",
             }}
           >
             Применить
