@@ -19,6 +19,7 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
+  const [requestUrl, setRequestUrl] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -35,16 +36,7 @@ export default function SearchPage() {
     if (typeof window !== "undefined") {
       localStorage.setItem("api_key", apiKey.trim());
       setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
-    }
-  };
-
-  const pasteKey = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      setApiKey(text.trim());
-    } catch {
-      alert("Не удалось вставить ключ из буфера обмена");
+      setTimeout(() => setSaved(false), 2500);
     }
   };
 
@@ -53,6 +45,7 @@ export default function SearchPage() {
       setError("Введите API-ключ перед поиском.");
       return;
     }
+
     setLoading(true);
     setError("");
 
@@ -62,7 +55,11 @@ export default function SearchPage() {
         .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
         .join("&");
 
-      const res = await fetch(`${API_URL}/plants?${params}`, {
+      const fullUrl = `${API_URL}/plants?${params}`;
+      setRequestUrl(fullUrl);
+
+      const res = await fetch(fullUrl, {
+        method: "GET",
         headers: {
           "X-API-Key": apiKey.trim(),
           "Content-Type": "application/json",
@@ -80,62 +77,27 @@ export default function SearchPage() {
   };
 
   return (
-    <main className="min-h-screen px-6 pt-8 text-green-100 bg-[var(--gc-bg)] flex flex-col items-center">
-      {/* === API-ключ (как на success) === */}
-      <div
-        className="flex items-center justify-between gap-3 mb-10 px-6 py-3 rounded-xl"
-        style={{
-          maxWidth: "900px",
-          width: "100%",
-          border: "1px solid rgba(83,255,148,0.25)",
-          background: "rgba(10,20,12,0.45)",
-          boxShadow: "0 0 12px rgba(83,255,148,0.2)",
-          backdropFilter: "blur(6px)",
-        }}
-      >
-        <input
-          type="text"
-          value={apiKey}
-          onChange={(e) => setApiKey(e.target.value)}
-          placeholder="Введите или вставьте API-ключ"
-          className="flex-grow bg-transparent border-none outline-none text-green-100 placeholder-green-700/70 font-mono text-[15px]"
-          style={{
-            height: "42px",
-            lineHeight: "42px",
-            paddingLeft: "8px",
-            paddingRight: "8px",
-          }}
-        />
-        <div className="flex items-center gap-2">
-          <button
-            onClick={pasteKey}
-            className="px-4 h-[42px] rounded-md border border-green-400/40 text-green-100 hover:bg-green-500/20 transition"
-            style={{
-              minWidth: "100px",
-              boxShadow: "0 0 8px rgba(83,255,148,0.25)",
-            }}
-          >
-            Вставить
-          </button>
-          <button
-            onClick={saveKey}
-            className="px-5 h-[42px] rounded-md text-[#04140a] font-semibold hover:brightness-110 transition"
-            style={{
-              minWidth: "110px",
-              background:
-                "linear-gradient(90deg, rgba(63,214,124,1) 0%, rgba(83,255,148,1) 100%)",
-              boxShadow:
-                "0 0 12px rgba(83,255,148,0.4), inset 0 -2px 6px rgba(0,0,0,0.25)",
-            }}
-          >
+    <main className="min-h-screen px-8 py-16 text-green-100 bg-[var(--gc-bg)]">
+      <h1 className="text-4xl text-green-400 mb-10 text-center drop-shadow-[0_0_8px_rgba(83,255,148,0.6)]">
+        Поиск растений
+      </h1>
+
+      {/* === Поле API-ключа === */}
+      <div className="api-key-panel">
+        <div className="api-key-row">
+          <input
+            type="text"
+            value={apiKey}
+            onChange={(e) => setApiKey(e.target.value)}
+            placeholder="Введите API-ключ"
+            className="api-key-input"
+          />
+          <button onClick={saveKey} className="api-key-button">
             Применить
           </button>
         </div>
+        {saved && <span className="api-key-saved">✓ Ключ принят</span>}
       </div>
-
-      {saved && (
-        <p className="text-green-400 text-center mb-8">✓ Ключ принят</p>
-      )}
 
       {/* === Панель фильтров === */}
       <div className="filter-panel">
@@ -146,7 +108,9 @@ export default function SearchPage() {
             name="view"
             type="text"
             value={filters.view}
-            onChange={(e) => setFilters({ ...filters, view: e.target.value })}
+            onChange={(e) =>
+              setFilters({ ...filters, view: e.target.value })
+            }
             placeholder="Например: hydrangea"
           />
         </div>
@@ -218,7 +182,9 @@ export default function SearchPage() {
             id="sort"
             name="sort"
             value={filters.sort}
-            onChange={handleChange}
+            onChange={(e) =>
+              setFilters({ ...filters, sort: e.target.value })
+            }
           >
             <option value="random">random</option>
             <option value="id">id</option>
@@ -230,8 +196,56 @@ export default function SearchPage() {
         </button>
       </div>
 
-      {/* === Стили === */}
+      {/* === Стили фильтров и панели === */}
       <style jsx>{`
+        .api-key-panel {
+          max-width: 900px;
+          margin: 40px auto 40px;
+        }
+        .api-key-row {
+          display: flex;
+          gap: 12px;
+          width: 100%;
+          align-items: center;
+          justify-content: space-between;
+        }
+        .api-key-input {
+          flex: 1 1 auto;
+          height: 48px;
+          border: 1px solid rgba(83, 255, 148, 0.4);
+          border-radius: 8px;
+          background: rgba(0, 0, 0, 0.5);
+          color: #c6f7cb;
+          font-size: 15px;
+          padding: 0 16px;
+          outline: none;
+        }
+        .api-key-input:focus {
+          border-color: #53ff94;
+        }
+        .api-key-button {
+          all: unset;
+          height: 48px;
+          min-width: 110px;
+          padding: 0 20px;
+          background: #43e37c;
+          color: #0b1a0f;
+          border-radius: 8px;
+          text-align: center;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.12s ease;
+        }
+        .api-key-button:hover {
+          background: #53ff94;
+        }
+        .api-key-saved {
+          display: block;
+          color: #53ff94;
+          margin-top: 8px;
+          font-size: 14px;
+          text-align: center;
+        }
         .filter-panel {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -291,6 +305,7 @@ export default function SearchPage() {
 
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
 
+      {/* === Вывод карточек === */}
       {plants.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {plants.map((p, i) => (
