@@ -181,137 +181,74 @@ export default function SearchPage() {
         </span>
       )}
 
-      {/* === Панель фильтров === */}
-      <div
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[900px] mx-auto mb-12 p-8"
-        style={{
-          background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(83,255,148,0.2)",
-          borderRadius: "12px",
-          boxShadow: "0 0 16px rgba(83,255,148,0.1)",
-        }}
-      >
-        <div className="flex flex-col gap-2">
-          <label htmlFor="view" className="text-green-400 text-sm font-medium">
-            Вид / сорт
-          </label>
-          <input
-            id="view"
-            name="view"
-            type="text"
-            value={filters.view}
-            onChange={(e) => setFilters({ ...filters, view: e.target.value })}
-            placeholder="Например: hydrangea"
-            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 placeholder-green-700/60 focus:outline-none focus:border-green-400"
-          />
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label htmlFor="light" className="text-green-400 text-sm font-medium">
-            Освещение
-          </label>
-          <select
-            id="light"
-            name="light"
-            value={filters.light}
-            onChange={handleChange}
-            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
-          >
-            <option value="">--</option>
-            <option value="тень">тень</option>
-            <option value="полутень">полутень</option>
-            <option value="яркий">яркий</option>
-          </select>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="zone_usda"
-            className="text-green-400 text-sm font-medium"
-          >
-            Зона USDA
-          </label>
-          <select
-            id="zone_usda"
-            name="zone_usda"
-            value={filters.zone_usda}
-            onChange={handleChange}
-            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
-          >
-            <option value="">--</option>
-            {Array.from({ length: 11 }, (_, i) => (
-              <option key={i + 2} value={(i + 2).toString()}>
-                {i + 2}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="toxicity"
-            className="text-green-400 text-sm font-medium"
-          >
-            Токсичность
-          </label>
-          <select
-            id="toxicity"
-            name="toxicity"
-            value={filters.toxicity}
-            onChange={handleChange}
-            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
-          >
-            <option value="">--</option>
-            <option value="none">none</option>
-            <option value="mild">mild</option>
-            <option value="toxic">toxic</option>
-          </select>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label
-            htmlFor="placement"
-            className="text-green-400 text-sm font-medium"
-          >
-            Размещение
-          </label>
-          <select
-            id="placement"
-            name="placement"
-            value={filters.placement}
-            onChange={handleChange}
-            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
-          >
-            <option value="">--</option>
-            <option value="комнатное">комнатное</option>
-            <option value="садовое">садовое</option>
-          </select>
-        </div>
-
-        <div className="flex flex-col gap-2">
-          <label htmlFor="sort" className="text-green-400 text-sm font-medium">
-            Сортировка
-          </label>
-          <select
-            id="sort"
-            name="sort"
-            value={filters.sort}
-            onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
-            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
-          >
-            <option value="random">random</option>
-            <option value="id">id</option>
-          </select>
-        </div>
-
-        <button
-          onClick={fetchPlants}
-          disabled={loading}
-          className="col-span-full mt-4 py-3 rounded-md bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition duration-200 shadow-[0_0_14px_rgba(83,255,148,0.4)]"
+{/* === Панель фильтров (адаптированная сетка) === */}
+<div
+  className="flex flex-wrap justify-center gap-6 max-w-[1100px] mx-auto mb-12 p-8"
+  style={{
+    background: "rgba(255,255,255,0.03)",
+    border: "1px solid rgba(83,255,148,0.2)",
+    borderRadius: "12px",
+    boxShadow: "0 0 16px rgba(83,255,148,0.1)",
+    minWidth: "760px",
+  }}
+>
+  {[
+    {
+      id: "view",
+      label: "Вид / сорт",
+      type: "text",
+      placeholder: "Например: hydrangea",
+    },
+    { id: "light", label: "Освещение", type: "select", options: ["тень", "полутень", "яркий"] },
+    { id: "zone_usda", label: "Зона USDA", type: "select", options: Array.from({ length: 11 }, (_, i) => (i + 2).toString()) },
+    { id: "toxicity", label: "Токсичность", type: "select", options: ["none", "mild", "toxic"] },
+    { id: "placement", label: "Размещение", type: "select", options: ["комнатное", "садовое"] },
+    { id: "sort", label: "Сортировка", type: "select", options: ["random", "id"] },
+  ].map((f) => (
+    <div key={f.id} className="flex flex-col gap-2 min-w-[220px] flex-grow max-w-[300px]">
+      <label htmlFor={f.id} className="text-green-400 text-sm font-medium">
+        {f.label}
+      </label>
+      {f.type === "text" ? (
+        <input
+          id={f.id}
+          name={f.id}
+          type="text"
+          value={filters[f.id as keyof typeof filters] || ""}
+          onChange={(e) =>
+            setFilters({ ...filters, [f.id]: e.target.value })
+          }
+          placeholder={f.placeholder}
+          className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 placeholder-green-700/60 focus:outline-none focus:border-green-400"
+        />
+      ) : (
+        <select
+          id={f.id}
+          name={f.id}
+          value={filters[f.id as keyof typeof filters] || ""}
+          onChange={handleChange}
+          className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
         >
-          {loading ? "Загрузка..." : "Найти"}
-        </button>
-      </div>
+          <option value="">--</option>
+          {f.options.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+      )}
+    </div>
+  ))}
+
+  <button
+    onClick={fetchPlants}
+    disabled={loading}
+    className="w-full mt-4 py-3 rounded-md bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition duration-200 shadow-[0_0_14px_rgba(83,255,148,0.4)]"
+  >
+    {loading ? "Загрузка..." : "Найти"}
+  </button>
+</div>
+
 
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
 
