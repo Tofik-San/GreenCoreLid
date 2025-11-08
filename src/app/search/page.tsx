@@ -79,20 +79,18 @@ export default function SearchPage() {
   };
 
   return (
-    <main className="min-h-screen px-8 py-16 text-green-100 bg-[var(--gc-bg)]">
-      <h1 className="text-4xl text-green-400 mb-10 text-center drop-shadow-[0_0_8px_rgba(83,255,148,0.6)]">
-        Поиск растений
-      </h1>
-
-      {/* === API-ключ в одном блоке === */}
+    <main className="min-h-screen px-8 py-12 text-green-100 bg-[var(--gc-bg)] flex flex-col items-center">
+      {/* === Монолитный блок API-ключа === */}
       <div
-        className="flex items-center justify-between gap-2 mx-auto mb-10 px-4 py-3 rounded-xl"
+        className="flex items-center justify-between gap-3 px-6 py-3 rounded-xl mb-10"
         style={{
           maxWidth: "900px",
           width: "100%",
           border: "1px solid rgba(83,255,148,0.25)",
-          background: "rgba(0,0,0,0.35)",
-          boxShadow: "0 0 14px rgba(83,255,148,0.2)",
+          background: "rgba(8,18,10,0.6)",
+          boxShadow:
+            "0 0 16px rgba(83,255,148,0.25), inset 0 0 12px rgba(83,255,148,0.15)",
+          backdropFilter: "blur(6px)",
         }}
       >
         <input
@@ -102,17 +100,20 @@ export default function SearchPage() {
           placeholder="Введите или вставьте API-ключ"
           className="flex-grow bg-transparent border-none outline-none text-green-100 placeholder-green-700/70 font-mono text-[15px]"
           style={{
-            height: "44px",
-            lineHeight: "44px",
+            height: "46px",
+            lineHeight: "46px",
             paddingLeft: "10px",
             paddingRight: "10px",
           }}
         />
-        <div className="flex items-center gap-2 h-[44px]">
+        <div className="flex items-center gap-2 h-[46px]">
           <button
             onClick={pasteKey}
             className="px-4 h-full rounded-md border border-green-400/40 text-green-100 hover:bg-green-500/20 transition"
-            style={{ minWidth: "100px" }}
+            style={{
+              minWidth: "100px",
+              boxShadow: "0 0 8px rgba(83,255,148,0.25)",
+            }}
           >
             Вставить
           </button>
@@ -124,7 +125,7 @@ export default function SearchPage() {
               background:
                 "linear-gradient(90deg, rgba(63,214,124,1) 0%, rgba(83,255,148,1) 100%)",
               boxShadow:
-                "0 0 10px rgba(83,255,148,0.3), inset 0 -2px 6px rgba(0,0,0,0.25)",
+                "0 0 12px rgba(83,255,148,0.4), inset 0 -2px 6px rgba(0,0,0,0.25)",
             }}
           >
             Применить
@@ -132,7 +133,9 @@ export default function SearchPage() {
         </div>
       </div>
 
-      {saved && <p className="text-green-400 text-center mb-8">✓ Ключ принят</p>}
+      {saved && (
+        <p className="text-green-400 text-center mb-8">✓ Ключ принят</p>
+      )}
 
       {/* === Панель фильтров === */}
       <div className="filter-panel">
@@ -227,6 +230,7 @@ export default function SearchPage() {
         </button>
       </div>
 
+      {/* === Стили панели === */}
       <style jsx>{`
         .filter-panel {
           display: grid;
