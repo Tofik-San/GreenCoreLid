@@ -40,17 +40,24 @@ export default function PaymentSuccess() {
         <>
           <p className="text-green-200 mb-4 text-lg">Ваш API-ключ:</p>
           <div
-            className="relative w-full max-w-[720px] px-8 py-4 mb-12"
+            className="relative px-8 py-5 mb-12"
             style={{
+              width: "80vw", // растягиваем по ширине экрана
+              maxWidth: "1100px",
+              minWidth: "720px",
               background:
                 "linear-gradient(180deg, rgba(12,20,14,0.85), rgba(18,26,20,0.9))",
               border: "1px solid rgba(83,255,148,0.25)",
               borderRadius: "14px",
               boxShadow: "0 0 20px rgba(83,255,148,0.15)",
               backdropFilter: "blur(4px)",
+              overflowX: "auto",
+              whiteSpace: "nowrap",
             }}
           >
-            <CopyBlock code={key} />
+            <div style={{ fontSize: "18px" }}>
+              <CopyBlock code={key} />
+            </div>
           </div>
         </>
       )}
