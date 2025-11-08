@@ -39,7 +39,7 @@ export default function PaymentSuccess() {
       {!loading && key && (
         <>
           <p className="text-green-200 mb-4 text-lg">Ваш API-ключ:</p>
-          <div className="relative w-full max-w-[720px] px-8 py-4 bg-[rgba(12,20,14,0.8)] border border-green-400/30 rounded-xl shadow-[0_0_16px_rgba(83,255,148,0.15)] backdrop-blur-sm mb-10">
+          <div className="relative w-full max-w-[720px] px-8 py-4 bg-[rgba(12,20,14,0.8)] border border-green-400/30 rounded-xl shadow-[0_0_16px_rgba(83,255,148,0.15)] backdrop-blur-sm mb-12">
             <CopyBlock code={key} />
           </div>
         </>
@@ -54,7 +54,7 @@ export default function PaymentSuccess() {
       {/* кнопка */}
       <a
         href="/search"
-        className="inline-block px-10 py-3 rounded-full bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition duration-200 shadow-[0_0_14px_rgba(83,255,148,0.4)] no-underline"
+        className="mt-16 inline-block px-10 py-3 rounded-full bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition duration-200 shadow-[0_0_14px_rgba(83,255,148,0.4)] no-underline"
         style={{ textDecoration: "none" }}
       >
         Перейти к поиску растений
