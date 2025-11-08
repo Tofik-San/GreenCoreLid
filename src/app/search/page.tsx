@@ -82,22 +82,106 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === Поле API-ключа === */}
-      <div className="api-key-panel">
-        <div className="api-key-row">
-          <input
-            type="text"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            placeholder="Введите API-ключ"
-            className="api-key-input"
-          />
-          <button onClick={saveKey} className="api-key-button">
-            Применить
-          </button>
-        </div>
-        {saved && <span className="api-key-saved">✓ Ключ принят</span>}
+      {/* === Поле API-ключа (новый дизайн) === */}
+      <div
+        className="relative mb-12 mx-auto"
+        style={{
+          width: "80vw",
+          maxWidth: "1100px",
+          minWidth: "720px",
+          background:
+            "linear-gradient(180deg, rgba(12,20,14,0.85), rgba(18,26,20,0.9))",
+          border: "1px solid rgba(83,255,148,0.25)",
+          borderRadius: "14px",
+          boxShadow: "0 0 20px rgba(83,255,148,0.15)",
+          backdropFilter: "blur(4px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "12px 20px",
+          overflowX: "auto",
+        }}
+      >
+        <input
+          type="text"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          placeholder="Введите или вставьте API-ключ"
+          style={{
+            flexGrow: 1,
+            fontFamily: "monospace",
+            fontSize: "18px",
+            color: "#9effb5",
+            textShadow: "0 0 6px rgba(83,255,148,0.4)",
+            background: "transparent",
+            border: "none",
+            outline: "none",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        />
+
+        <button
+          onClick={async () => {
+            try {
+              const text = await navigator.clipboard.readText();
+              setApiKey(text.trim());
+            } catch {
+              alert("Не удалось вставить ключ из буфера");
+            }
+          }}
+          style={{
+            marginLeft: "20px",
+            padding: "8px 14px",
+            borderRadius: "8px",
+            background: "rgba(83,255,148,0.15)",
+            border: "1px solid rgba(83,255,148,0.3)",
+            color: "#aaffc8",
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+          }}
+          onMouseEnter={(e) =>
+            (e.currentTarget.style.background = "rgba(83,255,148,0.25)")
+          }
+          onMouseLeave={(e) =>
+            (e.currentTarget.style.background = "rgba(83,255,148,0.15)")
+          }
+        >
+          Вставить
+        </button>
+
+        <button
+          onClick={saveKey}
+          style={{
+            marginLeft: "12px",
+            padding: "8px 20px",
+            borderRadius: "8px",
+            background: "linear-gradient(90deg,#3fd67c,#53ff94)",
+            color: "#04140a",
+            fontWeight: 600,
+            cursor: "pointer",
+            border: "none",
+            transition: "filter 0.2s ease, transform 0.2s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.filter = "brightness(1.1)";
+            e.currentTarget.style.transform = "translateY(-2px)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.filter = "brightness(1)";
+            e.currentTarget.style.transform = "translateY(0)";
+          }}
+        >
+          Применить
+        </button>
       </div>
+
+      {saved && (
+        <span className="block text-center text-green-400 mt-2">
+          ✓ Ключ принят
+        </span>
+      )}
 
       {/* === Панель фильтров === */}
       <div className="filter-panel">
@@ -108,9 +192,7 @@ export default function SearchPage() {
             name="view"
             type="text"
             value={filters.view}
-            onChange={(e) =>
-              setFilters({ ...filters, view: e.target.value })
-            }
+            onChange={(e) => setFilters({ ...filters, view: e.target.value })}
             placeholder="Например: hydrangea"
           />
         </div>
@@ -196,113 +278,6 @@ export default function SearchPage() {
         </button>
       </div>
 
-      {/* === Стили фильтров и панели === */}
-      <style jsx>{`
-        .api-key-panel {
-          max-width: 900px;
-          margin: 40px auto 40px;
-        }
-        .api-key-row {
-          display: flex;
-          gap: 12px;
-          width: 100%;
-          align-items: center;
-          justify-content: space-between;
-        }
-        .api-key-input {
-          flex: 1 1 auto;
-          height: 48px;
-          border: 1px solid rgba(83, 255, 148, 0.4);
-          border-radius: 8px;
-          background: rgba(0, 0, 0, 0.5);
-          color: #c6f7cb;
-          font-size: 15px;
-          padding: 0 16px;
-          outline: none;
-        }
-        .api-key-input:focus {
-          border-color: #53ff94;
-        }
-        .api-key-button {
-          all: unset;
-          height: 48px;
-          min-width: 110px;
-          padding: 0 20px;
-          background: #43e37c;
-          color: #0b1a0f;
-          border-radius: 8px;
-          text-align: center;
-          font-weight: 600;
-          cursor: pointer;
-          transition: background 0.12s ease;
-        }
-        .api-key-button:hover {
-          background: #53ff94;
-        }
-        .api-key-saved {
-          display: block;
-          color: #53ff94;
-          margin-top: 8px;
-          font-size: 14px;
-          text-align: center;
-        }
-        .filter-panel {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-          gap: 20px;
-          max-width: 900px;
-          margin: 0 auto 50px;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(83, 255, 148, 0.2);
-          border-radius: 8px;
-          padding: 24px 28px;
-        }
-        .filter-item {
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-          font-size: 14px;
-          color: #bde6c2;
-        }
-        label {
-          font-weight: 500;
-          color: #8effa9;
-        }
-        input,
-        select {
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(83, 255, 148, 0.3);
-          border-radius: 6px;
-          padding: 8px 10px;
-          color: #c6f7cb;
-          font-size: 14px;
-          outline: none;
-        }
-        select option {
-          color: #000;
-          background: #e8ffe8;
-        }
-        input:focus,
-        select:focus {
-          border-color: #53ff94;
-        }
-        button {
-          grid-column: 1 / -1;
-          margin-top: 10px;
-          padding: 10px 0;
-          background: #43e37c;
-          color: #0b1a0f;
-          font-weight: 600;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          transition: background 0.2s ease;
-        }
-        button:hover {
-          background: #53ff94;
-        }
-      `}</style>
-
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
 
       {/* === Вывод карточек === */}
@@ -314,28 +289,60 @@ export default function SearchPage() {
               className="bg-black/40 border border-green-500/30 rounded-lg p-6 flex flex-col gap-3"
             >
               <div>
-                <h2 className="text-2xl text-green-300 font-bold">{p.cultivar}</h2>
+                <h2 className="text-2xl text-green-300 font-bold">
+                  {p.cultivar}
+                </h2>
                 {p.view && <p className="text-green-200 italic">{p.view}</p>}
-                {p.family && <p className="text-green-400 text-sm">{p.family}</p>}
+                {p.family && (
+                  <p className="text-green-400 text-sm">{p.family}</p>
+                )}
               </div>
 
               {p.insights && (
-                <p className="text-green-100 text-sm leading-relaxed">{p.insights}</p>
+                <p className="text-green-100 text-sm leading-relaxed">
+                  {p.insights}
+                </p>
               )}
 
               <div className="text-xs text-green-300 space-y-1 mt-2">
-                {p.light && <p>☀ <b>Свет:</b> {p.light}</p>}
-                {p.watering && <p>💧 <b>Полив:</b> {p.watering}</p>}
-                {p.temperature && <p>🌡 <b>Температура:</b> {p.temperature}</p>}
-                {p.soil && <p>🌱 <b>Почва:</b> {p.soil}</p>}
-                {p.fertilizer && <p>🧪 <b>Удобрения:</b> {p.fertilizer}</p>}
+                {p.light && (
+                  <p>
+                    ☀ <b>Свет:</b> {p.light}
+                  </p>
+                )}
+                {p.watering && (
+                  <p>
+                    💧 <b>Полив:</b> {p.watering}
+                  </p>
+                )}
+                {p.temperature && (
+                  <p>
+                    🌡 <b>Температура:</b> {p.temperature}
+                  </p>
+                )}
+                {p.soil && (
+                  <p>
+                    🌱 <b>Почва:</b> {p.soil}
+                  </p>
+                )}
+                {p.fertilizer && (
+                  <p>
+                    🧪 <b>Удобрения:</b> {p.fertilizer}
+                  </p>
+                )}
               </div>
 
               {(p.pruning || p.pests_diseases) && (
                 <div className="text-xs text-green-400 mt-2">
-                  {p.pruning && <p>✂ <b>Обрезка:</b> {p.pruning}</p>}
+                  {p.pruning && (
+                    <p>
+                      ✂ <b>Обрезка:</b> {p.pruning}
+                    </p>
+                  )}
                   {p.pests_diseases && (
-                    <p>🦠 <b>Вредители и болезни:</b> {p.pests_diseases}</p>
+                    <p>
+                      🦠 <b>Вредители и болезни:</b> {p.pests_diseases}
+                    </p>
                   )}
                 </div>
               )}
@@ -351,14 +358,18 @@ export default function SearchPage() {
                 </p>
                 <p>⚠ <b>Токсичность:</b> {p.toxicity || "none"}</p>
                 {p.ru_regions && (
-                  <p>📍 <b>Регионы РФ:</b> {p.ru_regions}</p>
+                  <p>
+                    📍 <b>Регионы РФ:</b> {p.ru_regions}
+                  </p>
                 )}
               </div>
             </div>
           ))}
         </div>
       ) : (
-        !loading && <p className="text-green-300 text-center mt-8">Нет результатов</p>
+        !loading && (
+          <p className="text-green-300 text-center mt-8">Нет результатов</p>
+        )
       )}
     </main>
   );
