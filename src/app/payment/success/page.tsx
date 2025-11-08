@@ -51,13 +51,29 @@ export default function PaymentSuccess() {
         </p>
       )}
 
-      {/* кнопка */}
+      {/* кнопка — вручную прописанные стили */}
       <a
         href="/search"
-        className="inline-block px-14 py-4 rounded-full bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold text-lg hover:brightness-110 transition duration-200 shadow-[0_0_18px_rgba(83,255,148,0.45)] no-underline"
         style={{
+          display: "inline-block",
+          padding: "20px 60px",
+          borderRadius: "9999px",
+          background: "linear-gradient(90deg,#3fd67c,#53ff94)",
+          color: "#04140a",
+          fontWeight: 600,
+          fontSize: "20px",
+          marginTop: "90px",
+          boxShadow: "0 0 22px rgba(83,255,148,0.45)",
           textDecoration: "none",
-          marginTop: "80px", // оставляем отступ
+          transition: "filter 0.2s ease, transform 0.2s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.filter = "brightness(1.1)";
+          e.currentTarget.style.transform = "translateY(-2px)";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.filter = "brightness(1)";
+          e.currentTarget.style.transform = "translateY(0)";
         }}
       >
         Перейти к поиску растений
