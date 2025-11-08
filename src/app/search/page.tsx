@@ -81,10 +81,17 @@ export default function SearchPage() {
 
   return (
     <main className="min-h-screen px-6 pt-8 text-green-100 bg-[var(--gc-bg)] flex flex-col items-center">
-      {/* === API-ключ === */}
+      {/* === API-ключ (как на success) === */}
       <div
-        className="flex items-center justify-between gap-3 mb-8 px-5 py-3 rounded-xl border border-green-500/30 bg-black/30 shadow-[0_0_14px_rgba(83,255,148,0.15)]"
-        style={{ maxWidth: "900px", width: "100%", height: "58px" }}
+        className="flex items-center justify-between gap-3 mb-10 px-6 py-3 rounded-xl"
+        style={{
+          maxWidth: "900px",
+          width: "100%",
+          border: "1px solid rgba(83,255,148,0.25)",
+          background: "rgba(10,20,12,0.45)",
+          boxShadow: "0 0 12px rgba(83,255,148,0.2)",
+          backdropFilter: "blur(6px)",
+        }}
       >
         <input
           type="text"
@@ -92,20 +99,34 @@ export default function SearchPage() {
           onChange={(e) => setApiKey(e.target.value)}
           placeholder="Введите или вставьте API-ключ"
           className="flex-grow bg-transparent border-none outline-none text-green-100 placeholder-green-700/70 font-mono text-[15px]"
-          style={{ height: "100%", paddingLeft: "10px", paddingRight: "10px" }}
+          style={{
+            height: "42px",
+            lineHeight: "42px",
+            paddingLeft: "8px",
+            paddingRight: "8px",
+          }}
         />
-        <div className="flex items-center gap-2 h-full">
+        <div className="flex items-center gap-2">
           <button
             onClick={pasteKey}
-            className="px-4 h-full rounded-md border border-green-400/40 text-green-200 hover:bg-green-500/20 transition flex items-center justify-center"
-            style={{ minWidth: "100px" }}
+            className="px-4 h-[42px] rounded-md border border-green-400/40 text-green-100 hover:bg-green-500/20 transition"
+            style={{
+              minWidth: "100px",
+              boxShadow: "0 0 8px rgba(83,255,148,0.25)",
+            }}
           >
             Вставить
           </button>
           <button
             onClick={saveKey}
-            className="px-5 h-full rounded-md bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition flex items-center justify-center"
-            style={{ minWidth: "110px" }}
+            className="px-5 h-[42px] rounded-md text-[#04140a] font-semibold hover:brightness-110 transition"
+            style={{
+              minWidth: "110px",
+              background:
+                "linear-gradient(90deg, rgba(63,214,124,1) 0%, rgba(83,255,148,1) 100%)",
+              boxShadow:
+                "0 0 12px rgba(83,255,148,0.4), inset 0 -2px 6px rgba(0,0,0,0.25)",
+            }}
           >
             Применить
           </button>
