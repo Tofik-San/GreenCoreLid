@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import CopyBlock from "@/components/CopyBlock";
 
 export default function PaymentSuccess() {
   const [key, setKey] = useState<string | null>(null);
@@ -39,10 +38,11 @@ export default function PaymentSuccess() {
       {!loading && key && (
         <>
           <p className="text-green-200 mb-4 text-lg">Ваш API-ключ:</p>
+
           <div
-            className="relative px-8 py-5 mb-12"
+            className="relative mb-12"
             style={{
-              width: "80vw", // растягиваем по ширине экрана
+              width: "80vw",
               maxWidth: "1100px",
               minWidth: "720px",
               background:
@@ -51,13 +51,49 @@ export default function PaymentSuccess() {
               borderRadius: "14px",
               boxShadow: "0 0 20px rgba(83,255,148,0.15)",
               backdropFilter: "blur(4px)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              padding: "12px 20px",
               overflowX: "auto",
-              whiteSpace: "nowrap",
             }}
           >
-            <div style={{ fontSize: "18px" }}>
-              <CopyBlock code={key} />
-            </div>
+            <span
+              style={{
+                fontFamily: "monospace",
+                fontSize: "18px",
+                color: "#9effb5",
+                textShadow: "0 0 6px rgba(83,255,148,0.4)",
+                userSelect: "text",
+                whiteSpace: "nowrap",
+                flexGrow: 1,
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {key}
+            </span>
+            <button
+              onClick={() => navigator.clipboard.writeText(key || "")}
+              style={{
+                marginLeft: "20px",
+                padding: "8px 14px",
+                borderRadius: "8px",
+                background: "rgba(83,255,148,0.15)",
+                border: "1px solid rgba(83,255,148,0.3)",
+                color: "#aaffc8",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.background = "rgba(83,255,148,0.25)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.background = "rgba(83,255,148,0.15)")
+              }
+            >
+              Копировать
+            </button>
           </div>
         </>
       )}
