@@ -80,11 +80,11 @@ export default function SearchPage() {
   };
 
   return (
-    <main className="min-h-screen px-8 py-16 text-green-100 bg-[var(--gc-bg)]">
+    <main className="min-h-screen px-6 pt-8 text-green-100 bg-[var(--gc-bg)] flex flex-col items-center">
       {/* === API-ключ === */}
       <div
-        className="flex items-center justify-between gap-3 mx-auto mb-12 px-5 py-3 rounded-xl border border-green-500/30 bg-black/30 shadow-[0_0_14px_rgba(83,255,148,0.15)]"
-        style={{ maxWidth: "900px", height: "58px" }}
+        className="flex items-center justify-between gap-3 mb-8 px-5 py-3 rounded-xl border border-green-500/30 bg-black/30 shadow-[0_0_14px_rgba(83,255,148,0.15)]"
+        style={{ maxWidth: "900px", width: "100%", height: "58px" }}
       >
         <input
           type="text"
