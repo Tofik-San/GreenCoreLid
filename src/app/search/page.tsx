@@ -181,74 +181,105 @@ export default function SearchPage() {
         </span>
       )}
 
-{/* === Панель фильтров (адаптированная сетка) === */}
-<div
-  className="flex flex-wrap justify-center gap-6 max-w-[1100px] mx-auto mb-12 p-8"
-  style={{
-    background: "rgba(255,255,255,0.03)",
-    border: "1px solid rgba(83,255,148,0.2)",
-    borderRadius: "12px",
-    boxShadow: "0 0 16px rgba(83,255,148,0.1)",
-    minWidth: "760px",
-  }}
->
-  {[
-    {
-      id: "view",
-      label: "Вид / сорт",
-      type: "text",
-      placeholder: "Например: hydrangea",
-    },
-    { id: "light", label: "Освещение", type: "select", options: ["тень", "полутень", "яркий"] },
-    { id: "zone_usda", label: "Зона USDA", type: "select", options: Array.from({ length: 11 }, (_, i) => (i + 2).toString()) },
-    { id: "toxicity", label: "Токсичность", type: "select", options: ["none", "mild", "toxic"] },
-    { id: "placement", label: "Размещение", type: "select", options: ["комнатное", "садовое"] },
-    { id: "sort", label: "Сортировка", type: "select", options: ["random", "id"] },
-  ].map((f) => (
-    <div key={f.id} className="flex flex-col gap-2 min-w-[220px] flex-grow max-w-[300px]">
-      <label htmlFor={f.id} className="text-green-400 text-sm font-medium">
-        {f.label}
-      </label>
-      {f.type === "text" ? (
-        <input
-          id={f.id}
-          name={f.id}
-          type="text"
-          value={filters[f.id as keyof typeof filters] || ""}
-          onChange={(e) =>
-            setFilters({ ...filters, [f.id]: e.target.value })
-          }
-          placeholder={f.placeholder}
-          className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 placeholder-green-700/60 focus:outline-none focus:border-green-400"
-        />
-      ) : (
-        <select
-          id={f.id}
-          name={f.id}
-          value={filters[f.id as keyof typeof filters] || ""}
-          onChange={handleChange}
-          className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
+      {/* === Панель фильтров (адаптированная сетка) === */}
+      <div
+        className="flex flex-wrap justify-center gap-6 max-w-[1100px] mx-auto mb-12 p-8"
+        style={{
+          background: "rgba(255,255,255,0.03)",
+          border: "1px solid rgba(83,255,148,0.2)",
+          borderRadius: "12px",
+          boxShadow: "0 0 16px rgba(83,255,148,0.1)",
+          minWidth: "760px",
+        }}
+      >
+        {[
+          {
+            id: "view",
+            label: "Вид / сорт",
+            type: "text",
+            placeholder: "Например: hydrangea",
+          },
+          {
+            id: "light",
+            label: "Освещение",
+            type: "select",
+            options: ["тень", "полутень", "яркий"],
+          },
+          {
+            id: "zone_usda",
+            label: "Зона USDA",
+            type: "select",
+            options: Array.from({ length: 11 }, (_, i) => (i + 2).toString()),
+          },
+          {
+            id: "toxicity",
+            label: "Токсичность",
+            type: "select",
+            options: ["none", "mild", "toxic"],
+          },
+          {
+            id: "placement",
+            label: "Размещение",
+            type: "select",
+            options: ["комнатное", "садовое"],
+          },
+          {
+            id: "sort",
+            label: "Сортировка",
+            type: "select",
+            options: ["random", "id"],
+          },
+        ].map((f) => (
+          <div
+            key={f.id}
+            className="flex flex-col gap-2 min-w-[220px] flex-grow max-w-[300px]"
+          >
+            <label
+              htmlFor={f.id}
+              className="text-green-400 text-sm font-medium"
+            >
+              {f.label}
+            </label>
+            {f.type === "text" ? (
+              <input
+                id={f.id}
+                name={f.id}
+                type="text"
+                value={filters[f.id as keyof typeof filters] || ""}
+                onChange={(e) =>
+                  setFilters({ ...filters, [f.id]: e.target.value })
+                }
+                placeholder={f.placeholder}
+                className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 placeholder-green-700/60 focus:outline-none focus:border-green-400"
+              />
+            ) : (
+              <select
+                id={f.id}
+                name={f.id}
+                value={filters[f.id as keyof typeof filters] || ""}
+                onChange={handleChange}
+                className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
+              >
+                <option value="">--</option>
+                {Array.isArray(f.options) &&
+                  f.options.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+              </select>
+            )}
+          </div>
+        ))}
+
+        <button
+          onClick={fetchPlants}
+          disabled={loading}
+          className="w-full mt-4 py-3 rounded-md bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition duration-200 shadow-[0_0_14px_rgba(83,255,148,0.4)]"
         >
-          <option value="">--</option>
-          {f.options.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
-      )}
-    </div>
-  ))}
-
-  <button
-    onClick={fetchPlants}
-    disabled={loading}
-    className="w-full mt-4 py-3 rounded-md bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition duration-200 shadow-[0_0_14px_rgba(83,255,148,0.4)]"
-  >
-    {loading ? "Загрузка..." : "Найти"}
-  </button>
-</div>
-
+          {loading ? "Загрузка..." : "Найти"}
+        </button>
+      </div>
 
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
 
