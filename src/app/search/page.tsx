@@ -81,10 +81,6 @@ export default function SearchPage() {
 
   return (
     <main className="min-h-screen px-8 py-16 text-green-100 bg-[var(--gc-bg)]">
-      <h1 className="text-4xl text-green-400 mb-10 text-center drop-shadow-[0_0_8px_rgba(83,255,148,0.6)]">
-        Поиск растений
-      </h1>
-
       {/* === API-ключ === */}
       <div
         className="flex items-center justify-between gap-3 mx-auto mb-12 px-5 py-3 rounded-xl border border-green-500/30 bg-black/30 shadow-[0_0_14px_rgba(83,255,148,0.15)]"
@@ -274,7 +270,6 @@ export default function SearchPage() {
 
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
 
-      {/* === Результаты === */}
       {plants.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {plants.map((p, i) => (
