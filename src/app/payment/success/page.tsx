@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import CopyBlock from "@/components/CopyBlock";
 
 export default function PaymentSuccess() {
   const [key, setKey] = useState<string | null>(null);
@@ -32,9 +33,9 @@ export default function PaymentSuccess() {
 
       {!loading && key && (
         <>
-          <p className="text-lg text-green-200 mb-8">Ваш API-ключ:</p>
-          <div className="bg-black/50 border border-green-400/50 rounded-xl px-6 py-3 font-mono text-green-300 shadow-[0_0_20px_rgba(83,255,148,0.4)] break-all max-w-[90%]">
-            {key}
+          <p className="text-lg text-green-200 mb-4">Ваш API-ключ:</p>
+          <div className="w-full max-w-[600px] px-6">
+            <CopyBlock code={key} />
           </div>
         </>
       )}
