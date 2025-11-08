@@ -39,12 +39,20 @@ export default function SearchPage() {
     }
   };
 
+  const pasteKey = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      setApiKey(text.trim());
+    } catch {
+      alert("Не удалось вставить ключ из буфера обмена");
+    }
+  };
+
   const fetchPlants = async () => {
     if (!apiKey) {
       setError("Введите API-ключ перед поиском.");
       return;
     }
-
     setLoading(true);
     setError("");
 
@@ -54,10 +62,7 @@ export default function SearchPage() {
         .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
         .join("&");
 
-      const fullUrl = `${API_URL}/plants?${params}`;
-
-      const res = await fetch(fullUrl, {
-        method: "GET",
+      const res = await fetch(`${API_URL}/plants?${params}`, {
         headers: {
           "X-API-Key": apiKey.trim(),
           "Content-Type": "application/json",
@@ -80,206 +85,186 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === Поле API-ключа (новый стиль) === */}
+      {/* === API-ключ === */}
       <div
-        className="relative mb-12 mx-auto"
-        style={{
-          width: "80vw",
-          maxWidth: "1100px",
-          minWidth: "720px",
-          background:
-            "linear-gradient(180deg, rgba(12,20,14,0.85), rgba(18,26,20,0.9))",
-          border: "1px solid rgba(83,255,148,0.25)",
-          borderRadius: "14px",
-          boxShadow: "0 0 20px rgba(83,255,148,0.15)",
-          backdropFilter: "blur(4px)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "12px 20px",
-          overflowX: "auto",
-        }}
+        className="flex items-center justify-between gap-3 mx-auto mb-12 px-5 py-3 rounded-xl border border-green-500/30 bg-black/30 shadow-[0_0_14px_rgba(83,255,148,0.15)]"
+        style={{ maxWidth: "900px" }}
       >
         <input
           type="text"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}
           placeholder="Введите или вставьте API-ключ"
-          style={{
-            flexGrow: 1,
-            fontFamily: "monospace",
-            fontSize: "18px",
-            color: "#9effb5",
-            textShadow: "0 0 6px rgba(83,255,148,0.4)",
-            background: "transparent",
-            border: "none",
-            outline: "none",
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
+          className="flex-grow bg-transparent border-none outline-none text-green-100 placeholder-green-700/70 font-mono text-[15px]"
         />
-
         <button
-          onClick={async () => {
-            try {
-              const text = await navigator.clipboard.readText();
-              setApiKey(text.trim());
-            } catch {
-              alert("Не удалось вставить ключ из буфера");
-            }
-          }}
-          style={{
-            marginLeft: "20px",
-            padding: "8px 14px",
-            borderRadius: "8px",
-            background: "rgba(83,255,148,0.15)",
-            border: "1px solid rgba(83,255,148,0.3)",
-            color: "#aaffc8",
-            cursor: "pointer",
-            transition: "all 0.2s ease",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.background = "rgba(83,255,148,0.25)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.background = "rgba(83,255,148,0.15)")
-          }
+          onClick={pasteKey}
+          className="px-4 py-2 rounded-md border border-green-400/40 text-green-200 hover:bg-green-500/20 transition"
         >
           Вставить
         </button>
-
         <button
           onClick={saveKey}
-          style={{
-            marginLeft: "12px",
-            padding: "8px 20px",
-            borderRadius: "8px",
-            background: "linear-gradient(90deg,#3fd67c,#53ff94)",
-            color: "#04140a",
-            fontWeight: 600,
-            cursor: "pointer",
-            border: "none",
-            transition: "filter 0.2s ease, transform 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.filter = "brightness(1.1)";
-            e.currentTarget.style.transform = "translateY(-2px)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.filter = "brightness(1)";
-            e.currentTarget.style.transform = "translateY(0)";
-          }}
+          className="px-5 py-2 rounded-md bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition"
         >
           Применить
         </button>
       </div>
-
       {saved && (
-        <span className="block text-center text-green-400 mt-2">
-          ✓ Ключ принят
-        </span>
+        <p className="text-green-400 text-center mb-8">✓ Ключ принят</p>
       )}
 
-      {/* === Панель фильтров (адаптированная сетка) === */}
-      <div
-        className="flex flex-wrap justify-center gap-6 max-w-[1100px] mx-auto mb-12 p-8"
-        style={{
-          background: "rgba(255,255,255,0.03)",
-          border: "1px solid rgba(83,255,148,0.2)",
-          borderRadius: "12px",
-          boxShadow: "0 0 16px rgba(83,255,148,0.1)",
-          minWidth: "760px",
-        }}
-      >
-        {[
-          {
-            id: "view",
-            label: "Вид / сорт",
-            type: "text",
-            placeholder: "Например: hydrangea",
-          },
-          {
-            id: "light",
-            label: "Освещение",
-            type: "select",
-            options: ["тень", "полутень", "яркий"],
-          },
-          {
-            id: "zone_usda",
-            label: "Зона USDA",
-            type: "select",
-            options: Array.from({ length: 11 }, (_, i) => (i + 2).toString()),
-          },
-          {
-            id: "toxicity",
-            label: "Токсичность",
-            type: "select",
-            options: ["none", "mild", "toxic"],
-          },
-          {
-            id: "placement",
-            label: "Размещение",
-            type: "select",
-            options: ["комнатное", "садовое"],
-          },
-          {
-            id: "sort",
-            label: "Сортировка",
-            type: "select",
-            options: ["random", "id"],
-          },
-        ].map((f) => (
-          <div
-            key={f.id}
-            className="flex flex-col gap-2 min-w-[220px] flex-grow max-w-[300px]"
-          >
-            <label
-              htmlFor={f.id}
-              className="text-green-400 text-sm font-medium"
-            >
-              {f.label}
-            </label>
-            {f.type === "text" ? (
-              <input
-                id={f.id}
-                name={f.id}
-                type="text"
-                value={filters[f.id as keyof typeof filters] || ""}
-                onChange={(e) =>
-                  setFilters({ ...filters, [f.id]: e.target.value })
-                }
-                placeholder={f.placeholder}
-                className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 placeholder-green-700/60 focus:outline-none focus:border-green-400"
-              />
-            ) : (
-              <select
-                id={f.id}
-                name={f.id}
-                value={filters[f.id as keyof typeof filters] || ""}
-                onChange={handleChange}
-                className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
-              >
-                <option value="">--</option>
-                {Array.isArray(f.options) &&
-                  f.options.map((opt) => (
-                    <option key={opt} value={opt}>
-                      {opt}
-                    </option>
-                  ))}
-              </select>
-            )}
-          </div>
-        ))}
+      {/* === Панель фильтров (старая структура) === */}
+      <div className="filter-panel">
+        <div className="filter-item">
+          <label htmlFor="view">Вид / сорт</label>
+          <input
+            id="view"
+            name="view"
+            type="text"
+            value={filters.view}
+            onChange={(e) => setFilters({ ...filters, view: e.target.value })}
+            placeholder="Например: hydrangea"
+          />
+        </div>
 
-        <button
-          onClick={fetchPlants}
-          disabled={loading}
-          className="w-full mt-4 py-3 rounded-md bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition duration-200 shadow-[0_0_14px_rgba(83,255,148,0.4)]"
-        >
+        <div className="filter-item">
+          <label htmlFor="light">Освещение</label>
+          <select
+            id="light"
+            name="light"
+            value={filters.light}
+            onChange={handleChange}
+          >
+            <option value="">--</option>
+            <option value="тень">тень</option>
+            <option value="полутень">полутень</option>
+            <option value="яркий">яркий</option>
+          </select>
+        </div>
+
+        <div className="filter-item">
+          <label htmlFor="zone_usda">Зона USDA</label>
+          <select
+            id="zone_usda"
+            name="zone_usda"
+            value={filters.zone_usda}
+            onChange={handleChange}
+          >
+            <option value="">--</option>
+            {Array.from({ length: 11 }, (_, i) => (
+              <option key={i + 2} value={(i + 2).toString()}>
+                {i + 2}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="filter-item">
+          <label htmlFor="toxicity">Токсичность</label>
+          <select
+            id="toxicity"
+            name="toxicity"
+            value={filters.toxicity}
+            onChange={handleChange}
+          >
+            <option value="">--</option>
+            <option value="none">none</option>
+            <option value="mild">mild</option>
+            <option value="toxic">toxic</option>
+          </select>
+        </div>
+
+        <div className="filter-item">
+          <label htmlFor="placement">Размещение</label>
+          <select
+            id="placement"
+            name="placement"
+            value={filters.placement}
+            onChange={handleChange}
+          >
+            <option value="">--</option>
+            <option value="комнатное">комнатное</option>
+            <option value="садовое">садовое</option>
+          </select>
+        </div>
+
+        <div className="filter-item">
+          <label htmlFor="sort">Сортировка</label>
+          <select
+            id="sort"
+            name="sort"
+            value={filters.sort}
+            onChange={handleChange}
+          >
+            <option value="random">random</option>
+            <option value="id">id</option>
+          </select>
+        </div>
+
+        <button onClick={fetchPlants} disabled={loading}>
           {loading ? "Загрузка..." : "Найти"}
         </button>
       </div>
+
+      {/* === Стили === */}
+      <style jsx>{`
+        .filter-panel {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+          gap: 20px;
+          max-width: 900px;
+          margin: 0 auto 50px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(83, 255, 148, 0.2);
+          border-radius: 8px;
+          padding: 24px 28px;
+        }
+        .filter-item {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          font-size: 14px;
+          color: #bde6c2;
+        }
+        label {
+          font-weight: 500;
+          color: #8effa9;
+        }
+        input,
+        select {
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(83, 255, 148, 0.3);
+          border-radius: 6px;
+          padding: 8px 10px;
+          color: #c6f7cb;
+          font-size: 14px;
+          outline: none;
+        }
+        select option {
+          color: #000;
+          background: #e8ffe8;
+        }
+        input:focus,
+        select:focus {
+          border-color: #53ff94;
+        }
+        button {
+          grid-column: 1 / -1;
+          margin-top: 10px;
+          padding: 10px 0;
+          background: #43e37c;
+          color: #0b1a0f;
+          font-weight: 600;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          transition: background 0.2s ease;
+        }
+        button:hover {
+          background: #53ff94;
+        }
+      `}</style>
 
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
 
@@ -292,60 +277,28 @@ export default function SearchPage() {
               className="bg-black/40 border border-green-500/30 rounded-lg p-6 flex flex-col gap-3"
             >
               <div>
-                <h2 className="text-2xl text-green-300 font-bold">
-                  {p.cultivar}
-                </h2>
+                <h2 className="text-2xl text-green-300 font-bold">{p.cultivar}</h2>
                 {p.view && <p className="text-green-200 italic">{p.view}</p>}
-                {p.family && (
-                  <p className="text-green-400 text-sm">{p.family}</p>
-                )}
+                {p.family && <p className="text-green-400 text-sm">{p.family}</p>}
               </div>
 
               {p.insights && (
-                <p className="text-green-100 text-sm leading-relaxed">
-                  {p.insights}
-                </p>
+                <p className="text-green-100 text-sm leading-relaxed">{p.insights}</p>
               )}
 
               <div className="text-xs text-green-300 space-y-1 mt-2">
-                {p.light && (
-                  <p>
-                    ☀ <b>Свет:</b> {p.light}
-                  </p>
-                )}
-                {p.watering && (
-                  <p>
-                    💧 <b>Полив:</b> {p.watering}
-                  </p>
-                )}
-                {p.temperature && (
-                  <p>
-                    🌡 <b>Температура:</b> {p.temperature}
-                  </p>
-                )}
-                {p.soil && (
-                  <p>
-                    🌱 <b>Почва:</b> {p.soil}
-                  </p>
-                )}
-                {p.fertilizer && (
-                  <p>
-                    🧪 <b>Удобрения:</b> {p.fertilizer}
-                  </p>
-                )}
+                {p.light && <p>☀ <b>Свет:</b> {p.light}</p>}
+                {p.watering && <p>💧 <b>Полив:</b> {p.watering}</p>}
+                {p.temperature && <p>🌡 <b>Температура:</b> {p.temperature}</p>}
+                {p.soil && <p>🌱 <b>Почва:</b> {p.soil}</p>}
+                {p.fertilizer && <p>🧪 <b>Удобрения:</b> {p.fertilizer}</p>}
               </div>
 
               {(p.pruning || p.pests_diseases) && (
                 <div className="text-xs text-green-400 mt-2">
-                  {p.pruning && (
-                    <p>
-                      ✂ <b>Обрезка:</b> {p.pruning}
-                    </p>
-                  )}
+                  {p.pruning && <p>✂ <b>Обрезка:</b> {p.pruning}</p>}
                   {p.pests_diseases && (
-                    <p>
-                      🦠 <b>Вредители и болезни:</b> {p.pests_diseases}
-                    </p>
+                    <p>🦠 <b>Вредители и болезни:</b> {p.pests_diseases}</p>
                   )}
                 </div>
               )}
@@ -361,18 +314,14 @@ export default function SearchPage() {
                 </p>
                 <p>⚠ <b>Токсичность:</b> {p.toxicity || "none"}</p>
                 {p.ru_regions && (
-                  <p>
-                    📍 <b>Регионы РФ:</b> {p.ru_regions}
-                  </p>
+                  <p>📍 <b>Регионы РФ:</b> {p.ru_regions}</p>
                 )}
               </div>
             </div>
           ))}
         </div>
       ) : (
-        !loading && (
-          <p className="text-green-300 text-center mt-8">Нет результатов</p>
-        )
+        !loading && <p className="text-green-300 text-center mt-8">Нет результатов</p>
       )}
     </main>
   );
