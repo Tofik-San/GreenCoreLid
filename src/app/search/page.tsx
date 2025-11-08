@@ -88,7 +88,7 @@ export default function SearchPage() {
       {/* === API-ключ === */}
       <div
         className="flex items-center justify-between gap-3 mx-auto mb-12 px-5 py-3 rounded-xl border border-green-500/30 bg-black/30 shadow-[0_0_14px_rgba(83,255,148,0.15)]"
-        style={{ maxWidth: "900px" }}
+        style={{ maxWidth: "900px", height: "58px" }}
       >
         <input
           type="text"
@@ -96,25 +96,31 @@ export default function SearchPage() {
           onChange={(e) => setApiKey(e.target.value)}
           placeholder="Введите или вставьте API-ключ"
           className="flex-grow bg-transparent border-none outline-none text-green-100 placeholder-green-700/70 font-mono text-[15px]"
+          style={{ height: "100%", paddingLeft: "10px", paddingRight: "10px" }}
         />
-        <button
-          onClick={pasteKey}
-          className="px-4 py-2 rounded-md border border-green-400/40 text-green-200 hover:bg-green-500/20 transition"
-        >
-          Вставить
-        </button>
-        <button
-          onClick={saveKey}
-          className="px-5 py-2 rounded-md bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition"
-        >
-          Применить
-        </button>
+        <div className="flex items-center gap-2 h-full">
+          <button
+            onClick={pasteKey}
+            className="px-4 h-full rounded-md border border-green-400/40 text-green-200 hover:bg-green-500/20 transition flex items-center justify-center"
+            style={{ minWidth: "100px" }}
+          >
+            Вставить
+          </button>
+          <button
+            onClick={saveKey}
+            className="px-5 h-full rounded-md bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition flex items-center justify-center"
+            style={{ minWidth: "110px" }}
+          >
+            Применить
+          </button>
+        </div>
       </div>
+
       {saved && (
         <p className="text-green-400 text-center mb-8">✓ Ключ принят</p>
       )}
 
-      {/* === Панель фильтров (старая структура) === */}
+      {/* === Панель фильтров === */}
       <div className="filter-panel">
         <div className="filter-item">
           <label htmlFor="view">Вид / сорт</label>
