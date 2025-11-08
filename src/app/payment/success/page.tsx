@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 export default function PaymentSuccess() {
   const [key, setKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     async function fetchKey() {
@@ -22,17 +23,21 @@ export default function PaymentSuccess() {
     fetchKey();
   }, []);
 
+  const handleCopy = () => {
+    if (!key) return;
+    navigator.clipboard.writeText(key);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-start text-center bg-black relative overflow-hidden px-6 pt-[12vh] pb-[8vh]">
-      {/* фон свечения */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_25%,rgba(83,255,148,0.06),transparent_80%)] pointer-events-none" />
 
-      {/* заголовок */}
       <h1 className="text-5xl font-bold mb-10 text-green-300 drop-shadow-[0_0_20px_rgba(83,255,148,0.6)] animate-pulse">
         Оплата прошла успешно
       </h1>
 
-      {/* блок ключа */}
       {loading && <p className="text-green-300 mt-6">Обработка платежа...</p>}
 
       {!loading && key && (
@@ -74,25 +79,30 @@ export default function PaymentSuccess() {
               {key}
             </span>
             <button
-              onClick={() => navigator.clipboard.writeText(key || "")}
+              onClick={handleCopy}
               style={{
                 marginLeft: "20px",
                 padding: "8px 14px",
                 borderRadius: "8px",
-                background: "rgba(83,255,148,0.15)",
+                background: copied
+                  ? "rgba(83,255,148,0.4)"
+                  : "rgba(83,255,148,0.15)",
                 border: "1px solid rgba(83,255,148,0.3)",
-                color: "#aaffc8",
+                color: copied ? "#0b1a0f" : "#aaffc8",
+                fontWeight: 600,
                 cursor: "pointer",
-                transition: "all 0.2s ease",
+                transition: "all 0.25s ease",
               }}
               onMouseEnter={(e) =>
                 (e.currentTarget.style.background = "rgba(83,255,148,0.25)")
               }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = "rgba(83,255,148,0.15)")
-              }
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = copied
+                  ? "rgba(83,255,148,0.4)"
+                  : "rgba(83,255,148,0.15)";
+              }}
             >
-              Копировать
+              {copied ? "Скопировано ✓" : "Копировать"}
             </button>
           </div>
         </>
@@ -104,7 +114,6 @@ export default function PaymentSuccess() {
         </p>
       )}
 
-      {/* кнопка */}
       <a
         href="/search"
         style={{
