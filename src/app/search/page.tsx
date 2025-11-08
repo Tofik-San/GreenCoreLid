@@ -40,15 +40,6 @@ export default function SearchPage() {
     }
   };
 
-  const pasteFromClipboard = async () => {
-    try {
-      const text = await navigator.clipboard.readText();
-      if (text) setApiKey(text.trim());
-    } catch (err) {
-      console.error("Clipboard error:", err);
-    }
-  };
-
   const fetchPlants = async () => {
     if (!apiKey) {
       setError("Введите API-ключ перед поиском.");
@@ -101,9 +92,6 @@ export default function SearchPage() {
             placeholder="Введите API-ключ"
             className="api-key-input"
           />
-          <button onClick={pasteFromClipboard} className="api-key-button">
-            Вставить
-          </button>
           <button onClick={saveKey} className="api-key-button">
             Применить
           </button>
