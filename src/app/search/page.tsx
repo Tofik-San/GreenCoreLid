@@ -19,7 +19,6 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
-  const [requestUrl, setRequestUrl] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -36,7 +35,7 @@ export default function SearchPage() {
     if (typeof window !== "undefined") {
       localStorage.setItem("api_key", apiKey.trim());
       setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
+      setTimeout(() => setSaved(false), 2000);
     }
   };
 
@@ -56,7 +55,6 @@ export default function SearchPage() {
         .join("&");
 
       const fullUrl = `${API_URL}/plants?${params}`;
-      setRequestUrl(fullUrl);
 
       const res = await fetch(fullUrl, {
         method: "GET",
@@ -82,7 +80,7 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === Поле API-ключа (новый дизайн) === */}
+      {/* === Поле API-ключа (новый стиль) === */}
       <div
         className="relative mb-12 mx-auto"
         style={{
@@ -184,9 +182,19 @@ export default function SearchPage() {
       )}
 
       {/* === Панель фильтров === */}
-      <div className="filter-panel">
-        <div className="filter-item">
-          <label htmlFor="view">Вид / сорт</label>
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-[900px] mx-auto mb-12 p-8"
+        style={{
+          background: "rgba(255,255,255,0.03)",
+          border: "1px solid rgba(83,255,148,0.2)",
+          borderRadius: "12px",
+          boxShadow: "0 0 16px rgba(83,255,148,0.1)",
+        }}
+      >
+        <div className="flex flex-col gap-2">
+          <label htmlFor="view" className="text-green-400 text-sm font-medium">
+            Вид / сорт
+          </label>
           <input
             id="view"
             name="view"
@@ -194,16 +202,20 @@ export default function SearchPage() {
             value={filters.view}
             onChange={(e) => setFilters({ ...filters, view: e.target.value })}
             placeholder="Например: hydrangea"
+            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 placeholder-green-700/60 focus:outline-none focus:border-green-400"
           />
         </div>
 
-        <div className="filter-item">
-          <label htmlFor="light">Освещение</label>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="light" className="text-green-400 text-sm font-medium">
+            Освещение
+          </label>
           <select
             id="light"
             name="light"
             value={filters.light}
             onChange={handleChange}
+            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
           >
             <option value="">--</option>
             <option value="тень">тень</option>
@@ -212,13 +224,19 @@ export default function SearchPage() {
           </select>
         </div>
 
-        <div className="filter-item">
-          <label htmlFor="zone_usda">Зона USDA</label>
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="zone_usda"
+            className="text-green-400 text-sm font-medium"
+          >
+            Зона USDA
+          </label>
           <select
             id="zone_usda"
             name="zone_usda"
             value={filters.zone_usda}
             onChange={handleChange}
+            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
           >
             <option value="">--</option>
             {Array.from({ length: 11 }, (_, i) => (
@@ -229,13 +247,19 @@ export default function SearchPage() {
           </select>
         </div>
 
-        <div className="filter-item">
-          <label htmlFor="toxicity">Токсичность</label>
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="toxicity"
+            className="text-green-400 text-sm font-medium"
+          >
+            Токсичность
+          </label>
           <select
             id="toxicity"
             name="toxicity"
             value={filters.toxicity}
             onChange={handleChange}
+            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
           >
             <option value="">--</option>
             <option value="none">none</option>
@@ -244,13 +268,19 @@ export default function SearchPage() {
           </select>
         </div>
 
-        <div className="filter-item">
-          <label htmlFor="placement">Размещение</label>
+        <div className="flex flex-col gap-2">
+          <label
+            htmlFor="placement"
+            className="text-green-400 text-sm font-medium"
+          >
+            Размещение
+          </label>
           <select
             id="placement"
             name="placement"
             value={filters.placement}
             onChange={handleChange}
+            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
           >
             <option value="">--</option>
             <option value="комнатное">комнатное</option>
@@ -258,29 +288,34 @@ export default function SearchPage() {
           </select>
         </div>
 
-        <div className="filter-item">
-          <label htmlFor="sort">Сортировка</label>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="sort" className="text-green-400 text-sm font-medium">
+            Сортировка
+          </label>
           <select
             id="sort"
             name="sort"
             value={filters.sort}
-            onChange={(e) =>
-              setFilters({ ...filters, sort: e.target.value })
-            }
+            onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
+            className="bg-black/30 border border-green-400/30 rounded-md px-3 py-2 text-green-100 focus:outline-none focus:border-green-400"
           >
             <option value="random">random</option>
             <option value="id">id</option>
           </select>
         </div>
 
-        <button onClick={fetchPlants} disabled={loading}>
+        <button
+          onClick={fetchPlants}
+          disabled={loading}
+          className="col-span-full mt-4 py-3 rounded-md bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition duration-200 shadow-[0_0_14px_rgba(83,255,148,0.4)]"
+        >
           {loading ? "Загрузка..." : "Найти"}
         </button>
       </div>
 
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
 
-      {/* === Вывод карточек === */}
+      {/* === Результаты === */}
       {plants.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {plants.map((p, i) => (
