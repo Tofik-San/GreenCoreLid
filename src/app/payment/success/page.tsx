@@ -39,7 +39,17 @@ export default function PaymentSuccess() {
       {!loading && key && (
         <>
           <p className="text-green-200 mb-4 text-lg">Ваш API-ключ:</p>
-          <div className="relative w-full max-w-[720px] px-8 py-4 bg-[rgba(12,20,14,0.8)] border border-green-400/30 rounded-xl shadow-[0_0_16px_rgba(83,255,148,0.15)] backdrop-blur-sm mb-12">
+          <div
+            className="relative w-full max-w-[720px] px-8 py-4 mb-12"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(12,20,14,0.85), rgba(18,26,20,0.9))",
+              border: "1px solid rgba(83,255,148,0.25)",
+              borderRadius: "14px",
+              boxShadow: "0 0 20px rgba(83,255,148,0.15)",
+              backdropFilter: "blur(4px)",
+            }}
+          >
             <CopyBlock code={key} />
           </div>
         </>
@@ -51,7 +61,7 @@ export default function PaymentSuccess() {
         </p>
       )}
 
-      {/* кнопка — вручную прописанные стили */}
+      {/* кнопка */}
       <a
         href="/search"
         style={{
