@@ -54,10 +54,10 @@ export default function PaymentSuccess() {
       {/* кнопка */}
       <a
         href="/search"
-        className="inline-block px-50 py-3 rounded-full bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold hover:brightness-110 transition duration-200 shadow-[0_0_14px_rgba(83,255,148,0.4)] no-underline"
+        className="inline-block px-14 py-4 rounded-full bg-[linear-gradient(90deg,#3fd67c,#53ff94)] text-[#04140a] font-semibold text-lg hover:brightness-110 transition duration-200 shadow-[0_0_18px_rgba(83,255,148,0.45)] no-underline"
         style={{
           textDecoration: "none",
-          marginTop: "80px", // жёсткий отступ, чтобы не слипалось
+          marginTop: "80px", // оставляем отступ
         }}
       >
         Перейти к поиску растений
