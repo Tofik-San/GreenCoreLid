@@ -19,7 +19,6 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
-  const [requestUrl, setRequestUrl] = useState("");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -28,15 +27,23 @@ export default function SearchPage() {
     }
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) =>
     setFilters({ ...filters, [e.target.name]: e.target.value });
-  };
 
   const saveKey = () => {
     if (typeof window !== "undefined") {
       localStorage.setItem("api_key", apiKey.trim());
       setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
+      setTimeout(() => setSaved(false), 2000);
+    }
+  };
+
+  const pasteKey = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      setApiKey(text.trim());
+    } catch {
+      alert("Не удалось вставить ключ из буфера обмена");
     }
   };
 
@@ -45,7 +52,6 @@ export default function SearchPage() {
       setError("Введите API-ключ перед поиском.");
       return;
     }
-
     setLoading(true);
     setError("");
 
@@ -55,11 +61,7 @@ export default function SearchPage() {
         .map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
         .join("&");
 
-      const fullUrl = `${API_URL}/plants?${params}`;
-      setRequestUrl(fullUrl);
-
-      const res = await fetch(fullUrl, {
-        method: "GET",
+      const res = await fetch(`${API_URL}/plants?${params}`, {
         headers: {
           "X-API-Key": apiKey.trim(),
           "Content-Type": "application/json",
@@ -82,22 +84,55 @@ export default function SearchPage() {
         Поиск растений
       </h1>
 
-      {/* === Поле API-ключа === */}
-      <div className="api-key-panel">
-        <div className="api-key-row">
-          <input
-            type="text"
-            value={apiKey}
-            onChange={(e) => setApiKey(e.target.value)}
-            placeholder="Введите API-ключ"
-            className="api-key-input"
-          />
-          <button onClick={saveKey} className="api-key-button">
+      {/* === API-ключ в одном блоке === */}
+      <div
+        className="flex items-center justify-between gap-2 mx-auto mb-10 px-4 py-3 rounded-xl"
+        style={{
+          maxWidth: "900px",
+          width: "100%",
+          border: "1px solid rgba(83,255,148,0.25)",
+          background: "rgba(0,0,0,0.35)",
+          boxShadow: "0 0 14px rgba(83,255,148,0.2)",
+        }}
+      >
+        <input
+          type="text"
+          value={apiKey}
+          onChange={(e) => setApiKey(e.target.value)}
+          placeholder="Введите или вставьте API-ключ"
+          className="flex-grow bg-transparent border-none outline-none text-green-100 placeholder-green-700/70 font-mono text-[15px]"
+          style={{
+            height: "44px",
+            lineHeight: "44px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+          }}
+        />
+        <div className="flex items-center gap-2 h-[44px]">
+          <button
+            onClick={pasteKey}
+            className="px-4 h-full rounded-md border border-green-400/40 text-green-100 hover:bg-green-500/20 transition"
+            style={{ minWidth: "100px" }}
+          >
+            Вставить
+          </button>
+          <button
+            onClick={saveKey}
+            className="px-5 h-full rounded-md text-[#04140a] font-semibold hover:brightness-110 transition"
+            style={{
+              minWidth: "110px",
+              background:
+                "linear-gradient(90deg, rgba(63,214,124,1) 0%, rgba(83,255,148,1) 100%)",
+              boxShadow:
+                "0 0 10px rgba(83,255,148,0.3), inset 0 -2px 6px rgba(0,0,0,0.25)",
+            }}
+          >
             Применить
           </button>
         </div>
-        {saved && <span className="api-key-saved">✓ Ключ принят</span>}
       </div>
+
+      {saved && <p className="text-green-400 text-center mb-8">✓ Ключ принят</p>}
 
       {/* === Панель фильтров === */}
       <div className="filter-panel">
@@ -108,9 +143,7 @@ export default function SearchPage() {
             name="view"
             type="text"
             value={filters.view}
-            onChange={(e) =>
-              setFilters({ ...filters, view: e.target.value })
-            }
+            onChange={(e) => setFilters({ ...filters, view: e.target.value })}
             placeholder="Например: hydrangea"
           />
         </div>
@@ -182,9 +215,7 @@ export default function SearchPage() {
             id="sort"
             name="sort"
             value={filters.sort}
-            onChange={(e) =>
-              setFilters({ ...filters, sort: e.target.value })
-            }
+            onChange={handleChange}
           >
             <option value="random">random</option>
             <option value="id">id</option>
@@ -196,56 +227,7 @@ export default function SearchPage() {
         </button>
       </div>
 
-      {/* === Стили фильтров и панели === */}
       <style jsx>{`
-        .api-key-panel {
-          max-width: 900px;
-          margin: 40px auto 40px;
-        }
-        .api-key-row {
-          display: flex;
-          gap: 12px;
-          width: 100%;
-          align-items: center;
-          justify-content: space-between;
-        }
-        .api-key-input {
-          flex: 1 1 auto;
-          height: 48px;
-          border: 1px solid rgba(83, 255, 148, 0.4);
-          border-radius: 8px;
-          background: rgba(0, 0, 0, 0.5);
-          color: #c6f7cb;
-          font-size: 15px;
-          padding: 0 16px;
-          outline: none;
-        }
-        .api-key-input:focus {
-          border-color: #53ff94;
-        }
-        .api-key-button {
-          all: unset;
-          height: 48px;
-          min-width: 110px;
-          padding: 0 20px;
-          background: #43e37c;
-          color: #0b1a0f;
-          border-radius: 8px;
-          text-align: center;
-          font-weight: 600;
-          cursor: pointer;
-          transition: background 0.12s ease;
-        }
-        .api-key-button:hover {
-          background: #53ff94;
-        }
-        .api-key-saved {
-          display: block;
-          color: #53ff94;
-          margin-top: 8px;
-          font-size: 14px;
-          text-align: center;
-        }
         .filter-panel {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -305,60 +287,8 @@ export default function SearchPage() {
 
       {error && <p className="text-red-400 text-center mb-6">{error}</p>}
 
-      {/* === Вывод карточек === */}
-      {plants.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-          {plants.map((p, i) => (
-            <div
-              key={i}
-              className="bg-black/40 border border-green-500/30 rounded-lg p-6 flex flex-col gap-3"
-            >
-              <div>
-                <h2 className="text-2xl text-green-300 font-bold">{p.cultivar}</h2>
-                {p.view && <p className="text-green-200 italic">{p.view}</p>}
-                {p.family && <p className="text-green-400 text-sm">{p.family}</p>}
-              </div>
-
-              {p.insights && (
-                <p className="text-green-100 text-sm leading-relaxed">{p.insights}</p>
-              )}
-
-              <div className="text-xs text-green-300 space-y-1 mt-2">
-                {p.light && <p>☀ <b>Свет:</b> {p.light}</p>}
-                {p.watering && <p>💧 <b>Полив:</b> {p.watering}</p>}
-                {p.temperature && <p>🌡 <b>Температура:</b> {p.temperature}</p>}
-                {p.soil && <p>🌱 <b>Почва:</b> {p.soil}</p>}
-                {p.fertilizer && <p>🧪 <b>Удобрения:</b> {p.fertilizer}</p>}
-              </div>
-
-              {(p.pruning || p.pests_diseases) && (
-                <div className="text-xs text-green-400 mt-2">
-                  {p.pruning && <p>✂ <b>Обрезка:</b> {p.pruning}</p>}
-                  {p.pests_diseases && (
-                    <p>🦠 <b>Вредители и болезни:</b> {p.pests_diseases}</p>
-                  )}
-                </div>
-              )}
-
-              <div className="text-xs text-green-500 mt-2 space-y-1">
-                <p>
-                  🏡 <b>Размещение:</b>{" "}
-                  {p.indoor ? "комнатное" : p.outdoor ? "садовое" : "—"}
-                </p>
-                <p>
-                  🌿 <b>Для начинающих:</b>{" "}
-                  {p.beginner_friendly ? "подходит" : "требует опыта"}
-                </p>
-                <p>⚠ <b>Токсичность:</b> {p.toxicity || "none"}</p>
-                {p.ru_regions && (
-                  <p>📍 <b>Регионы РФ:</b> {p.ru_regions}</p>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      ) : (
-        !loading && <p className="text-green-300 text-center mt-8">Нет результатов</p>
+      {!loading && plants.length === 0 && (
+        <p className="text-green-300 text-center mt-8">Нет результатов</p>
       )}
     </main>
   );
