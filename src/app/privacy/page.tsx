@@ -11,16 +11,24 @@ export default function PrivacyPage() {
         <p className="text-green-300 mb-6">
           <strong>Дата обновления:</strong> 28 октября 2025 г.<br />
           <strong>Владелец:</strong> GreenCore.<br />
-          <strong>Контакты:</strong>{" "}
+          <strong>Контакты:</strong><br />
+          📧 Email:{" "}
           <a
-            href="https://t.me/greencore_support"
+            href="mailto:Tofik-San@Mail.ru"
+            className="text-green-400 underline hover:text-green-300"
+          >
+            Tofik-San@Mail.ru
+          </a><br />
+          💬 Telegram:{" "}
+          <a
+            href="https://t.me/veryhappyEpta"
             target="_blank"
             rel="noopener noreferrer"
             className="text-green-400 underline hover:text-green-300"
           >
-            @greencore_support
-          </a>{" "}
-          — официальный Telegram-канал поддержки.
+            @veryhappyEpta
+          </a><br />
+          ИНН самозанятого: <strong>613502909302</strong>
         </p>
 
         <section className="space-y-6 text-green-200">
