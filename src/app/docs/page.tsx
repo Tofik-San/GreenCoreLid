@@ -5,11 +5,10 @@ export default function DocsPage() {
   const [plans, setPlans] = useState<any[]>([]);
   const [message, setMessage] = useState<string | null>(null);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
-  const [email, setEmail] = useState("");
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
-    "https://www.greencore-api.ru";
+    "https://web-production-310c7c.up.railway.app";
 
   // ────────────────────────────────
   // 📦 Загрузка тарифов из API
@@ -45,11 +44,9 @@ export default function DocsPage() {
         }
       } else {
         // YooKassa для платных тарифов
-        const safeEmail = email.trim() || "anonymous@greencore.ru";
+        const email = "test@example.com";
         const res = await fetch(
-          `${API_URL}/api/payment/session?plan=${planName}&email=${encodeURIComponent(
-            safeEmail
-          )}`,
+          `${API_URL}/api/payment/session?plan=${planName}&email=${email}`,
           { method: "POST" }
         );
         const data = await res.json();
@@ -94,21 +91,6 @@ export default function DocsPage() {
 
       <section className="max-w-[1600px] mx-auto px-8">
         <h2 className="text-3xl mb-14 text-green-400">Планы</h2>
-
-        {/* Поле e-mail */}
-        <div className="mb-10">
-          <label htmlFor="email" className="block text-green-400 mb-2">
-            Введите e-mail для получения чека и API-ключа:
-          </label>
-          <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="example@mail.ru"
-            className="px-4 py-2 rounded-lg border border-green-600 bg-neutral-900 text-green-300 w-[300px] text-center"
-          />
-        </div>
 
         {message && (
           <div className="mb-12 text-green-300 bg-black/50 border border-green-400/50 px-8 py-5 rounded-2xl shadow-[0_0_25px_rgba(83,255,148,0.3)] inline-block">
