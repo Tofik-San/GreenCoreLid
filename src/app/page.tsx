@@ -9,7 +9,7 @@ export default function Home() {
   useEffect(() => {
     const API_URL =
       process.env.NEXT_PUBLIC_API_URL ||
-      "https://web-production-310c7cup.railway.app";
+      "https://web-production-310c7c.up.railway.app";
 
     fetch(`${API_URL}/health`)
       .then((res) => {
