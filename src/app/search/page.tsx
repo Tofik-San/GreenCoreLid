@@ -320,7 +320,7 @@ export default function SearchPage() {
               </div>
 
               {p.insights && (
-                <p className="text-green-100 text-sm leading-relaxed">{p.insights}</p>
+                <p className="text-green-100 text-sm leading-relaxed whitespace-pre-line">{p.insights}</p>
               )}
 
               <div className="text-xs text-green-300 space-y-1 mt-2">
