@@ -13,6 +13,7 @@ export default function SearchPage() {
     zone_usda: "",
     toxicity: "",
     placement: "",
+    category: "",
     sort: "random",
   });
   const [plants, setPlants] = useState<any[]>([]);
@@ -175,6 +176,19 @@ export default function SearchPage() {
             <option value="садовое">садовое</option>
           </select>
         </div>
+
+        <div className="filter-item">
+           <label htmlFor="category">Категория</label>
+           <select
+            id="category"
+            name="category"
+            value={filters.category}
+            onChange={handleChange}
+        >
+            <option value="">--</option>
+            <option value="annual">Однолетники</option>
+          </select>
+         </div>
 
         <div className="filter-item">
           <label htmlFor="sort">Сортировка</label>
