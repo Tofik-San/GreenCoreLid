@@ -321,7 +321,7 @@ export default function SearchPage() {
 
               {p.insights && (
   <div className="text-green-100 text-sm leading-relaxed space-y-1">
-    {p.insights.split("►").map((line, i) =>
+    {p.insights.split("►").map((line: string, i: number) =>
       line.trim() && <p key={i}>► {line.trim()}</p>
     )}
   </div>
