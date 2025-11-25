@@ -13,7 +13,7 @@ export default function TermsPage() {
           <strong>Владелец:</strong> GreenCore.<br />
           <strong>Контакты:</strong>{" "}
           <a
-            href="https://t.me/greencore_support"
+            href="https://t.me/BOTanikPlants"
             target="_blank"
             rel="noopener noreferrer"
             className="text-green-400 underline hover:text-green-300"
