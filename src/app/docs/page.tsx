@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 export default function DocsPage() {
   // ========================
@@ -169,40 +170,43 @@ export default function DocsPage() {
         </div>
       </section>
 
-      {/* FREE MODAL */}
-      {showFreeModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-          <div className="bg-black border border-green-400 rounded-2xl p-8 w-[420px]">
-            <h3 className="text-2xl text-green-300 mb-4">
-              Бесплатный доступ
-            </h3>
+      {/* FREE MODAL (PORTAL) */}
+      {showFreeModal &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div className="fixed inset-0 z-[9999] bg-black/80 flex items-center justify-center">
+            <div className="bg-black border border-green-400 rounded-2xl p-8 w-[420px]">
+              <h3 className="text-2xl text-green-300 mb-4">
+                Бесплатный доступ
+              </h3>
 
-            {!freeSuccess ? (
-              <>
-                <input
-                  type="email"
-                  placeholder="Введите email"
-                  value={freeEmail}
-                  onChange={(e) => setFreeEmail(e.target.value)}
-                  className="w-full mb-4 p-3 rounded bg-black border border-green-400 text-green-100"
-                />
+              {!freeSuccess ? (
+                <>
+                  <input
+                    type="email"
+                    placeholder="Введите email"
+                    value={freeEmail}
+                    onChange={(e) => setFreeEmail(e.target.value)}
+                    className="w-full mb-4 p-3 rounded bg-black border border-green-400 text-green-100"
+                  />
 
-                <button
-                  disabled={freeLoading}
-                  onClick={handleFreeSubmit}
-                  className="w-full py-3 bg-green-700 rounded text-white"
-                >
-                  {freeLoading ? "Отправка..." : "Получить ключ"}
-                </button>
-              </>
-            ) : (
-              <p className="text-green-300">
-                Ключ отправлен на почту
-              </p>
-            )}
-          </div>
-        </div>
-      )}
+                  <button
+                    disabled={freeLoading}
+                    onClick={handleFreeSubmit}
+                    className="w-full py-3 bg-green-700 rounded text-white"
+                  >
+                    {freeLoading ? "Отправка..." : "Получить ключ"}
+                  </button>
+                </>
+              ) : (
+                <p className="text-green-300">
+                  Ключ отправлен на почту
+                </p>
+              )}
+            </div>
+          </div>,
+          document.body
+        )}
     </main>
   );
 }
