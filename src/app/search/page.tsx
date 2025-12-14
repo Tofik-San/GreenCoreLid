@@ -12,7 +12,6 @@ export default function SearchPage() {
     light: "",
     zone_usda: "",
     toxicity: "",
-    placement: "",
     category: "",
     sort: "random",
   });
@@ -166,20 +165,6 @@ export default function SearchPage() {
             <option value="none">Нет</option>
             <option value="mild">Умеренная</option>
             <option value="toxic">Токсично</option>
-          </select>
-        </div>
-
-        <div className="filter-item">
-          <label htmlFor="placement">Размещение</label>
-          <select
-            id="placement"
-            name="placement"
-            value={filters.placement}
-            onChange={handleChange}
-          >
-            <option value="">--</option>
-            <option value="комнатное">комнатное</option>
-            <option value="садовое">садовое</option>
           </select>
         </div>
 
