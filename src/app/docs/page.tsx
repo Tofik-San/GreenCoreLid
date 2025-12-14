@@ -1,200 +1,154 @@
 "use client";
+
 import { useEffect, useState } from "react";
 
 export default function DocsPage() {
- const [showFreeModal, setShowFreeModal] = useState(false);
- const [freeEmail, setFreeEmail] = useState("");
- const [freeLoading, setFreeLoading] = useState(false);
- const [freeSuccess, setFreeSuccess] = useState(false);
+  // ========================
+  // STATE
+  // ========================
+  const [plans, setPlans] = useState<any[]>([]);
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
+
+  const [showFreeModal, setShowFreeModal] = useState(false);
+  const [freeEmail, setFreeEmail] = useState("");
+  const [freeLoading, setFreeLoading] = useState(false);
+  const [freeSuccess, setFreeSuccess] = useState(false);
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
     "https://web-production-310c7c.up.railway.app";
 
-  // ────────────────────────────────
-  // 📦 Загрузка тарифов из API
-  // ────────────────────────────────
+  // ========================
+  // LOAD PLANS
+  // ========================
   useEffect(() => {
     fetch(`${API_URL}/plans`)
       .then((res) => res.json())
       .then((data) => {
-        if (data?.plans && Array.isArray(data.plans)) setPlans(data.plans);
-        else setPlans([]);
+        if (data?.plans && Array.isArray(data.plans)) {
+          setPlans(data.plans);
+        } else {
+          setPlans([]);
+        }
       })
       .catch(() => setPlans([]));
-  }, []);
+  }, [API_URL]);
 
-  // ────────────────────────────────
-  // 💳 Обработчик кнопки "Активировать"
-  // ────────────────────────────────
-const handleActivate = async (planName: string) => {
-  try {
-    setLoadingPlan(planName);
-    setMessage("");
+  // ========================
+  // ACTIVATE PLAN
+  // ========================
+  const handleActivate = async (planName: string) => {
+    try {
+      setLoadingPlan(planName);
+      setMessage(null);
 
-    if (planName.toLowerCase() === "free") {
-      setShowFreeModal(true);
+      if (planName.toLowerCase() === "free") {
+        setShowFreeModal(true);
+        setLoadingPlan(null);
+        return;
+      }
+
+      // ПЛАТНЫЕ ТАРИФЫ
+      const email = "test@example.com"; // временно
+      const res = await fetch(
+        `${API_URL}/api/payment/session?plan=${planName}&email=${email}`,
+        { method: "POST" }
+      );
+
+      const data = await res.json();
+
+      if (res.ok && data?.payment_url) {
+        window.location.href = data.payment_url;
+      } else {
+        throw new Error(data?.detail || "Ошибка при создании платежа");
+      }
+    } catch (err: any) {
+      setMessage(err.message || "Ошибка");
+      setTimeout(() => setMessage(null), 8000);
+    } finally {
       setLoadingPlan(null);
-      return;
-    }
-
-    // ПЛАТНЫЕ ТАРИФЫ
-    const email = "test@example.com"; // временно
-    const res = await fetch(
-      `${API_URL}/api/payment/session?plan=${planName}&email=${email}`,
-      { method: "POST" }
-    );
-
-    const data = await res.json();
-
-    if (res.ok && data?.payment_url) {
-      window.location.href = data.payment_url;
-    } else {
-      throw new Error(data?.detail || "Ошибка при создании платежа");
-    }
-
-  } catch (err: any) {
-    setMessage(err.message || "Ошибка");
-    setTimeout(() => setMessage(null), 8000); // ⬅ ВОТ ЗДЕСЬ
-  } finally {
-    setLoadingPlan(null);
-  }
-};
-
-  // ────────────────────────────────
-  // 🌿 Иконки планов
-  // ────────────────────────────────
-  const getPlanIcon = (name: string) => {
-    switch (name?.toLowerCase()) {
-      case "free":
-        return "🌱";
-      case "premium":
-        return "🌿";
-      case "supreme":
-        return "🌳";
-      default:
-        return "🌾";
     }
   };
 
-  // ────────────────────────────────
-  // 🖼️ Интерфейс
-  // ────────────────────────────────
-  return (
-    <main className="min-h-screen px-10 py-20 text-center text-green-100">
-      <h1 className="text-5xl mb-16 text-green-400 drop-shadow-[0_0_10px_rgba(163,255,163,0.7)]">
-        Документация API
-      </h1>
+  // ========================
+  // FREE SUBMIT
+  // ========================
+  const handleFreeSubmit = async () => {
+    if (!freeEmail) return;
 
-      <section className="max-w-[1600px] mx-auto px-8">
-        <h2 className="text-3xl mb-14 text-green-400">Планы</h2>
+    try {
+      setFreeLoading(true);
+      setMessage(null);
+
+      const res = await fetch(`${API_URL}/create_user_key`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          owner_email: freeEmail,
+          plan: "free",
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data?.detail || "Ошибка при создании ключа");
+      }
+
+      setFreeSuccess(true);
+    } catch (err: any) {
+      setMessage(err.message || "Ошибка");
+      setTimeout(() => setMessage(null), 8000);
+    } finally {
+      setFreeLoading(false);
+    }
+  };
+
+  // ========================
+  // RENDER
+  // ========================
+  return (
+    <main className="min-h-screen bg-black text-green-100 px-6 py-12">
+      <section className="max-w-6xl mx-auto">
+        <h1 className="text-4xl text-green-300 text-center mb-12">
+          Документация API
+        </h1>
 
         {message && (
-          <div className="mb-12 text-green-300 bg-black/50 border border-green-400/50 px-8 py-5 rounded-2xl shadow-[0_0_25px_rgba(83,255,148,0.3)] inline-block">
-            {message}
-          </div>
+          <div className="mb-6 text-center text-red-400">{message}</div>
         )}
 
-        {plans.length === 0 ? (
-          <p className="text-green-300">Нет данных о планах.</p>
-        ) : (
-          <div className="flex flex-wrap justify-center gap-32 relative">
-            {plans.map((plan: any, index: number) => (
-              <div
-                key={plan.id}
-                className="relative flex flex-col items-center mx-4 my-6"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {plans.map((plan, index) => (
+            <div
+              key={plan.name}
+              className="border border-green-500/40 rounded-2xl p-8 bg-black relative"
+            >
+              <h3 className="text-2xl text-green-300 mb-4">
+                {plan.name.toUpperCase()}
+              </h3>
+
+              <p className="mb-6 text-green-200">{plan.description}</p>
+
+              <p className="mb-6 text-green-400">
+                {plan.price_rub ? `${plan.price_rub} ₽` : "Бесплатно"}
+              </p>
+
+              <button
+                onClick={() => handleActivate(plan.name)}
+                disabled={loadingPlan === plan.name}
+                className="w-full py-3 bg-green-700 rounded text-white hover:bg-green-600 transition"
               >
-                <div className="bg-black/40 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[450px] flex flex-col items-center justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
-                  <div className="flex flex-col items-center mb-8">
-                    <span className="text-7xl mb-5 drop-shadow-[0_0_20px_rgba(83,255,148,0.6)]">
-                      {getPlanIcon(plan.name)}
-                    </span>
-                    <h3 className="text-3xl text-green-300 font-semibold drop-shadow-[0_0_6px_rgba(83,255,148,0.6)] uppercase tracking-wide">
-                      {plan.name}
-                    </h3>
-                  </div>
+                {loadingPlan === plan.name ? "Создание..." : "Активировать"}
+              </button>
 
-                  <div className="text-green-200 mb-10 text-lg leading-relaxed space-y-5 text-center max-w-[340px]">
-                    {plan.name.toLowerCase() === "free" && (
-                      <>
-                        <p>
-                          Базовый доступ для тестирования и личных
-                          экспериментов. Позволяет изучить структуру API и
-                          оценить качество данных.
-                        </p>
-                        <p>
-                          <strong>5 запросов</strong> • до{" "}
-                          <strong>5 карточек</strong> за один вызов
-                        </p>
-                      </>
-                    )}
-                    {plan.name.toLowerCase() === "premium" && (
-                      <>
-                        <p>
-                          Оптимальный выбор для дизайнеров и небольших студий.
-                          Расширенные фильтры, выгрузка данных и стабильные
-                          лимиты для работы над проектами.
-                        </p>
-                        <p>
-                          <strong>20 запросов</strong> • до{" "}
-                          <strong>5 карточек</strong> за вызов
-                          <br />
-                          <span className="text-green-400/80 text-sm">
-                            Используется по лимиту, без привязки ко времени.
-                          </span>
-                        </p>
-                      </>
-                    )}
-                    {plan.name.toLowerCase() === "supreme" && (
-                      <>
-                        <p>
-                          Полный доступ к экосистеме GreenCore. Пакетные
-                          запросы, приоритетная обработка и ранний доступ к
-                          новым функциям.
-                        </p>
-                        <p>
-                          <strong>100 запросов</strong> • до{" "}
-                          <strong>20 карточек</strong> за вызов
-                          <br />
-                          <span className="text-green-400/80 text-sm">
-                            Используется по лимиту, без привязки ко времени.
-                          </span>
-                        </p>
-                      </>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col items-center mt-auto">
-                    <p className="text-green-400 font-semibold text-2xl mb-5">
-                      {plan.name.toLowerCase() === "free"
-                        ? "БЕСПЛАТНО"
-                        : plan.name.toLowerCase() === "premium"
-                        ? "590 ₽"
-                        : "2 490 ₽"}
-                    </p>
-                    <button
-                      disabled={loadingPlan === plan.name}
-                      className={`px-12 py-4 rounded-2xl ${
-                        loadingPlan === plan.name
-                          ? "bg-green-800/30 cursor-wait"
-                          : "bg-green-700/40 hover:bg-green-600/60"
-                      } text-green-100 font-medium text-lg shadow-[0_0_25px_rgba(83,255,148,0.5)] transition`}
-                      onClick={() => handleActivate(plan.name)}
-                    >
-                      {loadingPlan === plan.name
-                        ? "Создание..."
-                        : "Активировать"}
-                    </button>
-                  </div>
-                </div>
-
-                {index < plans.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 right-[-60px] w-px h-[280px] bg-gradient-to-b from-green-400/70 via-green-300/40 to-transparent blur-[1px] shadow-[0_0_15px_rgba(83,255,148,0.7)]" />
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+              {index < plans.length - 1 && (
+                <div className="hidden lg:block absolute top-1/2 right-[-60px] w-px h-[280px] bg-gradient-to-b from-green-500/0 via-green-500/50 to-green-500/0" />
+              )}
+            </div>
+          ))}
+        </div>
 
         <div className="flex justify-center mt-20">
           <a
@@ -214,6 +168,41 @@ const handleActivate = async (planName: string) => {
           </a>
         </div>
       </section>
+
+      {/* FREE MODAL */}
+      {showFreeModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
+          <div className="bg-black border border-green-400 rounded-2xl p-8 w-[420px]">
+            <h3 className="text-2xl text-green-300 mb-4">
+              Бесплатный доступ
+            </h3>
+
+            {!freeSuccess ? (
+              <>
+                <input
+                  type="email"
+                  placeholder="Введите email"
+                  value={freeEmail}
+                  onChange={(e) => setFreeEmail(e.target.value)}
+                  className="w-full mb-4 p-3 rounded bg-black border border-green-400 text-green-100"
+                />
+
+                <button
+                  disabled={freeLoading}
+                  onClick={handleFreeSubmit}
+                  className="w-full py-3 bg-green-700 rounded text-white"
+                >
+                  {freeLoading ? "Отправка..." : "Получить ключ"}
+                </button>
+              </>
+            ) : (
+              <p className="text-green-300">
+                Ключ отправлен на почту
+              </p>
+            )}
+          </div>
+        </div>
+      )}
     </main>
   );
 }
