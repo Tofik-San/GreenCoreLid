@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 
 export default function DocsPage() {
-  const [plans, setPlans] = useState<any[]>([]);
-  const [message, setMessage] = useState<string | null>(null);
-  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+ const [showFreeModal, setShowFreeModal] = useState(false);
+ const [freeEmail, setFreeEmail] = useState("");
+ const [freeLoading, setFreeLoading] = useState(false);
+ const [freeSuccess, setFreeSuccess] = useState(false);
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
@@ -26,43 +27,39 @@ export default function DocsPage() {
   // ────────────────────────────────
   // 💳 Обработчик кнопки "Активировать"
   // ────────────────────────────────
-  const handleActivate = async (planName: string) => {
-    try {
-      setLoadingPlan(planName);
-      setMessage("");
+const handleActivate = async (planName: string) => {
+  try {
+    setLoadingPlan(planName);
+    setMessage("");
 
-      if (planName.toLowerCase() === "free") {
-        // Бесплатный ключ
-        const res = await fetch(`${API_URL}/create_user_key?plan=free`, {
-          method: "POST",
-        });
-        const data = await res.json();
-        if (res.ok && data?.api_key) {
-          setMessage(`🔑 Ключ успешно создан: ${data.api_key}`);
-        } else {
-          throw new Error(data?.detail || "Ошибка при создании ключа.");
-        }
-      } else {
-        // YooKassa для платных тарифов
-        const email = "test@example.com";
-        const res = await fetch(
-          `${API_URL}/api/payment/session?plan=${planName}&email=${email}`,
-          { method: "POST" }
-        );
-        const data = await res.json();
-        if (res.ok && data.payment_url) {
-          window.location.href = data.payment_url;
-        } else {
-          throw new Error(data?.detail || "Не удалось создать платёж.");
-        }
-      }
-    } catch (err: any) {
-      setMessage(`⚠ ${err.message}`);
-    } finally {
+    if (planName.toLowerCase() === "free") {
+      setShowFreeModal(true);
       setLoadingPlan(null);
-      setTimeout(() => setMessage(null), 8000);
+      return;
     }
-  };
+
+    // ПЛАТНЫЕ ТАРИФЫ
+    const email = "test@example.com"; // временно
+    const res = await fetch(
+      `${API_URL}/api/payment/session?plan=${planName}&email=${email}`,
+      { method: "POST" }
+    );
+
+    const data = await res.json();
+
+    if (res.ok && data?.payment_url) {
+      window.location.href = data.payment_url;
+    } else {
+      throw new Error(data?.detail || "Ошибка при создании платежа");
+    }
+
+  } catch (err: any) {
+    setMessage(err.message || "Ошибка");
+    setTimeout(() => setMessage(null), 8000); // ⬅ ВОТ ЗДЕСЬ
+  } finally {
+    setLoadingPlan(null);
+  }
+};
 
   // ────────────────────────────────
   // 🌿 Иконки планов
