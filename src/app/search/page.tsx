@@ -163,9 +163,9 @@ export default function SearchPage() {
             onChange={handleChange}
           >
             <option value="">--</option>
-            <option value="none">none</option>
-            <option value="mild">mild</option>
-            <option value="toxic">toxic</option>
+            <option value="none">Нет</option>
+            <option value="mild">Умеренная</option>
+            <option value="toxic">Токсично</option>
           </select>
         </div>
 
