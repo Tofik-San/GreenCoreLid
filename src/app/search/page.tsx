@@ -187,6 +187,8 @@ export default function SearchPage() {
         >
             <option value="">--</option>
             <option value="annual">Однолетники</option>
+            <option value="perennial">Многолетники</option>
+            <option value="indoor">Комнатные</option>
           </select>
          </div>
 
