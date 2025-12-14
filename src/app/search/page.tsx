@@ -76,6 +76,12 @@ export default function SearchPage() {
       setLoading(false);
     }
   };
+  
+  const TOXICITY_LABELS: Record<string, string> = {
+    none: "нет",
+    mild: "умеренная",
+    toxic: "токсично",
+  };
 
   return (
     <main className="min-h-screen px-8 py-16 text-green-100 bg-[var(--gc-bg)]">
@@ -369,7 +375,11 @@ export default function SearchPage() {
                   🌿 <b>Для начинающих:</b>{" "}
                   {p.beginner_friendly ? "подходит" : "требует опыта"}
                 </p>
-                <p>⚠ <b>Токсичность:</b> {p.toxicity || "none"}</p>
+                <p>
+                  ⚠ <b>Токсичность:</b>{" "}
+                  {TOXICITY_LABELS[p.toxicity] || "—"}
+                </p>
+
                 {p.ru_regions && (
                   <p>📍 <b>Регионы РФ:</b> {p.ru_regions}</p>
                 )}
