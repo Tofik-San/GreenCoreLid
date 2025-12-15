@@ -76,7 +76,7 @@ export default function EmailModal({ plan, onClose }: Props) {
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[9999] isolate flex items-center justify-center bg-black/70 backdrop-blur-sm">
       <div className="relative w-full max-w-md rounded-2xl border border-green-400/40 bg-black/90 p-8 shadow-[0_0_40px_rgba(83,255,148,0.35)]">
         <h2 className="text-2xl text-green-300 mb-6 text-center">
           Введите email
