@@ -131,25 +131,19 @@ export default function DocsPage() {
             </div>
           )}
         </section>
-{/* GLOBAL CTA */}
-<div className="relative mt-24 mb-32 flex justify-center">
-  {/* glow background */}
-  <div className="absolute inset-x-0 -bottom-10 h-40 bg-green-500/10 blur-3xl" />
-
+<div className="mt-20 mb-28 flex justify-center">
   <Link
     href="/search"
     className="
-      relative
-      min-w-[520px]
-      h-[88px]
+      min-w-[420px]
+      h-[64px]
       flex items-center justify-center
       rounded-full
       bg-[#53ff94]
       text-[#0b1a0f]
-      text-3xl font-extrabold
-      shadow-[0_0_90px_rgba(83,255,148,1)]
-      hover:shadow-[0_0_120px_rgba(83,255,148,1)]
-      hover:scale-[1.06]
+      text-xl font-semibold
+      shadow-md
+      hover:shadow-lg
       transition-all duration-200
     "
   >
