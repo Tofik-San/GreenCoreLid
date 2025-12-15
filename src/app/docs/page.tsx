@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import EmailModal from "../../components/EmailModal";
 
 export default function DocsPage() {
-  const [plans, setPlans] = useState<any[]>([]);
-  const [showModal, setShowModal] = useState(false);
+ const [showModal, setShowModal] = useState(false);
+ const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
@@ -26,7 +26,8 @@ export default function DocsPage() {
   // ────────────────────────────────
   // 💳 Обработчик кнопки "Активировать"
   // ────────────────────────────────
-  const handleActivate = async (_planName: string) => {
+  const handleActivate = async (planName: string) => {
+    setSelectedPlan(planName);
     setShowModal(true);
     return;
   };
@@ -124,7 +125,13 @@ export default function DocsPage() {
         </section>
       </main>
 
-      {showModal && <EmailModal onClose={() => setShowModal(false)} />}
-    </>
-  );
-}
+     {showModal && (
+       <EmailModal
+         plan={selectedPlan}
+         onClose={() => {
+           setShowModal(false);
+           setSelectedPlan(null);
+     }}
+   />
+ )}
+ 

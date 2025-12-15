@@ -1,6 +1,12 @@
 "use client";
 
-export default function EmailModal({ onClose }: { onClose: () => void }) {
+export default function EmailModal({
+  plan,
+  onClose,
+}: {
+  plan: string | null;
+  onClose: () => void;
+}) {
   return (
     <div
       style={{
@@ -23,7 +29,11 @@ export default function EmailModal({ onClose }: { onClose: () => void }) {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        TEST MODAL<br />
+        TEST MODAL
+        <br />
+        <br />
+        PLAN: {plan ?? "—"}
+        <br />
         <br />
         Клик вне — закрыть
       </div>
