@@ -2,13 +2,12 @@
 
 import { useState } from "react";
 
-export default function EmailModal({
-  plan,
-  onClose,
-}: {
+type Props = {
   plan: string | null;
   onClose: () => void;
-}) {
+};
+
+export default function EmailModal({ plan, onClose }: Props) {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -18,44 +17,76 @@ export default function EmailModal({
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
     "https://web-production-310c7c.up.railway.app";
 
-  const isFree = plan?.toLowerCase() === "free";
+  const normalizedPlan = plan?.toLowerCase() || "";
+  const isFree = normalizedPlan === "free";
+  const isPaid = normalizedPlan === "premium" || normalizedPlan === "supreme";
+
+  const validateEmail = (value: string) =>
+    value.includes("@") && value.includes(".");
 
   const handleSubmit = async () => {
     setError(null);
 
-    if (!email || !email.includes("@")) {
+    if (!validateEmail(email)) {
       setError("Введите корректный email");
-      return;
-    }
-
-    if (!isFree) {
-      setError("Для платных тарифов логика будет добавлена позже");
       return;
     }
 
     try {
       setLoading(true);
 
-      const res = await fetch(
-        `${API_URL}/create_user_key?plan=free&email=${encodeURIComponent(
-          email
-        )}`,
-        { method: "POST" }
-      );
+      // ────────────────────────────────
+      // FREE — создаём ключ сразу
+      // ────────────────────────────────
+      if (isFree) {
+        const res = await fetch(
+          `${API_URL}/create_user_key?plan=free&email=${encodeURIComponent(
+            email
+          )}`,
+          { method: "POST" }
+        );
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data?.detail || "Ошибка при создании ключа");
+        if (!res.ok) {
+          throw new Error(data?.detail || "Ошибка при создании ключа");
+        }
+
+        if (!data?.api_key) {
+          throw new Error("API-ключ не получен");
+        }
+
+        setApiKey(data.api_key);
+        return;
       }
 
-      if (!data?.api_key) {
-        throw new Error("API-ключ не получен");
+      // ────────────────────────────────
+      // PAID — уходим в YooKassa
+      // ────────────────────────────────
+      if (isPaid) {
+        const res = await fetch(`${API_URL}/api/payment/session`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            plan: normalizedPlan,
+            email,
+          }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data?.confirmation_url) {
+          throw new Error("Не удалось создать платёжную сессию");
+        }
+
+        // редиректим пользователя
+        window.location.href = data.confirmation_url;
+        return;
       }
 
-      setApiKey(data.api_key);
+      setError("Неизвестный тариф");
     } catch (e: any) {
-      setError(e.message || "Неизвестная ошибка");
+      setError(e.message || "Ошибка");
     } finally {
       setLoading(false);
     }
@@ -83,7 +114,7 @@ export default function EmailModal({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ marginBottom: "16px", fontSize: "18px" }}>
+        <div style={{ marginBottom: "12px", fontSize: "18px" }}>
           PLAN: {plan}
         </div>
 
@@ -122,14 +153,22 @@ export default function EmailModal({
                 cursor: loading ? "default" : "pointer",
               }}
             >
-              {loading ? "Отправка..." : "Получить API-ключ"}
+              {loading
+                ? "Подождите..."
+                : isFree
+                ? "Получить API-ключ"
+                : "Перейти к оплате"}
             </button>
+
+            {!isFree && (
+              <div style={{ marginTop: "10px", fontSize: "12px", color: "#6f6" }}>
+                После оплаты API-ключ будет отправлен на почту
+              </div>
+            )}
           </>
         ) : (
           <>
-            <div style={{ marginBottom: "12px" }}>
-              Ваш API-ключ:
-            </div>
+            <div style={{ marginBottom: "8px" }}>Ваш API-ключ:</div>
             <div
               style={{
                 wordBreak: "break-all",
