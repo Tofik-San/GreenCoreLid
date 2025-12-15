@@ -1,10 +1,12 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import EmailModal from "../../components/EmailModal";
 
 export default function DocsPage() {
- const [showModal, setShowModal] = useState(false);
- const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [plans, setPlans] = useState<any[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
@@ -17,8 +19,11 @@ export default function DocsPage() {
     fetch(`${API_URL}/plans`)
       .then((res) => res.json())
       .then((data) => {
-        if (data?.plans && Array.isArray(data.plans)) setPlans(data.plans);
-        else setPlans([]);
+        if (data?.plans && Array.isArray(data.plans)) {
+          setPlans(data.plans);
+        } else {
+          setPlans([]);
+        }
       })
       .catch(() => setPlans([]));
   }, []);
@@ -87,6 +92,7 @@ export default function DocsPage() {
                           </p>
                         </>
                       )}
+
                       {plan.name.toLowerCase() === "premium" && (
                         <>
                           <p>Для дизайнеров и студий.</p>
@@ -96,6 +102,7 @@ export default function DocsPage() {
                           </p>
                         </>
                       )}
+
                       {plan.name.toLowerCase() === "supreme" && (
                         <>
                           <p>Полный доступ.</p>
@@ -125,13 +132,15 @@ export default function DocsPage() {
         </section>
       </main>
 
-     {showModal && (
-       <EmailModal
-         plan={selectedPlan}
-         onClose={() => {
-           setShowModal(false);
-           setSelectedPlan(null);
-     }}
-   />
- )}
- 
+      {showModal && (
+        <EmailModal
+          plan={selectedPlan}
+          onClose={() => {
+            setShowModal(false);
+            setSelectedPlan(null);
+          }}
+        />
+      )}
+    </>
+  );
+}
