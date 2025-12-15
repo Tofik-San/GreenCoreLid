@@ -131,25 +131,31 @@ export default function DocsPage() {
             </div>
           )}
         </section>
-<div className="mt-20 mb-32 flex justify-center">
+{/* GLOBAL CTA */}
+<div className="relative mt-24 mb-32 flex justify-center">
+  {/* glow background */}
+  <div className="absolute inset-x-0 -bottom-10 h-40 bg-green-500/10 blur-3xl" />
+
   <Link
     href="/search"
     className="
-      px-28 py-7
+      relative
+      min-w-[520px]
+      h-[88px]
+      flex items-center justify-center
       rounded-full
       bg-[#53ff94]
       text-[#0b1a0f]
-      text-2xl font-extrabold
-      shadow-[0_0_70px_rgba(83,255,148,1)]
-      hover:shadow-[0_0_90px_rgba(83,255,148,1)]
-      hover:scale-[1.05]
+      text-3xl font-extrabold
+      shadow-[0_0_90px_rgba(83,255,148,1)]
+      hover:shadow-[0_0_120px_rgba(83,255,148,1)]
+      hover:scale-[1.06]
       transition-all duration-200
     "
   >
     Перейти к поиску растений
   </Link>
 </div>
-
       </main>
 
       {showModal && (
