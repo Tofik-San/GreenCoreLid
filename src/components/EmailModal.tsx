@@ -90,8 +90,8 @@ export default function EmailModal({ plan, onClose }: Props) {
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(0,0,0,0.75)",
-        backdropFilter: "blur(4px)",
+        background: "rgba(20,30,22,0.55)",
+        backdropFilter: "blur(6px)",
         zIndex: 999999,
       }}
       onClick={onClose}
@@ -100,12 +100,12 @@ export default function EmailModal({ plan, onClose }: Props) {
         style={{
           maxWidth: "480px",
           margin: "120px auto",
-          padding: "32px",
-          borderRadius: "18px",
-          background: "linear-gradient(180deg, rgba(12,20,14,0.95), rgba(8,14,10,0.98))",
-          border: "1px solid rgba(83,255,148,0.18)",
-          boxShadow: "0 0 40px rgba(0,0,0,0.85)",
-          color: "#c6f7cb",
+          padding: "36px 34px",
+          borderRadius: "20px",
+          background: "linear-gradient(180deg,#f4f1ea,#ede8dc)",
+          border: "1px solid rgba(95,163,106,0.35)",
+          boxShadow: "0 20px 50px rgba(0,0,0,0.25)",
+          color: "#2a3a2f",
           textAlign: "center",
         }}
         onClick={(e) => e.stopPropagation()}
@@ -115,9 +115,9 @@ export default function EmailModal({ plan, onClose }: Props) {
           style={{
             fontSize: "20px",
             fontWeight: 700,
-            letterSpacing: "0.12em",
-            color: "#8effa9",
-            marginBottom: "14px",
+            letterSpacing: "0.14em",
+            color: "#3f7f4a",
+            marginBottom: "10px",
           }}
         >
           GreenCoreAPI
@@ -126,9 +126,9 @@ export default function EmailModal({ plan, onClose }: Props) {
         {/* PLAN */}
         <div
           style={{
-            fontSize: "14px",
-            letterSpacing: "0.2em",
-            color: "#6fdc95",
+            fontSize: "13px",
+            letterSpacing: "0.22em",
+            color: "#5fa36a",
             marginBottom: "26px",
             textTransform: "uppercase",
           }}
@@ -143,7 +143,7 @@ export default function EmailModal({ plan, onClose }: Props) {
               style={{
                 fontSize: "15px",
                 marginBottom: "10px",
-                color: "#bde6c2",
+                color: "#2a3a2f",
               }}
             >
               Введите вашу почту
@@ -157,13 +157,14 @@ export default function EmailModal({ plan, onClose }: Props) {
               style={{
                 width: "100%",
                 padding: "12px 14px",
-                borderRadius: "10px",
-                background: "rgba(0,0,0,0.55)",
-                border: "1px solid rgba(83,255,148,0.35)",
-                color: "#c6f7cb",
+                borderRadius: "12px",
+                background: "#faf8f3",
+                border: "1px solid rgba(95,163,106,0.45)",
+                color: "#2a3a2f",
                 fontSize: "15px",
                 outline: "none",
                 marginBottom: "8px",
+                boxShadow: "inset 0 1px 4px rgba(0,0,0,0.08)",
               }}
             />
 
@@ -171,7 +172,7 @@ export default function EmailModal({ plan, onClose }: Props) {
             <div
               style={{
                 fontSize: "12px",
-                color: "rgba(169,216,178,0.75)",
+                color: "#5c6f63",
                 marginBottom: "18px",
               }}
             >
@@ -179,7 +180,7 @@ export default function EmailModal({ plan, onClose }: Props) {
             </div>
 
             {error && (
-              <div style={{ color: "#ff7b7b", marginBottom: "12px" }}>
+              <div style={{ color: "#b94a4a", marginBottom: "12px" }}>
                 {error}
               </div>
             )}
@@ -190,15 +191,15 @@ export default function EmailModal({ plan, onClose }: Props) {
               style={{
                 width: "100%",
                 padding: "14px",
-                borderRadius: "12px",
+                borderRadius: "14px",
                 background: loading
-                  ? "rgba(83,255,148,0.25)"
-                  : "linear-gradient(90deg,#3fd67c,#53ff94)",
-                color: "#0b1a0f",
+                  ? "#cfd8cf"
+                  : "linear-gradient(90deg,#5fa36a,#7fbf8a)",
+                color: "#ffffff",
                 fontWeight: 600,
                 fontSize: "15px",
                 cursor: loading ? "default" : "pointer",
-                boxShadow: "0 0 14px rgba(83,255,148,0.35)",
+                boxShadow: "0 6px 18px rgba(95,163,106,0.35)",
                 border: "none",
               }}
             >
@@ -214,7 +215,7 @@ export default function EmailModal({ plan, onClose }: Props) {
                 style={{
                   marginTop: "14px",
                   fontSize: "12px",
-                  color: "rgba(169,216,178,0.75)",
+                  color: "#6b7d72",
                 }}
               >
                 После оплаты API-ключ будет отправлен на почту
@@ -223,15 +224,19 @@ export default function EmailModal({ plan, onClose }: Props) {
           </>
         ) : (
           <>
-            <div style={{ marginBottom: "8px" }}>Ваш API-ключ:</div>
+            <div style={{ marginBottom: "8px", fontWeight: 500 }}>
+              Ваш API-ключ:
+            </div>
             <div
               style={{
                 wordBreak: "break-all",
                 padding: "12px",
-                borderRadius: "10px",
-                background: "rgba(0,0,0,0.5)",
-                border: "1px solid rgba(83,255,148,0.35)",
-                marginBottom: "14px",
+                borderRadius: "12px",
+                background: "#faf8f3",
+                border: "1px solid rgba(95,163,106,0.45)",
+                marginBottom: "16px",
+                color: "#2a3a2f",
+                boxShadow: "inset 0 1px 4px rgba(0,0,0,0.08)",
               }}
             >
               {apiKey}
@@ -241,12 +246,13 @@ export default function EmailModal({ plan, onClose }: Props) {
               style={{
                 width: "100%",
                 padding: "14px",
-                borderRadius: "12px",
-                background: "linear-gradient(90deg,#3fd67c,#53ff94)",
-                color: "#0b1a0f",
+                borderRadius: "14px",
+                background: "linear-gradient(90deg,#5fa36a,#7fbf8a)",
+                color: "#ffffff",
                 fontWeight: 600,
                 cursor: "pointer",
                 border: "none",
+                boxShadow: "0 6px 18px rgba(95,163,106,0.35)",
               }}
             >
               Закрыть
