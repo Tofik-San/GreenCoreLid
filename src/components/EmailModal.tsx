@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Props = {
   plan: string | null;
@@ -8,21 +9,40 @@ type Props = {
 };
 
 export default function EmailModal({ plan, onClose }: Props) {
+  const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
     "https://web-production-310c7c.up.railway.app";
+
+  // Гарантируем рендер только в браузере
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // ESC для закрытия
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === overlayRef.current) onClose();
+  };
 
   const handleSubmit = async () => {
     if (!email || !email.includes("@")) {
       setError("Введите корректный email");
       return;
     }
-
     if (!plan) {
       setError("План не выбран");
       return;
@@ -33,38 +53,23 @@ export default function EmailModal({ plan, onClose }: Props) {
     setMessage(null);
 
     try {
-      // FREE
       if (plan.toLowerCase() === "free") {
         const res = await fetch(
-          `${API_URL}/create_user_key?plan=free&email=${encodeURIComponent(
-            email
-          )}`,
+          `${API_URL}/create_user_key?plan=free&email=${encodeURIComponent(email)}`,
           { method: "POST" }
         );
-
         const data = await res.json();
+        if (!res.ok) throw new Error(data?.detail || "Ошибка создания ключа");
 
-        if (!res.ok) {
-          throw new Error(data?.detail || "Ошибка создания ключа");
-        }
-
-        setMessage(
-          "API-ключ отправлен на почту. Проверьте входящие и спам."
-        );
+        setMessage("API-ключ отправлен на почту. Проверьте входящие и спам.");
       } else {
-        // PREMIUM / SUPREME
         const res = await fetch(
-          `${API_URL}/api/payment/session?plan=${plan}&email=${encodeURIComponent(
-            email
-          )}`,
+          `${API_URL}/api/payment/session?plan=${plan}&email=${encodeURIComponent(email)}`,
           { method: "POST" }
         );
-
         const data = await res.json();
-
-        if (!res.ok || !data.payment_url) {
+        if (!res.ok || !data.payment_url)
           throw new Error(data?.detail || "Ошибка создания платежа");
-        }
 
         window.location.href = data.payment_url;
       }
@@ -75,12 +80,19 @@ export default function EmailModal({ plan, onClose }: Props) {
     }
   };
 
-  return (
-    <div className="fixed inset-0 z-[9999] isolate flex items-center justify-center bg-black/70 backdrop-blur-sm">
+  if (!mounted) return null;
+
+  // Портал: всегда поверх любых фоновых ::before/::after и z-index’ов
+  return createPortal(
+    <div
+      ref={overlayRef}
+      onClick={handleOverlayClick}
+      className="fixed inset-0 z-[2147483000] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+      aria-modal="true"
+      role="dialog"
+    >
       <div className="relative w-full max-w-md rounded-2xl border border-green-400/40 bg-black/90 p-8 shadow-[0_0_40px_rgba(83,255,148,0.35)]">
-        <h2 className="text-2xl text-green-300 mb-6 text-center">
-          Введите email
-        </h2>
+        <h2 className="text-2xl text-green-300 mb-6 text-center">Введите email</h2>
 
         <p className="text-green-200 text-sm mb-6 text-center">
           API-ключ будет отправлен на указанную почту
@@ -95,17 +107,8 @@ export default function EmailModal({ plan, onClose }: Props) {
           disabled={loading}
         />
 
-        {error && (
-          <div className="mb-4 text-red-400 text-sm text-center">
-            {error}
-          </div>
-        )}
-
-        {message && (
-          <div className="mb-4 text-green-400 text-sm text-center">
-            {message}
-          </div>
-        )}
+        {error && <div className="mb-4 text-red-400 text-sm text-center">{error}</div>}
+        {message && <div className="mb-4 text-green-400 text-sm text-center">{message}</div>}
 
         <div className="flex gap-4 mt-6">
           <button
@@ -125,6 +128,7 @@ export default function EmailModal({ plan, onClose }: Props) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
