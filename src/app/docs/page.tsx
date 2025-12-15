@@ -131,14 +131,20 @@ export default function DocsPage() {
             </div>
           )}
         </section>
-<div className="mt-24 flex justify-center">
+<div className="mt-28 flex justify-center">
   <Link
     href="/search"
-    className="px-16 py-5 rounded-3xl
-               bg-green-700/50 hover:bg-green-600/70
-               text-green-100 text-xl font-semibold
-               shadow-[0_0_35px_rgba(83,255,148,0.6)]
-               transition"
+    className="
+      px-20 py-5
+      rounded-full
+      bg-[#53ff94]
+      text-[#0b1a0f]
+      text-xl font-bold
+      shadow-[0_0_45px_rgba(83,255,148,0.9)]
+      hover:shadow-[0_0_65px_rgba(83,255,148,1)]
+      hover:scale-[1.03]
+      transition-all duration-200
+    "
   >
     Перейти к поиску растений
   </Link>
