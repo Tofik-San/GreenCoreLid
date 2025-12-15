@@ -131,18 +131,18 @@ export default function DocsPage() {
             </div>
           )}
         </section>
-<div className="mt-28 flex justify-center">
+<div className="mt-20 mb-32 flex justify-center">
   <Link
     href="/search"
     className="
-      px-20 py-5
+      px-28 py-7
       rounded-full
       bg-[#53ff94]
       text-[#0b1a0f]
-      text-xl font-bold
-      shadow-[0_0_45px_rgba(83,255,148,0.9)]
-      hover:shadow-[0_0_65px_rgba(83,255,148,1)]
-      hover:scale-[1.03]
+      text-2xl font-extrabold
+      shadow-[0_0_70px_rgba(83,255,148,1)]
+      hover:shadow-[0_0_90px_rgba(83,255,148,1)]
+      hover:scale-[1.05]
       transition-all duration-200
     "
   >
