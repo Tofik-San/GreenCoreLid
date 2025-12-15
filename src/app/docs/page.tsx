@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import EmailModal from "@/components/EmailModal";
+import EmailModal from "../../components/EmailModal";
 
 export default function DocsPage() {
   const [plans, setPlans] = useState<any[]>([]);
@@ -44,13 +44,10 @@ export default function DocsPage() {
     }
   };
 
-  // ────────────────────────────────
-  // 🖼️ Интерфейс
-  // ────────────────────────────────
   return (
     <>
       <main className="min-h-screen px-10 py-20 text-center text-green-100">
-        <h1 className="text-5xl mb-16 text-green-400 drop-shadow-[0_0_10px_rgba(163,255,163,0.7)]">
+        <h1 className="text-5xl mb-16 text-green-400">
           Документация API
         </h1>
 
@@ -61,121 +58,53 @@ export default function DocsPage() {
             <p className="text-green-300">Нет данных о планах.</p>
           ) : (
             <div className="flex flex-wrap justify-center gap-32 relative">
-              {plans.map((plan: any, index: number) => (
-                <div
-                  key={plan.id}
-                  className="relative flex flex-col items-center mx-4 my-6"
-                >
-                  <div className="bg-black/40 transition-all duration-300 rounded-3xl shadow-[0_0_50px_rgba(83,255,148,0.25)] p-16 w-[420px] min-h-[450px] flex flex-col items-center justify-between hover:shadow-[0_0_70px_rgba(83,255,148,0.45)]">
+              {plans.map((plan: any) => (
+                <div key={plan.id} className="flex flex-col items-center">
+                  <div className="bg-black/40 rounded-3xl p-16 w-[420px] min-h-[450px] flex flex-col items-center justify-between">
                     <div className="flex flex-col items-center mb-8">
-                      <span className="text-7xl mb-5 drop-shadow-[0_0_20px_rgba(83,255,148,0.6)]">
+                      <span className="text-7xl mb-5">
                         {getPlanIcon(plan.name)}
                       </span>
-                      <h3 className="text-3xl text-green-300 font-semibold drop-shadow-[0_0_6px_rgba(83,255,148,0.6)] uppercase tracking-wide">
+                      <h3 className="text-3xl text-green-300 uppercase">
                         {plan.name}
                       </h3>
                     </div>
 
-                    <div className="text-green-200 mb-10 text-lg leading-relaxed space-y-5 text-center max-w-[340px]">
+                    <div className="text-green-200 mb-10 text-lg text-center">
                       {plan.name.toLowerCase() === "free" && (
                         <>
-                          <p>
-                            Базовый доступ для тестирования и личных
-                            экспериментов. Позволяет изучить структуру API и
-                            оценить качество данных.
-                          </p>
-                          <p>
-                            <strong>5 запросов</strong> • до{" "}
-                            <strong>5 карточек</strong> за один вызов
-                          </p>
+                          <p>Базовый доступ для тестирования.</p>
+                          <p><strong>5 запросов</strong></p>
                         </>
                       )}
-
                       {plan.name.toLowerCase() === "premium" && (
                         <>
-                          <p>
-                            Оптимальный выбор для дизайнеров и небольших
-                            студий. Расширенные фильтры, выгрузка данных и
-                            стабильные лимиты для работы над проектами.
-                          </p>
-                          <p>
-                            <strong>20 запросов</strong> • до{" "}
-                            <strong>5 карточек</strong> за вызов
-                            <br />
-                            <span className="text-green-400/80 text-sm">
-                              Используется по лимиту, без привязки ко
-                              времени.
-                            </span>
-                          </p>
+                          <p>Для дизайнеров и студий.</p>
+                          <p><strong>20 запросов</strong></p>
                         </>
                       )}
-
                       {plan.name.toLowerCase() === "supreme" && (
                         <>
-                          <p>
-                            Полный доступ к экосистеме GreenCore. Пакетные
-                            запросы, приоритетная обработка и ранний доступ
-                            к новым функциям.
-                          </p>
-                          <p>
-                            <strong>100 запросов</strong> • до{" "}
-                            <strong>20 карточек</strong> за вызов
-                            <br />
-                            <span className="text-green-400/80 text-sm">
-                              Используется по лимиту, без привязки ко
-                              времени.
-                            </span>
-                          </p>
+                          <p>Полный доступ.</p>
+                          <p><strong>100 запросов</strong></p>
                         </>
                       )}
                     </div>
 
-                    <div className="flex flex-col items-center mt-auto">
-                      <p className="text-green-400 font-semibold text-2xl mb-5">
-                        {plan.name.toLowerCase() === "free"
-                          ? "БЕСПЛАТНО"
-                          : plan.name.toLowerCase() === "premium"
-                          ? "590 ₽"
-                          : "2 490 ₽"}
-                      </p>
-
-                      <button
-                        className="px-12 py-4 rounded-2xl bg-green-700/40 hover:bg-green-600/60 text-green-100 font-medium text-lg shadow-[0_0_25px_rgba(83,255,148,0.5)] transition"
-                        onClick={() => {
-                          setSelectedPlan(plan.name);
-                          setShowEmailModal(true);
-                        }}
-                      >
-                        Активировать
-                      </button>
-                    </div>
+                    <button
+                      className="px-12 py-4 rounded-2xl bg-green-700/40 hover:bg-green-600/60"
+                      onClick={() => {
+                        setSelectedPlan(plan.name);
+                        setShowEmailModal(true);
+                      }}
+                    >
+                      Активировать
+                    </button>
                   </div>
-
-                  {index < plans.length - 1 && (
-                    <div className="hidden lg:block absolute top-1/2 right-[-60px] w-px h-[280px] bg-gradient-to-b from-green-400/70 via-green-300/40 to-transparent blur-[1px] shadow-[0_0_15px_rgba(83,255,148,0.7)]" />
-                  )}
                 </div>
               ))}
             </div>
           )}
-
-          <div className="flex justify-center mt-20">
-            <a
-              href="/search"
-              className="gc-btn"
-              style={{
-                fontSize: "16px",
-                padding: "0.9rem 1.8rem",
-                borderRadius: "1rem",
-                boxShadow:
-                  "0 0 14px rgba(173,255,83,0.4), inset 0 -3px 8px rgba(0,0,0,0.25)",
-                letterSpacing: "0.5px",
-                filter: "brightness(1.2)",
-              }}
-            >
-              Перейти к поиску растений
-            </a>
-          </div>
         </section>
       </main>
 
