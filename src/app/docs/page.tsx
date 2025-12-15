@@ -131,19 +131,19 @@ export default function DocsPage() {
             </div>
           )}
         </section>
-<div className="mt-20 mb-28 flex justify-center">
+<div className="mt-16 mb-24 flex justify-center">
   <Link
     href="/search"
     className="
-      min-w-[420px]
-      h-[64px]
+      min-w-[300px]
+      h-[56px]
       flex items-center justify-center
       rounded-full
       bg-[#53ff94]
       text-[#0b1a0f]
-      text-xl font-semibold
-      shadow-md
-      hover:shadow-lg
+      text-2xl font-bold
+      shadow-sm
+      hover:shadow-md
       transition-all duration-200
     "
   >
