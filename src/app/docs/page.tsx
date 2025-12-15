@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import EmailModal from "../../components/EmailModal";
+import Link from "next/link";
 
 export default function DocsPage() {
   const [plans, setPlans] = useState<any[]>([]);
@@ -130,6 +131,19 @@ export default function DocsPage() {
             </div>
           )}
         </section>
+<div className="mt-24 flex justify-center">
+  <Link
+    href="/search"
+    className="px-16 py-5 rounded-3xl
+               bg-green-700/50 hover:bg-green-600/70
+               text-green-100 text-xl font-semibold
+               shadow-[0_0_35px_rgba(83,255,148,0.6)]
+               transition"
+  >
+    Перейти к поиску растений
+  </Link>
+</div>
+
       </main>
 
       {showModal && (
