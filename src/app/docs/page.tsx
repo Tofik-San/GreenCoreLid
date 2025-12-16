@@ -13,9 +13,6 @@ export default function DocsPage() {
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
     "https://web-production-310c7c.up.railway.app";
 
-  // ────────────────────────────────
-  // 📦 Загрузка тарифов из API
-  // ────────────────────────────────
   useEffect(() => {
     fetch(`${API_URL}/plans`)
       .then((res) => res.json())
@@ -29,18 +26,12 @@ export default function DocsPage() {
       .catch(() => setPlans([]));
   }, []);
 
-  // ────────────────────────────────
-  // 💳 Обработчик кнопки "Активировать"
-  // ────────────────────────────────
   const handleActivate = async (planName: string) => {
     setSelectedPlan(planName);
     setShowModal(true);
     return;
   };
 
-  // ────────────────────────────────
-  // 🌿 Иконки планов
-  // ────────────────────────────────
   const getPlanIcon = (name: string) => {
     switch (name?.toLowerCase()) {
       case "free":
@@ -86,7 +77,12 @@ export default function DocsPage() {
                     <div className="text-green-200 mb-10 text-lg leading-relaxed space-y-5 text-center max-w-[340px]">
                       {plan.name.toLowerCase() === "free" && (
                         <>
-                          <p>Базовый доступ для тестирования.</p>
+                          <p>
+                            Ознакомительный доступ для тестирования API и структуры данных.
+                          </p>
+                          <p>
+                            Подходит для первых запросов и проверки логики фильтров.
+                          </p>
                           <p>
                             <strong>5 запросов</strong> • до{" "}
                             <strong>5 карточек</strong>
@@ -96,7 +92,12 @@ export default function DocsPage() {
 
                       {plan.name.toLowerCase() === "premium" && (
                         <>
-                          <p>Для дизайнеров и студий.</p>
+                          <p>
+                            Рабочий тариф для дизайнеров, проектировщиков и студий.
+                          </p>
+                          <p>
+                            Оптимален для подбора растений под реальные задачи и сценарии.
+                          </p>
                           <p>
                             <strong>20 запросов</strong> • до{" "}
                             <strong>5 карточек</strong>
@@ -106,7 +107,12 @@ export default function DocsPage() {
 
                       {plan.name.toLowerCase() === "supreme" && (
                         <>
-                          <p>Полный доступ.</p>
+                          <p>
+                            Расширенный доступ для активной и системной работы с базой.
+                          </p>
+                          <p>
+                            Подходит для сервисов, интеграций и пакетных выборок.
+                          </p>
                           <p>
                             <strong>100 запросов</strong> • до{" "}
                             <strong>20 карточек</strong>
@@ -131,25 +137,26 @@ export default function DocsPage() {
             </div>
           )}
         </section>
-<div className="mt-16 mb-24 flex justify-center">
-  <Link
-    href="/search"
-    className="
-      min-w-[300px]
-      h-[56px]
-      flex items-center justify-center
-      rounded-full
-      bg-[#53ff94]
-      text-[#0b1a0f]
-      text-2xl font-bold
-      shadow-sm
-      hover:shadow-md
-      transition-all duration-200
-    "
-  >
-    Перейти к поиску растений
-  </Link>
-</div>
+
+        <div className="mt-16 mb-24 flex justify-center">
+          <Link
+            href="/search"
+            className="
+              min-w-[300px]
+              h-[56px]
+              flex items-center justify-center
+              rounded-full
+              bg-[#53ff94]
+              text-[#0b1a0f]
+              text-2xl font-bold
+              shadow-sm
+              hover:shadow-md
+              transition-all duration-200
+            "
+          >
+            Перейти к поиску растений
+          </Link>
+        </div>
       </main>
 
       {showModal && (
