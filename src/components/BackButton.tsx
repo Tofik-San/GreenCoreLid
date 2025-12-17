@@ -6,7 +6,7 @@ export default function BackButton() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // ❌ на главной не показываем
+  // не показываем на главной
   if (pathname === "/") return null;
 
   return (
@@ -17,21 +17,21 @@ export default function BackButton() {
         top-6
         left-6
         z-[9999]
-        px-4
-        py-2
-        rounded-full
+        gc-btn
+        px-6
+        py-3
         text-sm
-        font-medium
-        text-green-200
-        border
-        border-green-500/40
-        bg-black/60
-        backdrop-blur-md
-        shadow-[0_0_12px_rgba(83,255,148,0.35)]
-        hover:bg-green-700/30
-        hover:text-green-100
+        font-semibold
+        rounded-full
+        shadow-[0_0_18px_rgba(83,255,148,0.45)]
+        hover:translate-y-[-1px]
         transition-all
       "
+      style={{
+        background: "linear-gradient(90deg,#3fd67c,#53ff94)",
+        color: "#04140a",
+        letterSpacing: "0.4px",
+      }}
     >
       ← Назад
     </button>
