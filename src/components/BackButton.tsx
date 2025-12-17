@@ -1,13 +1,22 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function BackButton() {
   const router = useRouter();
   const pathname = usePathname();
+  const [isMobile, setIsMobile] = useState(false);
 
-  // не показываем на главной
-  if (pathname === "/") return null;
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  // ❌ не показываем на главной и на мобильных
+  if (pathname === "/" || isMobile) return null;
 
   return (
     <button
@@ -24,7 +33,6 @@ export default function BackButton() {
         shadow-[0_0_18px_rgba(83,255,148,0.45)]
         hover:translate-y-[-1px]
         transition-all
-        hidden md:inline-flex
       "
       style={{
         top: "4.3rem",
