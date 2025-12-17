@@ -6,7 +6,6 @@ export default function BackButton() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // не показываем на главной
   if (pathname === "/") return null;
 
   return (
@@ -14,8 +13,6 @@ export default function BackButton() {
       onClick={() => router.back()}
       className="
         fixed
-        top-12
-        left-12
         z-[9999]
         gc-btn
         px-6
@@ -28,6 +25,8 @@ export default function BackButton() {
         transition-all
       "
       style={{
+        top: "4.5rem",     // ⬇ ниже
+        left: "4.5rem",    // ➡ правее
         background: "linear-gradient(90deg,#3fd67c,#53ff94)",
         color: "#04140a",
         letterSpacing: "0.4px",
