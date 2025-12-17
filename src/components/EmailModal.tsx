@@ -50,10 +50,6 @@ export default function EmailModal({ plan, onClose }: Props) {
           throw new Error(data?.detail || "Ошибка при создании ключа");
         }
 
-        if (!data?.api_key) {
-          throw new Error("API-ключ не получен");
-        }
-
         setApiKey(data.api_key);
         return;
       }
@@ -69,7 +65,6 @@ export default function EmailModal({ plan, onClose }: Props) {
         });
 
         const data = await res.json();
-
         if (!res.ok || !data?.confirmation_url) {
           throw new Error("Не удалось создать платёжную сессию");
         }
@@ -77,8 +72,6 @@ export default function EmailModal({ plan, onClose }: Props) {
         window.location.href = data.confirmation_url;
         return;
       }
-
-      setError("Неизвестный тариф");
     } catch (e: any) {
       setError(e.message || "Ошибка");
     } finally {
@@ -95,66 +88,70 @@ export default function EmailModal({ plan, onClose }: Props) {
 
   return (
     <div
+      onClick={onClose}
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(10,14,12,0.65)",
+        background: "rgba(20,24,22,0.6)",
         backdropFilter: "blur(6px)",
         zIndex: 999999,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "24px",
       }}
-      onClick={onClose}
     >
       <div
+        onClick={(e) => e.stopPropagation()}
         style={{
           position: "relative",
-          maxWidth: "600px",
-          maxHeight: "calc(100vh - 160px)",
-          overflowY: "auto",
-          margin: "80px auto",
+          width: "100%",
+          maxWidth: "560px",
           padding: "48px 52px",
           borderRadius: "28px",
-          background: "#f4efe6",
-          border: "1.5px solid rgba(110,160,120,0.65)",
-          boxShadow: "0 22px 48px rgba(0,0,0,0.22)",
+          background: "#f5efe4",
+          border: "1.5px solid #9fc3ab",
+          boxShadow: "0 30px 70px rgba(0,0,0,0.25)",
+          fontFamily:
+            "-apple-system, BlinkMacSystemFont, Segoe UI, Inter, Roboto, sans-serif",
           color: "#1f2a24",
-          textAlign: "center",
         }}
-        onClick={(e) => e.stopPropagation()}
       >
-        {/* DECORATIVE ECO LINES */}
+        {/* декоративные линии */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(600px 220px at -5% 15%, rgba(90,150,110,0.28), transparent 65%)," +
-              "radial-gradient(520px 200px at 105% 90%, rgba(90,150,110,0.24), transparent 60%)",
+              "radial-gradient(600px 240px at -10% 10%, rgba(130,180,150,0.25), transparent 60%)," +
+              "radial-gradient(520px 220px at 110% 90%, rgba(130,180,150,0.22), transparent 60%)",
             pointerEvents: "none",
+            borderRadius: "28px",
           }}
         />
 
-        {/* CONTENT */}
         <div style={{ position: "relative", zIndex: 1 }}>
-          {/* BRAND */}
+          {/* бренд */}
           <div
             style={{
-              fontSize: "28px",
+              fontSize: "26px",
               fontWeight: 700,
               letterSpacing: "0.08em",
-              color: "#244d36",
+              color: "#2e5b45",
+              textAlign: "center",
               marginBottom: "6px",
             }}
           >
-            GreenCoreAPI
+            GreenCore-API
           </div>
 
-          {/* PLAN */}
           <div
             style={{
-              fontSize: "14px",
+              textAlign: "center",
+              fontSize: "13px",
               fontWeight: 600,
               letterSpacing: "0.18em",
-              color: "#4f7f64",
+              color: "#6a907c",
               marginBottom: "36px",
               textTransform: "uppercase",
             }}
@@ -166,9 +163,10 @@ export default function EmailModal({ plan, onClose }: Props) {
             <>
               <div
                 style={{
-                  fontSize: "18px",
+                  fontSize: "17px",
                   fontWeight: 600,
-                  marginBottom: "18px",
+                  marginBottom: "16px",
+                  textAlign: "center",
                 }}
               >
                 Введите вашу почту
@@ -176,20 +174,19 @@ export default function EmailModal({ plan, onClose }: Props) {
 
               <input
                 type="email"
-                placeholder="email@example.com"
                 value={email}
+                placeholder="email@example.com"
                 onChange={(e) => setEmail(e.target.value)}
                 style={{
                   width: "100%",
                   padding: "16px 18px",
                   borderRadius: "14px",
-                  background: "#faf8f3",
-                  border: "1px solid rgba(110,160,120,0.55)",
+                  border: "1px solid #9fc3ab",
+                  background: "#faf7f1",
                   fontSize: "16px",
-                  fontWeight: 500,
-                  outline: "none",
-                  marginBottom: "16px",
                   color: "#1f2a24",
+                  outline: "none",
+                  marginBottom: "14px",
                 }}
               />
 
@@ -197,19 +194,21 @@ export default function EmailModal({ plan, onClose }: Props) {
                 style={{
                   fontSize: "14px",
                   lineHeight: 1.6,
-                  color: "#39453e",
-                  marginBottom: "28px",
+                  color: "#3b4a43",
+                  marginBottom: "24px",
+                  textAlign: "center",
                 }}
               >
-                Внимательно проверьте email перед оплатой
+                Убедитесь, что email введён корректно
               </div>
 
               {error && (
                 <div
                   style={{
                     color: "#8a2e2e",
-                    fontSize: "15px",
-                    marginBottom: "18px",
+                    fontSize: "14px",
+                    marginBottom: "16px",
+                    textAlign: "center",
                   }}
                 >
                   {error}
@@ -223,13 +222,13 @@ export default function EmailModal({ plan, onClose }: Props) {
                   width: "100%",
                   padding: "18px",
                   borderRadius: "18px",
-                  background: loading ? "#a7b6ae" : "#5f9b75",
+                  border: "none",
+                  background: loading ? "#b7c6be" : "#6fae8a",
                   color: "#ffffff",
-                  fontWeight: 600,
                   fontSize: "16px",
+                  fontWeight: 600,
                   letterSpacing: "0.04em",
                   cursor: loading ? "default" : "pointer",
-                  border: "none",
                 }}
               >
                 {loading
@@ -242,12 +241,13 @@ export default function EmailModal({ plan, onClose }: Props) {
               {!isFree && (
                 <div
                   style={{
-                    marginTop: "20px",
-                    fontSize: "14px",
-                    color: "#39453e",
+                    marginTop: "18px",
+                    fontSize: "13px",
+                    color: "#3b4a43",
+                    textAlign: "center",
                   }}
                 >
-                  После оплаты API-ключ будет отправлен на почту
+                  API-ключ будет отправлен на почту после оплаты
                 </div>
               )}
             </>
@@ -255,9 +255,10 @@ export default function EmailModal({ plan, onClose }: Props) {
             <>
               <div
                 style={{
-                  marginBottom: "14px",
-                  fontSize: "16px",
+                  fontSize: "15px",
                   fontWeight: 600,
+                  marginBottom: "10px",
+                  textAlign: "center",
                 }}
               >
                 Ваш API-ключ
@@ -265,14 +266,13 @@ export default function EmailModal({ plan, onClose }: Props) {
 
               <div
                 style={{
-                  wordBreak: "break-all",
                   padding: "16px",
                   borderRadius: "14px",
-                  background: "#faf8f3",
-                  border: "1px solid rgba(110,160,120,0.55)",
-                  marginBottom: "18px",
+                  background: "#faf7f1",
+                  border: "1px solid #9fc3ab",
                   fontSize: "14px",
-                  fontWeight: 500,
+                  wordBreak: "break-all",
+                  marginBottom: "18px",
                 }}
               >
                 {apiKey}
@@ -284,32 +284,30 @@ export default function EmailModal({ plan, onClose }: Props) {
                   width: "100%",
                   padding: "14px",
                   borderRadius: "16px",
-                  background: copied ? "#7fb08f" : "#6aa887",
-                  color: "#ffffff",
-                  fontWeight: 600,
-                  fontSize: "15px",
-                  letterSpacing: "0.04em",
-                  cursor: "pointer",
                   border: "none",
-                  marginBottom: "18px",
+                  background: copied ? "#86bfa0" : "#6fae8a",
+                  color: "#ffffff",
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  marginBottom: "14px",
+                  cursor: "pointer",
                 }}
               >
-                {copied ? "Скопировано ✓" : "Скопировать API-ключ"}
+                {copied ? "Скопировано ✓" : "Скопировать ключ"}
               </button>
 
               <button
                 onClick={onClose}
                 style={{
                   width: "100%",
-                  padding: "18px",
-                  borderRadius: "18px",
+                  padding: "16px",
+                  borderRadius: "16px",
+                  border: "none",
                   background: "#5f9b75",
                   color: "#ffffff",
+                  fontSize: "15px",
                   fontWeight: 600,
-                  fontSize: "16px",
-                  letterSpacing: "0.04em",
                   cursor: "pointer",
-                  border: "none",
                 }}
               >
                 Закрыть
