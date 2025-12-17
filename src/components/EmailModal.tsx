@@ -22,6 +22,47 @@ export default function EmailModal({ plan, onClose }: Props) {
   const isFree = normalizedPlan === "free";
   const isPaid = normalizedPlan === "premium" || normalizedPlan === "supreme";
 
+  const validateEmail = (v: string) => v.includes("@") && v.includes(".");
+
+  const handleSubmit = async () => {
+    setError(null);
+    if (!validateEmail(email)) {
+      setError("Введите корректный email");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      if (isFree) {
+        const res = await fetch(
+          `${API_URL}/create_user_key?plan=free&email=${encodeURIComponent(email)}`,
+          { method: "POST" }
+        );
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.detail || "Ошибка");
+        setApiKey(data.api_key);
+        return;
+      }
+
+      if (isPaid) {
+        const res = await fetch(`${API_URL}/api/payment/session`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ plan: normalizedPlan, email }),
+        });
+        const data = await res.json();
+        if (!res.ok || !data?.confirmation_url)
+          throw new Error("Ошибка оплаты");
+        window.location.href = data.confirmation_url;
+      }
+    } catch (e: any) {
+      setError(e.message || "Ошибка");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleCopy = async () => {
     if (!apiKey) return;
     await navigator.clipboard.writeText(apiKey);
@@ -42,70 +83,47 @@ export default function EmailModal({ plan, onClose }: Props) {
     >
       <div
         style={{
-          maxWidth: "540px",
+          maxWidth: 540,
           margin: "100px auto",
-          padding: "44px",
-          borderRadius: "24px",
+          padding: 44,
+          borderRadius: 24,
           background: "linear-gradient(180deg,#cbbfa8,#bfb196)",
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {!apiKey ? (
-          <button
-            onClick={() => setApiKey("TEST_API_KEY")}
-            style={{
-              width: "100%",
-              padding: "16px",
-              borderRadius: "16px",
-              background: "#4f8f64",
-              color: "#fff",
-              fontWeight: 700,
-              border: "none",
-            }}
-          >
-            Сымитировать ключ
-          </button>
+          <>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="email@example.com"
+              style={{ width: "100%", padding: 16, marginBottom: 12 }}
+            />
+            {error && <div style={{ color: "#8a2e2e" }}>{error}</div>}
+            <button
+              onClick={handleSubmit}
+              disabled={loading}
+              style={{ width: "100%", padding: 16 }}
+            >
+              {loading
+                ? "Подождите..."
+                : isFree
+                ? "Получить API-ключ"
+                : "Перейти к оплате"}
+            </button>
+          </>
         ) : (
           <>
-            <div
-              style={{
-                wordBreak: "break-all",
-                padding: "16px",
-                background: "#eee8db",
-                borderRadius: "12px",
-                marginBottom: "12px",
-              }}
-            >
+            <div style={{ wordBreak: "break-all", marginBottom: 12 }}>
               {apiKey}
             </div>
-
             <button
               onClick={handleCopy}
-              style={{
-                width: "100%",
-                padding: "14px",
-                borderRadius: "14px",
-                background: copied ? "#7fbf96" : "#4f8f64",
-                color: "#fff",
-                fontWeight: 700,
-                border: "none",
-                marginBottom: "10px",
-              }}
+              style={{ width: "100%", padding: 14, marginBottom: 10 }}
             >
-              {copied ? "✓ Скопировано" : "Скопировать"}
+              {copied ? "✓ Скопировано" : "Скопировать API-ключ"}
             </button>
-
-            <button
-              onClick={onClose}
-              style={{
-                width: "100%",
-                padding: "14px",
-                borderRadius: "14px",
-                background: "#666",
-                color: "#fff",
-                border: "none",
-              }}
-            >
+            <button onClick={onClose} style={{ width: "100%", padding: 14 }}>
               Закрыть
             </button>
           </>
