@@ -179,6 +179,7 @@ export default function EmailModal({ plan, onClose }: Props) {
                 onChange={(e) => setEmail(e.target.value)}
                 style={{
                   width: "100%",
+                  boxSizing: "border-box",
                   padding: "16px 18px",
                   borderRadius: "14px",
                   border: "1px solid #9fc3ab",
