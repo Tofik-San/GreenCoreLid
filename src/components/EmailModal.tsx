@@ -107,28 +107,28 @@ export default function EmailModal({ plan, onClose }: Props) {
       <div
         style={{
           position: "relative",
-          maxWidth: "580px",
+          maxWidth: "600px",
           maxHeight: "calc(100vh - 160px)",
           overflowY: "auto",
           margin: "80px auto",
-          padding: "46px 48px",
-          borderRadius: "26px",
+          padding: "48px 52px",
+          borderRadius: "28px",
           background: "#f4efe6",
-          border: "1.5px solid rgba(110,160,120,0.55)",
-          boxShadow: "0 18px 40px rgba(0,0,0,0.18)",
-          color: "#2b2b2b",
+          border: "1.5px solid rgba(110,160,120,0.65)",
+          boxShadow: "0 22px 48px rgba(0,0,0,0.22)",
+          color: "#1f2a24",
           textAlign: "center",
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* decorative green lines */}
+        {/* DECORATIVE ECO LINES */}
         <div
           style={{
             position: "absolute",
             inset: 0,
             background:
-              "radial-gradient(1200px 420px at -10% 20%, rgba(110,160,120,0.14), transparent 60%)," +
-              "radial-gradient(900px 360px at 110% 85%, rgba(110,160,120,0.12), transparent 55%)",
+              "radial-gradient(600px 220px at -5% 15%, rgba(90,150,110,0.28), transparent 65%)," +
+              "radial-gradient(520px 200px at 105% 90%, rgba(90,150,110,0.24), transparent 60%)",
             pointerEvents: "none",
           }}
         />
@@ -138,10 +138,10 @@ export default function EmailModal({ plan, onClose }: Props) {
           {/* BRAND */}
           <div
             style={{
-              fontSize: "26px",
+              fontSize: "28px",
               fontWeight: 700,
               letterSpacing: "0.08em",
-              color: "#2e5f3e",
+              color: "#244d36",
               marginBottom: "6px",
             }}
           >
@@ -155,7 +155,7 @@ export default function EmailModal({ plan, onClose }: Props) {
               fontWeight: 600,
               letterSpacing: "0.18em",
               color: "#4f7f64",
-              marginBottom: "34px",
+              marginBottom: "36px",
               textTransform: "uppercase",
             }}
           >
@@ -168,7 +168,7 @@ export default function EmailModal({ plan, onClose }: Props) {
                 style={{
                   fontSize: "18px",
                   fontWeight: 600,
-                  marginBottom: "16px",
+                  marginBottom: "18px",
                 }}
               >
                 Введите вашу почту
@@ -184,11 +184,12 @@ export default function EmailModal({ plan, onClose }: Props) {
                   padding: "16px 18px",
                   borderRadius: "14px",
                   background: "#faf8f3",
-                  border: "1px solid rgba(110,160,120,0.45)",
+                  border: "1px solid rgba(110,160,120,0.55)",
                   fontSize: "16px",
                   fontWeight: 500,
                   outline: "none",
-                  marginBottom: "14px",
+                  marginBottom: "16px",
+                  color: "#1f2a24",
                 }}
               />
 
@@ -196,8 +197,8 @@ export default function EmailModal({ plan, onClose }: Props) {
                 style={{
                   fontSize: "14px",
                   lineHeight: 1.6,
-                  color: "#4a4a4a",
-                  marginBottom: "26px",
+                  color: "#39453e",
+                  marginBottom: "28px",
                 }}
               >
                 Внимательно проверьте email перед оплатой
@@ -222,7 +223,7 @@ export default function EmailModal({ plan, onClose }: Props) {
                   width: "100%",
                   padding: "18px",
                   borderRadius: "18px",
-                  background: loading ? "#a9b8b0" : "#5f9b75",
+                  background: loading ? "#a7b6ae" : "#5f9b75",
                   color: "#ffffff",
                   fontWeight: 600,
                   fontSize: "16px",
@@ -241,9 +242,9 @@ export default function EmailModal({ plan, onClose }: Props) {
               {!isFree && (
                 <div
                   style={{
-                    marginTop: "18px",
+                    marginTop: "20px",
                     fontSize: "14px",
-                    color: "#4a4a4a",
+                    color: "#39453e",
                   }}
                 >
                   После оплаты API-ключ будет отправлен на почту
@@ -268,8 +269,8 @@ export default function EmailModal({ plan, onClose }: Props) {
                   padding: "16px",
                   borderRadius: "14px",
                   background: "#faf8f3",
-                  border: "1px solid rgba(110,160,120,0.45)",
-                  marginBottom: "16px",
+                  border: "1px solid rgba(110,160,120,0.55)",
+                  marginBottom: "18px",
                   fontSize: "14px",
                   fontWeight: 500,
                 }}
@@ -290,7 +291,7 @@ export default function EmailModal({ plan, onClose }: Props) {
                   letterSpacing: "0.04em",
                   cursor: "pointer",
                   border: "none",
-                  marginBottom: "16px",
+                  marginBottom: "18px",
                 }}
               >
                 {copied ? "Скопировано ✓" : "Скопировать API-ключ"}
