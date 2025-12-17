@@ -101,6 +101,7 @@ export default function EmailModal({ plan, onClose }: Props) {
           maxWidth: "540px",
           margin: "100px auto",
           padding: "44px 46px",
+          boxSizing: "border-box", // ✅ КЛЮЧЕВАЯ ПРАВКА
           borderRadius: "24px",
           background: "linear-gradient(180deg, #cbbfa8, #bfb196)",
           border: "1px solid rgba(92,128,98,0.55)",
@@ -139,13 +140,11 @@ export default function EmailModal({ plan, onClose }: Props) {
 
         {!apiKey ? (
           <>
-            {/* LABEL */}
             <div
               style={{
                 fontSize: "18px",
                 fontWeight: 600,
                 marginBottom: "14px",
-                color: "#1c2520",
               }}
             >
               Введите вашу почту
@@ -162,34 +161,17 @@ export default function EmailModal({ plan, onClose }: Props) {
                 borderRadius: "16px",
                 background: "#eee8db",
                 border: "1px solid rgba(92,128,98,0.65)",
-                color: "#1c2520",
                 fontSize: "17px",
-                fontWeight: 500,
-                outline: "none",
                 marginBottom: "12px",
-                boxShadow: "inset 0 3px 8px rgba(0,0,0,0.14)",
+                outline: "none",
               }}
             />
-
-            {/* WARNING */}
-            <div
-              style={{
-                fontSize: "14px",
-                lineHeight: 1.6,
-                fontWeight: 500,
-                color: "#2f3f36",
-                marginBottom: "26px",
-              }}
-            >
-              Внимательно проверьте email перед оплатой
-            </div>
 
             {error && (
               <div
                 style={{
                   color: "#8a2e2e",
                   fontSize: "15px",
-                  fontWeight: 500,
                   marginBottom: "16px",
                 }}
               >
@@ -210,9 +192,8 @@ export default function EmailModal({ plan, onClose }: Props) {
                 color: "#ffffff",
                 fontWeight: 700,
                 fontSize: "17px",
-                cursor: loading ? "default" : "pointer",
-                boxShadow: "0 10px 26px rgba(79,143,100,0.5)",
                 border: "none",
+                cursor: loading ? "default" : "pointer",
               }}
             >
               {loading
@@ -221,32 +202,13 @@ export default function EmailModal({ plan, onClose }: Props) {
                 ? "Получить API-ключ"
                 : "Перейти к оплате"}
             </button>
-
-            {!isFree && (
-              <div
-                style={{
-                  marginTop: "18px",
-                  fontSize: "14px",
-                  lineHeight: 1.6,
-                  fontWeight: 500,
-                  color: "#2f3f36",
-                }}
-              >
-                После оплаты API-ключ будет отправлен на почту
-              </div>
-            )}
           </>
         ) : (
           <>
-            <div
-              style={{
-                marginBottom: "12px",
-                fontSize: "16px",
-                fontWeight: 600,
-              }}
-            >
+            <div style={{ marginBottom: "12px", fontWeight: 600 }}>
               Ваш API-ключ:
             </div>
+
             <div
               style={{
                 wordBreak: "break-all",
@@ -256,13 +218,11 @@ export default function EmailModal({ plan, onClose }: Props) {
                 border: "1px solid rgba(92,128,98,0.65)",
                 marginBottom: "22px",
                 fontSize: "15px",
-                fontWeight: 500,
-                color: "#1c2520",
-                boxShadow: "inset 0 3px 8px rgba(0,0,0,0.14)",
               }}
             >
               {apiKey}
             </div>
+
             <button
               onClick={onClose}
               style={{
@@ -273,9 +233,8 @@ export default function EmailModal({ plan, onClose }: Props) {
                 color: "#ffffff",
                 fontWeight: 700,
                 fontSize: "17px",
-                cursor: "pointer",
                 border: "none",
-                boxShadow: "0 10px 26px rgba(79,143,100,0.5)",
+                cursor: "pointer",
               }}
             >
               Закрыть
