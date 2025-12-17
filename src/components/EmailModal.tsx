@@ -12,7 +12,6 @@ export default function EmailModal({ plan, onClose }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
@@ -24,13 +23,6 @@ export default function EmailModal({ plan, onClose }: Props) {
 
   const validateEmail = (value: string) =>
     value.includes("@") && value.includes(".");
-
-  const handleCopy = async () => {
-    if (!apiKey) return;
-    await navigator.clipboard.writeText(apiKey);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const handleSubmit = async () => {
     setError(null);
@@ -53,8 +45,12 @@ export default function EmailModal({ plan, onClose }: Props) {
 
         const data = await res.json();
 
-        if (!res.ok || !data?.api_key) {
-          throw new Error(data?.detail || "Ошибка получения ключа");
+        if (!res.ok) {
+          throw new Error(data?.detail || "Ошибка при создании ключа");
+        }
+
+        if (!data?.api_key) {
+          throw new Error("API-ключ не получен");
         }
 
         setApiKey(data.api_key);
@@ -65,7 +61,10 @@ export default function EmailModal({ plan, onClose }: Props) {
         const res = await fetch(`${API_URL}/api/payment/session`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ plan: normalizedPlan, email }),
+          body: JSON.stringify({
+            plan: normalizedPlan,
+            email,
+          }),
         });
 
         const data = await res.json();
@@ -75,15 +74,16 @@ export default function EmailModal({ plan, onClose }: Props) {
         }
 
         window.location.href = data.confirmation_url;
+        return;
       }
+
+      setError("Неизвестный тариф");
     } catch (e: any) {
       setError(e.message || "Ошибка");
     } finally {
       setLoading(false);
     }
   };
-
-  const borderBox = { boxSizing: "border-box" as const };
 
   return (
     <div
@@ -102,24 +102,36 @@ export default function EmailModal({ plan, onClose }: Props) {
           margin: "100px auto",
           padding: "44px 46px",
           borderRadius: "24px",
-          background: "linear-gradient(180deg,#cbbfa8,#bfb196)",
+          background: "linear-gradient(180deg, #cbbfa8, #bfb196)",
           border: "1px solid rgba(92,128,98,0.55)",
           boxShadow: "0 28px 70px rgba(0,0,0,0.4)",
+          color: "#1c2520",
           textAlign: "center",
-          ...borderBox,
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ fontSize: 24, fontWeight: 800, marginBottom: 6 }}>
+        {/* BRAND */}
+        <div
+          style={{
+            fontSize: "24px",
+            fontWeight: 800,
+            letterSpacing: "0.12em",
+            color: "#2f6b45",
+            marginBottom: "8px",
+          }}
+        >
           GreenCoreAPI
         </div>
 
+        {/* PLAN */}
         <div
           style={{
-            fontSize: 14,
+            fontSize: "16px",
             fontWeight: 700,
-            marginBottom: 26,
             letterSpacing: "0.18em",
+            color: "#3f7f55",
+            marginBottom: "30px",
+            textTransform: "uppercase",
           }}
         >
           {plan}
@@ -127,14 +139,22 @@ export default function EmailModal({ plan, onClose }: Props) {
 
         {!apiKey ? (
           <>
-            <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 14 }}>
+            {/* LABEL */}
+            <div
+              style={{
+                fontSize: "18px",
+                fontWeight: 600,
+                marginBottom: "14px",
+                color: "#1c2520",
+              }}
+            >
               Введите вашу почту
             </div>
 
             <input
               type="email"
-              value={email}
               placeholder="email@example.com"
+              value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={{
                 width: "100%",
@@ -142,15 +162,37 @@ export default function EmailModal({ plan, onClose }: Props) {
                 borderRadius: "16px",
                 background: "#eee8db",
                 border: "1px solid rgba(92,128,98,0.65)",
-                fontSize: "16px",
-                marginBottom: "20px",
+                color: "#1c2520",
+                fontSize: "17px",
+                fontWeight: 500,
                 outline: "none",
-                ...borderBox,
+                marginBottom: "12px",
+                boxShadow: "inset 0 3px 8px rgba(0,0,0,0.14)",
               }}
             />
 
+            {/* WARNING */}
+            <div
+              style={{
+                fontSize: "14px",
+                lineHeight: 1.6,
+                fontWeight: 500,
+                color: "#2f3f36",
+                marginBottom: "26px",
+              }}
+            >
+              Внимательно проверьте email перед оплатой
+            </div>
+
             {error && (
-              <div style={{ color: "#8a2e2e", marginBottom: 16 }}>
+              <div
+                style={{
+                  color: "#8a2e2e",
+                  fontSize: "15px",
+                  fontWeight: 500,
+                  marginBottom: "16px",
+                }}
+              >
                 {error}
               </div>
             )}
@@ -165,67 +207,75 @@ export default function EmailModal({ plan, onClose }: Props) {
                 background: loading
                   ? "#9faa9f"
                   : "linear-gradient(90deg,#4f8f64,#6fae7e)",
-                color: "#fff",
+                color: "#ffffff",
                 fontWeight: 700,
-                fontSize: 16,
-                border: "none",
+                fontSize: "17px",
                 cursor: loading ? "default" : "pointer",
-                ...borderBox,
+                boxShadow: "0 10px 26px rgba(79,143,100,0.5)",
+                border: "none",
               }}
             >
-              {loading ? "Подождите..." : "Получить API-ключ"}
+              {loading
+                ? "Подождите..."
+                : isFree
+                ? "Получить API-ключ"
+                : "Перейти к оплате"}
             </button>
+
+            {!isFree && (
+              <div
+                style={{
+                  marginTop: "18px",
+                  fontSize: "14px",
+                  lineHeight: 1.6,
+                  fontWeight: 500,
+                  color: "#2f3f36",
+                }}
+              >
+                После оплаты API-ключ будет отправлен на почту
+              </div>
+            )}
           </>
         ) : (
           <>
-            <div style={{ fontWeight: 600, marginBottom: 10 }}>
-              Ваш API-ключ
+            <div
+              style={{
+                marginBottom: "12px",
+                fontSize: "16px",
+                fontWeight: 600,
+              }}
+            >
+              Ваш API-ключ:
             </div>
-
             <div
               style={{
                 wordBreak: "break-all",
-                padding: 16,
-                borderRadius: 16,
+                padding: "16px",
+                borderRadius: "16px",
                 background: "#eee8db",
-                marginBottom: 14,
-                fontSize: 14,
-                ...borderBox,
+                border: "1px solid rgba(92,128,98,0.65)",
+                marginBottom: "22px",
+                fontSize: "15px",
+                fontWeight: 500,
+                color: "#1c2520",
+                boxShadow: "inset 0 3px 8px rgba(0,0,0,0.14)",
               }}
             >
               {apiKey}
             </div>
-
-            <button
-              onClick={handleCopy}
-              style={{
-                width: "100%",
-                padding: "14px",
-                borderRadius: "14px",
-                background: copied
-                  ? "#7fbf9b"
-                  : "linear-gradient(90deg,#4f8f64,#6fae7e)",
-                color: "#fff",
-                fontWeight: 700,
-                border: "none",
-                marginBottom: 12,
-                ...borderBox,
-              }}
-            >
-              {copied ? "Скопировано ✓" : "Скопировать"}
-            </button>
-
             <button
               onClick={onClose}
               style={{
                 width: "100%",
-                padding: "14px",
-                borderRadius: "14px",
-                background: "#5c6f63",
-                color: "#fff",
-                fontWeight: 600,
+                padding: "18px",
+                borderRadius: "18px",
+                background: "linear-gradient(90deg,#4f8f64,#6fae7e)",
+                color: "#ffffff",
+                fontWeight: 700,
+                fontSize: "17px",
+                cursor: "pointer",
                 border: "none",
-                ...borderBox,
+                boxShadow: "0 10px 26px rgba(79,143,100,0.5)",
               }}
             >
               Закрыть
