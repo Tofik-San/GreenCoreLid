@@ -6,6 +6,7 @@ export default function BackButton() {
   const router = useRouter();
   const pathname = usePathname();
 
+  // не показываем на главной
   if (pathname === "/") return null;
 
   return (
@@ -23,10 +24,11 @@ export default function BackButton() {
         shadow-[0_0_18px_rgba(83,255,148,0.45)]
         hover:translate-y-[-1px]
         transition-all
+        hidden md:inline-flex
       "
       style={{
-        top: "4.3rem",     // ⬇ ниже
-        left: "4.5rem",    // ➡ правее
+        top: "4.3rem",
+        left: "4.5rem",
         background: "linear-gradient(90deg,#3fd67c,#53ff94)",
         color: "#04140a",
         letterSpacing: "0.4px",
