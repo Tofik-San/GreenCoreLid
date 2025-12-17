@@ -12,7 +12,7 @@ export default function EmailModal({ plan, onClose }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false); // ← добавлено
+  const [copied, setCopied] = useState(false);
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
@@ -24,6 +24,13 @@ export default function EmailModal({ plan, onClose }: Props) {
 
   const validateEmail = (value: string) =>
     value.includes("@") && value.includes(".");
+
+  const handleCopy = async () => {
+    if (!apiKey) return;
+    await navigator.clipboard.writeText(apiKey);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleSubmit = async () => {
     setError(null);
@@ -84,14 +91,6 @@ export default function EmailModal({ plan, onClose }: Props) {
     } finally {
       setLoading(false);
     }
-  };
-
-  // ← добавлено
-  const handleCopy = async () => {
-    if (!apiKey) return;
-    await navigator.clipboard.writeText(apiKey);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -167,12 +166,19 @@ export default function EmailModal({ plan, onClose }: Props) {
                 borderRadius: "16px",
                 background: "#eee8db",
                 border: "1px solid rgba(92,128,98,0.65)",
+                fontSize: "17px",
                 marginBottom: "12px",
               }}
             />
 
             {error && (
-              <div style={{ color: "#8a2e2e", marginBottom: "16px" }}>
+              <div
+                style={{
+                  color: "#8a2e2e",
+                  fontSize: "15px",
+                  marginBottom: "16px",
+                }}
+              >
                 {error}
               </div>
             )}
@@ -202,13 +208,7 @@ export default function EmailModal({ plan, onClose }: Props) {
           </>
         ) : (
           <>
-            <div
-              style={{
-                marginBottom: "12px",
-                fontSize: "16px",
-                fontWeight: 600,
-              }}
-            >
+            <div style={{ marginBottom: "10px", fontWeight: 600 }}>
               Ваш API-ключ:
             </div>
 
@@ -216,44 +216,44 @@ export default function EmailModal({ plan, onClose }: Props) {
               style={{
                 wordBreak: "break-all",
                 padding: "16px",
-                borderRadius: "16px",
+                borderRadius: "14px",
                 background: "#eee8db",
                 border: "1px solid rgba(92,128,98,0.65)",
-                marginBottom: "12px",
-                fontSize: "15px",
-                fontWeight: 500,
+                marginBottom: "14px",
+                fontSize: "14px",
               }}
             >
               {apiKey}
             </div>
 
-            {/* ← добавлено */}
             <button
               onClick={handleCopy}
               style={{
                 width: "100%",
                 padding: "14px",
                 borderRadius: "14px",
-                background: "#4f8f64",
-                color: "#ffffff",
-                fontWeight: 600,
-                marginBottom: "10px",
+                background: copied
+                  ? "#7fbf9b"
+                  : "linear-gradient(90deg,#4f8f64,#6fae7e)",
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "15px",
                 border: "none",
+                marginBottom: "12px",
               }}
             >
-              {copied ? "✓ Скопировано" : "Скопировать API-ключ"}
+              {copied ? "Скопировано ✓" : "Скопировать"}
             </button>
 
             <button
               onClick={onClose}
               style={{
                 width: "100%",
-                padding: "18px",
-                borderRadius: "18px",
-                background: "linear-gradient(90deg,#4f8f64,#6fae7e)",
-                color: "#ffffff",
-                fontWeight: 700,
-                fontSize: "17px",
+                padding: "14px",
+                borderRadius: "14px",
+                background: "#5c6f63",
+                color: "#fff",
+                fontWeight: 600,
                 border: "none",
               }}
             >
