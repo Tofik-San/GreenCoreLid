@@ -12,7 +12,7 @@ export default function EmailModal({ plan, onClose }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(false); // ← добавлено
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
@@ -86,6 +86,7 @@ export default function EmailModal({ plan, onClose }: Props) {
     }
   };
 
+  // ← добавлено
   const handleCopy = async () => {
     if (!apiKey) return;
     await navigator.clipboard.writeText(apiKey);
@@ -183,7 +184,9 @@ export default function EmailModal({ plan, onClose }: Props) {
                 width: "100%",
                 padding: "18px",
                 borderRadius: "18px",
-                background: "linear-gradient(90deg,#4f8f64,#6fae7e)",
+                background: loading
+                  ? "#9faa9f"
+                  : "linear-gradient(90deg,#4f8f64,#6fae7e)",
                 color: "#ffffff",
                 fontWeight: 700,
                 fontSize: "17px",
@@ -199,7 +202,13 @@ export default function EmailModal({ plan, onClose }: Props) {
           </>
         ) : (
           <>
-            <div style={{ marginBottom: "12px", fontWeight: 600 }}>
+            <div
+              style={{
+                marginBottom: "12px",
+                fontSize: "16px",
+                fontWeight: 600,
+              }}
+            >
               Ваш API-ключ:
             </div>
 
@@ -209,23 +218,25 @@ export default function EmailModal({ plan, onClose }: Props) {
                 padding: "16px",
                 borderRadius: "16px",
                 background: "#eee8db",
-                marginBottom: "14px",
+                border: "1px solid rgba(92,128,98,0.65)",
+                marginBottom: "12px",
+                fontSize: "15px",
+                fontWeight: 500,
               }}
             >
               {apiKey}
             </div>
 
+            {/* ← добавлено */}
             <button
               onClick={handleCopy}
               style={{
                 width: "100%",
                 padding: "14px",
-                borderRadius: "16px",
-                background: copied
-                  ? "#7fbf96"
-                  : "linear-gradient(90deg,#4f8f64,#6fae7e)",
+                borderRadius: "14px",
+                background: "#4f8f64",
                 color: "#ffffff",
-                fontWeight: 700,
+                fontWeight: 600,
                 marginBottom: "10px",
                 border: "none",
               }}
@@ -237,10 +248,12 @@ export default function EmailModal({ plan, onClose }: Props) {
               onClick={onClose}
               style={{
                 width: "100%",
-                padding: "14px",
-                borderRadius: "16px",
-                background: "#4f6f5c",
+                padding: "18px",
+                borderRadius: "18px",
+                background: "linear-gradient(90deg,#4f8f64,#6fae7e)",
                 color: "#ffffff",
+                fontWeight: 700,
+                fontSize: "17px",
                 border: "none",
               }}
             >
