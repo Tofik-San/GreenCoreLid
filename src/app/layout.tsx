@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import BackButton from "@/components/BackButton";
 
 export const metadata: Metadata = {
   title: "GreenCore",
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className="relative min-h-screen text-[var(--gc-text)] bg-[var(--gc-bg)] antialiased">
+        <BackButton />
         {children}
       </body>
     </html>
