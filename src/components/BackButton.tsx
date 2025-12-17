@@ -25,7 +25,7 @@ export default function BackButton() {
         transition-all
       "
       style={{
-        top: "4.5rem",     // ⬇ ниже
+        top: "4.3rem",     // ⬇ ниже
         left: "4.5rem",    // ➡ правее
         background: "linear-gradient(90deg,#3fd67c,#53ff94)",
         color: "#04140a",
