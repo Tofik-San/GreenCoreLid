@@ -12,6 +12,7 @@ export default function EmailModal({ plan, onClose }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [apiKey, setApiKey] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const API_URL =
     process.env.NEXT_PUBLIC_API_URL?.trim() ||
@@ -85,6 +86,13 @@ export default function EmailModal({ plan, onClose }: Props) {
     }
   };
 
+  const handleCopy = async () => {
+    if (!apiKey) return;
+    await navigator.clipboard.writeText(apiKey);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <div
       style={{
@@ -98,8 +106,10 @@ export default function EmailModal({ plan, onClose }: Props) {
     >
       <div
         style={{
-          maxWidth: "540px",
-          margin: "100px auto",
+          maxWidth: "580px",
+          maxHeight: "calc(100vh - 160px)",
+          overflowY: "auto",
+          margin: "80px auto",
           padding: "44px 46px",
           borderRadius: "24px",
           background: "linear-gradient(180deg, #cbbfa8, #bfb196)",
@@ -139,13 +149,11 @@ export default function EmailModal({ plan, onClose }: Props) {
 
         {!apiKey ? (
           <>
-            {/* LABEL */}
             <div
               style={{
                 fontSize: "18px",
                 fontWeight: 600,
                 marginBottom: "14px",
-                color: "#1c2520",
               }}
             >
               Введите вашу почту
@@ -162,22 +170,15 @@ export default function EmailModal({ plan, onClose }: Props) {
                 borderRadius: "16px",
                 background: "#eee8db",
                 border: "1px solid rgba(92,128,98,0.65)",
-                color: "#1c2520",
                 fontSize: "17px",
-                fontWeight: 500,
-                outline: "none",
                 marginBottom: "12px",
-                boxShadow: "inset 0 3px 8px rgba(0,0,0,0.14)",
               }}
             />
 
-            {/* WARNING */}
             <div
               style={{
                 fontSize: "14px",
                 lineHeight: 1.6,
-                fontWeight: 500,
-                color: "#2f3f36",
                 marginBottom: "26px",
               }}
             >
@@ -189,7 +190,6 @@ export default function EmailModal({ plan, onClose }: Props) {
                 style={{
                   color: "#8a2e2e",
                   fontSize: "15px",
-                  fontWeight: 500,
                   marginBottom: "16px",
                 }}
               >
@@ -211,7 +211,6 @@ export default function EmailModal({ plan, onClose }: Props) {
                 fontWeight: 700,
                 fontSize: "17px",
                 cursor: loading ? "default" : "pointer",
-                boxShadow: "0 10px 26px rgba(79,143,100,0.5)",
                 border: "none",
               }}
             >
@@ -227,9 +226,6 @@ export default function EmailModal({ plan, onClose }: Props) {
                 style={{
                   marginTop: "18px",
                   fontSize: "14px",
-                  lineHeight: 1.6,
-                  fontWeight: 500,
-                  color: "#2f3f36",
                 }}
               >
                 После оплаты API-ключ будет отправлен на почту
@@ -247,6 +243,7 @@ export default function EmailModal({ plan, onClose }: Props) {
             >
               Ваш API-ключ:
             </div>
+
             <div
               style={{
                 wordBreak: "break-all",
@@ -254,15 +251,33 @@ export default function EmailModal({ plan, onClose }: Props) {
                 borderRadius: "16px",
                 background: "#eee8db",
                 border: "1px solid rgba(92,128,98,0.65)",
-                marginBottom: "22px",
+                marginBottom: "14px",
                 fontSize: "15px",
-                fontWeight: 500,
-                color: "#1c2520",
-                boxShadow: "inset 0 3px 8px rgba(0,0,0,0.14)",
               }}
             >
               {apiKey}
             </div>
+
+            <button
+              onClick={handleCopy}
+              style={{
+                width: "100%",
+                padding: "14px",
+                borderRadius: "16px",
+                background: copied
+                  ? "#7fae8c"
+                  : "linear-gradient(90deg,#5a8f6f,#79b08a)",
+                color: "#ffffff",
+                fontWeight: 700,
+                fontSize: "15px",
+                cursor: "pointer",
+                border: "none",
+                marginBottom: "14px",
+              }}
+            >
+              {copied ? "Скопировано ✓" : "Скопировать API-ключ"}
+            </button>
+
             <button
               onClick={onClose}
               style={{
@@ -275,7 +290,6 @@ export default function EmailModal({ plan, onClose }: Props) {
                 fontSize: "17px",
                 cursor: "pointer",
                 border: "none",
-                boxShadow: "0 10px 26px rgba(79,143,100,0.5)",
               }}
             >
               Закрыть
