@@ -14,8 +14,8 @@ export default function BackButton() {
       onClick={() => router.back()}
       className="
         fixed
-        top-6
-        left-6
+        top-12
+        left-12
         z-[9999]
         gc-btn
         px-6
